@@ -10,7 +10,6 @@ class GenericObject(object):
     def __init__(self, config):
         self.config = config
         self.id = None
-        self.name = None
         self.parent_id = None
         self.input_field_attribute_lookup = None
 
@@ -23,6 +22,10 @@ class GenericObject(object):
         return generic_object
 
     @staticmethod
+    def current_id_object_type():
+        pass
+
+    @staticmethod
     def input_field_attribute_lookup():
         pass
 
@@ -33,7 +36,7 @@ class GenericObject(object):
 
     def _write_attributes_to_screen(self):
         arcpy.AddError("Begin Attribute Dump")
-        arcpy.AddError("Object Type:" + self.name)
+        arcpy.AddError("Object Type:" + type(self))
         attribute_names = vars(self)
         for attribute_name in attribute_names:
             attribute_value = getattr(self, attribute_name)

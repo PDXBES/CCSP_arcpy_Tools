@@ -20,11 +20,12 @@ print time.time() - start
 
 dme_master_links = []
 for dme_link in test_dme_pipes:
-    dme_master_link = dme_master_hybrid_db_data_io.create_object_with_id(DmeMasterLink)
+    dme_master_link = DmeMasterLink(config)
     dme_master_link.global_id = dme_link.global_id
     dme_master_link.geometry = dme_link.geometry
     dme_master_links.append(dme_master_link)
 
-dme_master_hybrid.append_dme_master_links_to_db(dme_master_links,
-                                                dme_master_hybrid_db_data_io)
+start = time.time()
+dme_master_hybrid_db_data_io.append_dme_master_links_to_db(dme_master_links)
+print time.time() - start
 pass

@@ -44,13 +44,4 @@ class DmeMasterHybrid:
                                                                                       view_name)
         return master_links
 
-    def append_dme_master_links_to_db(self, dme_master_links, dme_master_hybrid_db_data_io):
-        # type: (List[DmeMasterLink], DmeMasterHybridDbDataIo) -> None
-        input_field_attribute_lookup = DmeMasterLink.input_field_attribute_lookup()
-        template_table = self.config.DME_master_hybrid_sde_path
-        target_table = self.config.DME_master_hybrid_sde_path
-        dme_master_hybrid_db_data_io.append_objects_to_db(dme_master_links,
-                                                          input_field_attribute_lookup,
-                                                          template_table,
-                                                          target_table)
 

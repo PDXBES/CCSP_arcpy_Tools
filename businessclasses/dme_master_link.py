@@ -26,7 +26,7 @@ class DmeMasterLink(GenericObject):
         self.geometry = None
 
     @staticmethod
-    def name():
+    def current_id_object_type():
         return "Hybrid"
 
     @staticmethod

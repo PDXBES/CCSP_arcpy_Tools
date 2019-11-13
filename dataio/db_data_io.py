@@ -41,7 +41,7 @@ class DbDataIo(object):
             cursor = arcpy.da.UpdateCursor(self.current_id_database_table_path, field_names)
             for row in cursor:
                 object_name, current_id = row
-                if object_type.name() == object_name:
+                if object_type.current_id_object_type() == object_name:
                     next_id = current_id + number_of_ids
                     break
             cursor.updateRow([object_name, next_id])
@@ -82,7 +82,7 @@ class DbDataIo(object):
                 attribute_value = getattr(generic_object, attribute_name)
                 row.append(attribute_value)
         except AttributeError:
-            arcpy.AddMessage("When creating a row from a " + generic_object.name +
+            arcpy.AddMessage("When creating a row from a " + generic_object.current_id_object_type +
                   " the attribute " + attribute_name + " could not be found.")
             raise AttributeError
             #TODO find cleaner way to get traceback and stop program
@@ -225,6 +225,23 @@ class DbDataIo(object):
                                                field_attribute_lookup, template_table)
         self.append_table_to_db(output_feature_class, target_table)
 
+    def append_objects_to_db_with_ids(self, generic_object_list, field_attribute_lookup, template_table, target_table):
+        output_feature_class = self.workspace + "\\" + "intermediate_feature_class_to_append"
+        arcpy.Delete_management(output_feature_class)
+        self.create_feature_class_from_objects(generic_object_list, self.workspace,
+                                               "intermediate_feature_class_to_append",
+                                               field_attribute_lookup, template_table)
+        self.add_ids(output_feature_class, "id", type(generic_object_list[0]))
+        self.append_table_to_db(output_feature_class, target_table)
+
+    def append_objects_to_db(self, generic_object_list, field_attribute_lookup, template_table, target_table):
+        output_feature_class = self.workspace + "\\" + "intermediate_feature_class_to_append"
+        arcpy.Delete_management(output_feature_class)
+        self.create_feature_class_from_objects(generic_object_list, self.workspace,
+                                               "intermediate_feature_class_to_append",
+                                               field_attribute_lookup, template_table)
+        self.add_ids(output_feature_class, "id", type(generic_object_list[0]))
+        self.append_table_to_db(output_feature_class, target_table)
 
 
 
