@@ -8,12 +8,11 @@ from data_io_exception import DataIoException
 from data_io_exception import FieldNamesLengthDoesNotMatchRowLengthException
 
 class DbDataIo(object):
-    def __init__(self, config, class_factory):
+    def __init__(self, config):
         # type: (Config) -> None
         self.current_id_database_table_path = None
         self.config = config
         self.workspace = "in_memory"
-        self.class_factory = class_factory
 
     def _create_field_map_for_sde_db(self, model_link_results_path):
         field_mappings = arcpy.FieldMappings()
@@ -42,7 +41,7 @@ class DbDataIo(object):
             cursor = arcpy.da.UpdateCursor(self.current_id_database_table_path, field_names)
             for row in cursor:
                 object_name, current_id = row
-                if object_type == object_name:
+                if object_type.name() == object_name:
                     next_id = current_id + number_of_ids
                     break
             cursor.updateRow([object_name, next_id])
@@ -69,6 +68,12 @@ class DbDataIo(object):
             current_id += 1
         del cursor
 
+    def create_object(self, object_type):
+        return object_type(self.config)
+
+    def create_object_with_id(self, object_type):
+        return object_type.initialize_with_current_id(self.config, self)
+
     def create_row_from_object(self, generic_object, field_attribute_lookup):
         attribute_names = field_attribute_lookup.values()
         row = []
@@ -89,28 +94,28 @@ class DbDataIo(object):
             field_name_index = field_name_list.index(field_name)
             setattr(generic_object, attribute_name, row[field_name_index])
 
-    def create_objects_from_table(self, class_type, input_table, field_attribute_lookup):
+    def create_objects_from_table(self, object_type, input_table, field_attribute_lookup):
         generic_objects = []
         fields = field_attribute_lookup.keys()
         cursor = arcpy.da.SearchCursor(input_table, fields)
         for row in cursor:
-            generic_object = self.class_factory.create_object(class_type)
+            generic_object = self.create_object(object_type)
             self.create_object_from_row(generic_object, field_attribute_lookup, row)
             generic_objects.append(generic_object)
         del cursor
         return generic_objects
 
-    def create_objects_from_table_with_current_id(self, class_type, input_table, field_attribute_lookup):
+    def create_objects_from_table_with_current_id(self, object_type, input_table, field_attribute_lookup):
         generic_objects = []
         fields = field_attribute_lookup.keys()
         number_of_objects = int(arcpy.GetCount_management(input_table)[0])
-        current_id = self._retrieve_block_of_ids(class_type, number_of_objects)
+        current_id = self._retrieve_block_of_ids(object_type, number_of_objects)
         next_id = current_id + number_of_objects
         cursor = arcpy.da.SearchCursor(input_table, fields)
         for row in cursor:
             if current_id == next_id:
                 raise Exception
-            generic_object = self.class_factory.create_object(class_type)
+            generic_object = self.create_object(object_type)
             self.create_object_from_row(generic_object, field_attribute_lookup, row)
             generic_object.id = current_id
             current_id += 1
@@ -118,21 +123,42 @@ class DbDataIo(object):
         del cursor
         return generic_objects
 
-    def create_objects_from_database(self, class_type, input_table):
+    def create_objects_from_database(self, object_type, input_table):
         in_memory_output_table_name = "object_table"
         table = self.workspace + "/" + in_memory_output_table_name
-        field_attribute_lookup = self.class_factory.class_dict[class_type].input_field_attribute_lookup()
+        field_attribute_lookup = object_type.input_field_attribute_lookup()
         self.copy_to_memory(input_table, in_memory_output_table_name)
-        objects = self.create_objects_from_table(class_type, table, field_attribute_lookup)
+        objects = self.create_objects_from_table(object_type, table, field_attribute_lookup)
         arcpy.Delete_management(table)
         return objects
 
-    def create_objects_from_database_with_id_filter(self, class_type, input_table_name, id_field_name, id_list):
+    def create_objects_from_database_with_id_filter(self, object_type, input_table_name, id_field_name, id_list):
         in_memory_output_table_name = "object_table"
         table = self.workspace + "/" + in_memory_output_table_name
-        field_attribute_lookup = self.class_factory.class_dict[class_type].input_field_attribute_lookup()
+        field_attribute_lookup = object_type.input_field_attribute_lookup()
         self.copy_to_memory_with_id_filter(input_table_name, in_memory_output_table_name, id_field_name, id_list)
-        objects = self.create_objects_from_table(class_type, table, field_attribute_lookup)
+        objects = self.create_objects_from_table(object_type, table, field_attribute_lookup)
+        arcpy.Delete_management(table)
+        return objects
+
+    def create_objects_from_database_view(self, object_type, input_database, view):
+        #TODO: add tests
+        in_memory_output_table_name = "object_table"
+        table = self.workspace + "/" + in_memory_output_table_name
+        field_attribute_lookup = object_type.input_field_attribute_lookup()
+        query = "select * from " + view
+        self.copy_to_memory_with_query(input_database, in_memory_output_table_name, query)
+        objects = self.create_objects_from_table(object_type, table, field_attribute_lookup)
+        arcpy.Delete_management(table)
+        return objects
+
+    def create_objects_from_database_with_query(self, object_type, input_database, query):
+        #TODO: add tests
+        in_memory_output_table_name = "object_table"
+        table = self.workspace + "/" + in_memory_output_table_name
+        field_attribute_lookup = object_type.input_field_attribute_lookup()
+        self.copy_to_memory_with_query(input_database, in_memory_output_table_name, query)
+        objects = self.create_objects_from_table(object_type, table, field_attribute_lookup)
         arcpy.Delete_management(table)
         return objects
 
@@ -154,7 +180,7 @@ class DbDataIo(object):
 
     def copy_to_memory(self, input_table, in_memory_output_table_name):
         in_memory_table = self.workspace + "\\" + in_memory_output_table_name
-        # TODO check if feature class or table and add logic
+        # TODO: check if feature class or table and add logic
         # TODO: check if input table has > 0 records (arcpy.GetCount_management); throw Exception if not
         try:
             arcpy.CopyFeatures_management(input_table, in_memory_table)
@@ -175,6 +201,12 @@ class DbDataIo(object):
                 where_clause += ","
         where_clause += ")"
         arcpy.MakeQueryTable_management(input_table, in_memory_table, "", "", "", where_clause)
+
+    def copy_to_memory_with_query(self, input_database, in_memory_output_table_name, query):
+        #TODO: test
+        in_memory_table = self.workspace + "\\" + in_memory_output_table_name
+        arcpy.MakeQueryLayer_management(input_database, in_memory_table, query, "", "", "")
+        pass
 
     def append_table_to_db(self, input_table, target_table):
         # type: (str, str) -> None

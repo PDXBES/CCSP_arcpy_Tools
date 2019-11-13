@@ -18,7 +18,7 @@ class GenericObject(object):
     def initialize_with_current_id(cls, config, db_data_io):
         # type: (Config, DbDataIo) -> GenericObject
         generic_object = cls(config)
-        generic_object_current_id = db_data_io.retrieve_current_id(generic_object.name)
+        generic_object_current_id = db_data_io.retrieve_current_id(generic_object)
         generic_object.id = generic_object_current_id
         return generic_object
 
