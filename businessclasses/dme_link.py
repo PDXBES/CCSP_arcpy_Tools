@@ -13,13 +13,22 @@ class DmeLink(GenericObject):
     def __init__(self, config):
         # type: (Config) -> None
         self.global_id = None
-        self.name = "dme_link"
+        self.compkey = None
+        self.us_node_id = None
+        self.ds_node_id = None
+        self.diameter = None
+        self.us_depth = None
+        self.ds_depth = None
         self.geometry = None
 
     @staticmethod
     def input_field_attribute_lookup():
         field_attribute_lookup = OrderedDict()
         field_attribute_lookup["GlobalID"] = "global_id"
+        field_attribute_lookup["COMPKEY"] = "compkey"
+        field_attribute_lookup["FRM_NODE"] = "us_node_id"
+        field_attribute_lookup["TO_NODE"] = "ds_node_id"
+        field_attribute_lookup["PIPESIZE"] = "diameter"
         field_attribute_lookup["Shape@"] = "geometry"
         return field_attribute_lookup
 

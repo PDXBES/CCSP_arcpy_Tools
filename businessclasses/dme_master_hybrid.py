@@ -44,4 +44,12 @@ class DmeMasterHybrid:
                                                                                       view_name)
         return master_links
 
-
+    def create_ccsp_master_links(self, dme_master_hybrid_db_data_io):
+        # type: (DmeMasterHybridDbDataIo) -> List[MasterLinkWithNodes]
+        input_database = self.config.CCSP_sde_path
+        view_name = self.config.CCSP_Master_links_nodes_view_name
+        object_type = MasterLinkWithNodes
+        ccsp_master_links = dme_master_hybrid_db_data_io.create_objects_from_database_view(object_type,
+                                                                                      input_database,
+                                                                                      view_name)
+        return ccsp_master_links

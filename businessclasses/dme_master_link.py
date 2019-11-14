@@ -34,6 +34,15 @@ class DmeMasterLink(GenericObject):
         field_attribute_lookup = OrderedDict()
         field_attribute_lookup["ID"] = "id"
         field_attribute_lookup["GlobalID"] = "global_id"
+        field_attribute_lookup["COMPKEY"] = "compkey"
+        field_attribute_lookup["link_id"] = "link_id"
+        field_attribute_lookup["us_node_id"] = "us_node_id"
+        field_attribute_lookup["ds_node_id"] = "ds_node_id"
+        field_attribute_lookup["diameter"] = "diameter"
+        field_attribute_lookup["us_depth"] = "us_depth"
+        field_attribute_lookup["ds_depth"] = "ds_depth"
+        field_attribute_lookup["us_source"] = "us_depth_source"
+        field_attribute_lookup["ds_source"] = "ds_depth_source"
         field_attribute_lookup["Shape@"] = "geometry"
         return field_attribute_lookup
 
