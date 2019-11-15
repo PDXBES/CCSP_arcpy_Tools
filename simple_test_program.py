@@ -24,6 +24,8 @@ for test_ccsp_master_link in test_ccsp_master_links:
     dme_master_link = DmeMasterLink(config)
     dme_master_link.global_id = test_ccsp_master_link.global_id
     dme_master_link.link_id = test_ccsp_master_link.link_id
+    dme_master_link.us_node_name = test_ccsp_master_link.us_node_name
+    dme_master_link.ds_node_name = test_ccsp_master_link.ds_node_name
     dme_master_link.us_depth = test_ccsp_master_link.us_depth
     dme_master_link.ds_depth = test_ccsp_master_link.ds_depth
     dme_master_link.us_depth_source = "Master"

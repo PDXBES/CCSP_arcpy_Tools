@@ -16,8 +16,8 @@ class DmeMasterLink(GenericObject):
         self.global_id = None
         self.compkey = None
         self.link_id = None
-        self.us_node_id = None
-        self.ds_node_id = None
+        self.us_node_name = None
+        self.ds_node_name = None
         self.diameter = None
         self.us_depth = None
         self.ds_depth = None
@@ -36,8 +36,8 @@ class DmeMasterLink(GenericObject):
         field_attribute_lookup["GlobalID"] = "global_id"
         field_attribute_lookup["COMPKEY"] = "compkey"
         field_attribute_lookup["link_id"] = "link_id"
-        field_attribute_lookup["us_node_id"] = "us_node_id"
-        field_attribute_lookup["ds_node_id"] = "ds_node_id"
+        field_attribute_lookup["us_node_name"] = "us_node_name"
+        field_attribute_lookup["ds_node_name"] = "ds_node_name"
         field_attribute_lookup["diameter"] = "diameter"
         field_attribute_lookup["us_depth"] = "us_depth"
         field_attribute_lookup["ds_depth"] = "ds_depth"

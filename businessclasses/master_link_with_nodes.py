@@ -15,8 +15,8 @@ class MasterLinkWithNodes(GenericObject):
         self.name = "master_link_with_nodes"
         self.global_id = None
         self.link_id = None
-        self.us_node_id = None
-        self.ds_node_id = None
+        self.us_node_name = None
+        self.ds_node_name = None
         self.us_depth = None
         self.ds_depth = None
         self.geometry = None
@@ -26,8 +26,8 @@ class MasterLinkWithNodes(GenericObject):
         field_attribute_lookup = OrderedDict()
         field_attribute_lookup["dme_global_id"] = "global_id"
         field_attribute_lookup["link_id"] = "link_id"
-        field_attribute_lookup["us_node_id"] = "us_node_name"
-        field_attribute_lookup["ds_node_id"] = "ds_node_name"
+        field_attribute_lookup["us_node_name"] = "us_node_name"
+        field_attribute_lookup["ds_node_name"] = "ds_node_name"
         field_attribute_lookup["us_depth"] = "us_depth"
         field_attribute_lookup["ds_depth"] = "ds_depth"
         field_attribute_lookup["Shape@"] = "geometry"
