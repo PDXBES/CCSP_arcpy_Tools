@@ -28,6 +28,8 @@ for test_ccsp_master_link in test_ccsp_master_links:
     dme_master_link.ds_node_name = test_ccsp_master_link.ds_node_name
     dme_master_link.us_depth = test_ccsp_master_link.us_depth
     dme_master_link.ds_depth = test_ccsp_master_link.ds_depth
+    dme_master_link.us_ie = test_ccsp_master_link.us_ie
+    dme_master_link.ds_ie = test_ccsp_master_link.ds_ie
     dme_master_link.us_depth_source = "Master"
     dme_master_link.ds_depth_source = "Master"
     for index, dme_link in enumerate(test_dme_pipes):

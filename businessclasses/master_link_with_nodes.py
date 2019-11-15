@@ -19,6 +19,8 @@ class MasterLinkWithNodes(GenericObject):
         self.ds_node_name = None
         self.us_depth = None
         self.ds_depth = None
+        self.us_ie = None
+        self.ds_ie = None
         self.geometry = None
 
     @staticmethod
@@ -30,6 +32,8 @@ class MasterLinkWithNodes(GenericObject):
         field_attribute_lookup["ds_node_name"] = "ds_node_name"
         field_attribute_lookup["us_depth"] = "us_depth"
         field_attribute_lookup["ds_depth"] = "ds_depth"
+        field_attribute_lookup["us_ie"] = "us_ie"
+        field_attribute_lookup["ds_ie"] = "ds_ie"
         field_attribute_lookup["Shape@"] = "geometry"
         return field_attribute_lookup
 
