@@ -31,7 +31,7 @@ class TestDbDataIO(TestCase):
         self.mock_delete_management = self.patch_delete_management.start()
 
         self.mock_update_cursor = mock.MagicMock(arcpy.da.UpdateCursor)
-        self.mock_update_cursor.__iter__.return_value = iter([("object_1", 44), ("object_2", 55)])
+        self.mock_update_cursor.__iter__.return_value = iter([("MagicMock", 44), ("GenericObject", 55)])
 
         self.mock_update_cursor1 = mock.MagicMock(arcpy.da.UpdateCursor)
         row = [1]
@@ -82,7 +82,7 @@ class TestDbDataIO(TestCase):
 
         self.field_attribute_lookup_add_object = OrderedDict()
         self.field_attribute_lookup_add_object["id_field"] = "id"
-        self.field_attribute_lookup_add_object["name"] = "name"
+        self.field_attribute_lookup_add_object["parent_id_field"] = "parent_id"
 
         self.field_attribute_lookup_create_object = OrderedDict()
         self.field_attribute_lookup_create_object["id_db"] = "id"
@@ -92,7 +92,6 @@ class TestDbDataIO(TestCase):
 
         self.mock_generic_object = mock.MagicMock(GenericObject)
         self.mock_generic_object.id = 1
-        self.mock_generic_object.current_id_object_type = "name"
         self.mock_generic_object.valid = False
         self.mock_generic_object.parent_id = 2
         self.mock_generic_object.input_field_attribute_lookup.return_value = self.field_attribute_lookup_create_object
@@ -121,31 +120,31 @@ class TestDbDataIO(TestCase):
     def test_retrieve_current_id_calls_update_cursor_with_correct_arguments(self):
         self.mock_da_UpdateCursor.return_value = self.mock_update_cursor
         self.db_data_io.current_id_database_table_path = "current_id_database_table_path"
-        self.db_data_io.retrieve_current_id("object_1")
+        self.db_data_io.retrieve_current_id(mock.MagicMock)
         self.mock_da_UpdateCursor.assert_called_with("current_id_database_table_path", self.field_names_retrieve_id)
 
     def test_retrieve_current_id_return_current_ID(self):
         self.mock_da_UpdateCursor.return_value = self.mock_update_cursor
-        current_id = self.db_data_io.retrieve_current_id("object_1")
+        current_id = self.db_data_io.retrieve_current_id(mock.MagicMock)
         self.assertTrue(current_id == 44)
 
     def test_retrieve_current_id_update_next_id_of_object_1(self):
         self.mock_da_UpdateCursor.return_value = self.mock_update_cursor
-        self.db_data_io.retrieve_current_id("object_1")
+        self.db_data_io.retrieve_current_id(mock.MagicMock)
         self.assertTrue(self.mock_update_cursor.updateRow.called)
-        self.mock_update_cursor.updateRow.assert_called_with(["object_1", 45])
+        self.mock_update_cursor.updateRow.assert_called_with(["MagicMock", 45])
 
     def test_retrieve_current_id_update_next_id_of_object_2(self):
         self.mock_da_UpdateCursor.return_value = self.mock_update_cursor
-        self.db_data_io.retrieve_current_id("object_2")
+        self.db_data_io.retrieve_current_id(GenericObject)
         self.assertTrue(self.mock_update_cursor.updateRow.called)
-        self.mock_update_cursor.updateRow.assert_called_with(["object_2", 56])
+        self.mock_update_cursor.updateRow.assert_called_with(["GenericObject", 56])
 
     def test_retrieve_block_of_ids_number_of_objects_is_100_get_next_id_of_object_2(self):
         self.mock_da_UpdateCursor.return_value = self.mock_update_cursor
-        self.db_data_io._retrieve_block_of_ids("object_2", 100)
+        self.db_data_io._retrieve_block_of_ids(GenericObject, 100)
         self.assertTrue(self.mock_update_cursor.updateRow.called)
-        self.mock_update_cursor.updateRow.assert_called_with(["object_2", 155])
+        self.mock_update_cursor.updateRow.assert_called_with(["GenericObject", 155])
 
     #TODO create better exceptions
     def test_retrieve_block_of_ids_number_of_objects_is_zero_throws_exception(self):
@@ -158,7 +157,7 @@ class TestDbDataIO(TestCase):
 
     def test_create_row_from_object_creates_row_with_correct_values(self):
         row = self.db_data_io.create_row_from_object(self.mock_generic_object, self.field_attribute_lookup_add_object)
-        self.assertEquals(row, [1, "name"])
+        self.assertEquals(row, [1, 2])
 
     def test_create_row_from_object_raise_exception_when_attribute_name_does_not_exist(self):
         self.field_attribute_lookup_add_object["color"] = "red"

@@ -41,7 +41,7 @@ class DbDataIo(object):
             cursor = arcpy.da.UpdateCursor(self.current_id_database_table_path, field_names)
             for row in cursor:
                 object_name, current_id = row
-                if object_type.current_id_object_type() == object_name:
+                if object_type.__name__ == object_name:
                     next_id = current_id + number_of_ids
                     break
             cursor.updateRow([object_name, next_id])
@@ -231,7 +231,8 @@ class DbDataIo(object):
         self.create_feature_class_from_objects(generic_object_list, self.workspace,
                                                "intermediate_feature_class_to_append",
                                                field_attribute_lookup, template_table)
-        self.add_ids(output_feature_class, "id", type(generic_object_list[0]))
+        object_type = type(generic_object_list[0])
+        self.add_ids(output_feature_class, "id", object_type)
         self.append_table_to_db(output_feature_class, target_table)
 
     def append_objects_to_db(self, generic_object_list, field_attribute_lookup, template_table, target_table):
@@ -240,7 +241,6 @@ class DbDataIo(object):
         self.create_feature_class_from_objects(generic_object_list, self.workspace,
                                                "intermediate_feature_class_to_append",
                                                field_attribute_lookup, template_table)
-        self.add_ids(output_feature_class, "id", type(generic_object_list[0]))
         self.append_table_to_db(output_feature_class, target_table)
 
 

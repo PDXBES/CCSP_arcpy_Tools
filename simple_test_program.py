@@ -20,6 +20,7 @@ print time.time() - start
 
 dme_master_links = []
 start = time.time()
+
 for test_ccsp_master_link in test_ccsp_master_links:
     dme_master_link = DmeMasterLink(config)
     dme_master_link.global_id = test_ccsp_master_link.global_id

@@ -22,10 +22,6 @@ class GenericObject(object):
         return generic_object
 
     @staticmethod
-    def current_id_object_type():
-        pass
-
-    @staticmethod
     def input_field_attribute_lookup():
         pass
 
