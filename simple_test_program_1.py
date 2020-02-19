@@ -16,7 +16,7 @@ test_dme_links = dme_master_hybrid.create_dme_links(dme_master_hybrid_db_data_io
 print time.time() - start
 
 start = time.time()
-test_master_links = dme_master_hybrid.create_master_links(dme_master_hybrid_db_data_io)
+test_master_links = dme_master_hybrid.create_ccsp_master_links(dme_master_hybrid_db_data_io)
 print time.time() - start
 
 dme_master_links = []
