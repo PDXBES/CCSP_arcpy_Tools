@@ -14,7 +14,7 @@ class Config:
         self.test_flag = test_flag
 
 
-        sde_connections = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\03_RRAD\CCSP_Data_Management_ToolBox\connection_files"
+        sde_connections = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\03_RRAD\CCSP_Data_Management_ToolBox\connection_files_GIS_login"
 ##
         server = None
 
@@ -28,7 +28,6 @@ class Config:
         EMGAATS_sde = server + ".EMGAATS.sde"
         CCSP_sde = server + ".CCSP.sde"
         BESGEORPT_sde = server + ".BESGEORPT.sde"
-
 
         self.egh_public = os.path.join(sde_connections, GISDB1)
         self.DME_table_name = r"EGH_Public.ARCMAP_ADMIN.collection_lines_bes_pdx"
