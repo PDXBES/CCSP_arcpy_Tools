@@ -26,6 +26,7 @@ class DmeMasterHybrid:
         input_database = self.config.egh_public
         input_table_name = self.config.DME_table_name
         object_type = DmeLink
+        #TODO - point to SQL view using query layer instead of this hard coded query
         query = "select * from " + input_table_name + " where (OWNRSHIP in ( ' ' , 'BES' , 'UNKN' , 'DNRV' ) or " + \
                 "OWNRSHIP is Null) AND (SERVSTAT in ( ' ' , 'CNS' , 'IN' , 'PEND' , 'TBAB' ) or SERVSTAT is Null) AND " + \
                 "LAYER_GROUP in ( 'SEWER PIPES' , 'STORM PIPES')"

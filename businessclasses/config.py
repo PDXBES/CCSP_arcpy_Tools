@@ -45,9 +45,10 @@ class Config:
         self.DME_master_hybrid_id_table_sde_path = self.CCSP_sde_path + r"\CCSP.GIS.Current_ID"
         self.DME_master_hybrid_sde_path = self.CCSP_sde_path + r"\CCSP.GIS.DME_master_hybrid"
 
-        self.BESGEORPTS_sde_path = os.path.join(sde_connections, BESGEORPT_sde)
+        ## placeholders for use once we switch to using view/QL instead of hard coded query in dme_master_hybrid.create_dme_links()
+        self.BESGEORPT_sde_path = os.path.join(sde_connections, BESGEORPT_sde)
         self.collection_lines_ACTIVE_BES_SEWER_STORM_view_name = r"\BESGEORPT.GIS.v_collection_lines_ACTIVE_BES_SEWER_STORM"
-        self.collection_lines_ACTIVE_BES_SEWER_STORM_view_name_path = self.BESGEORPTS_sde_path + self.collection_lines_ACTIVE_BES_SEWER_STORM_view_name
+        self.collection_lines_ACTIVE_BES_SEWER_STORM_view_name_path = self.BESGEORPT_sde_path + self.collection_lines_ACTIVE_BES_SEWER_STORM_view_name
 
 
 ##
