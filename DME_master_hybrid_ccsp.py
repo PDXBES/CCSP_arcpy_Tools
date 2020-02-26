@@ -10,6 +10,7 @@ config = Config('TEST')
 dme_master_hybrid = DmeMasterHybrid(config)
 dme_master_hybrid_db_data_io = DmeMasterHybridDbDataIo(config)
 
+## will write out result for a subset of mlinks specified in CCSP.MASTER_LINK_NAMES (generally apply to modeled basin links)
 ## 1. create in memory version of DME links
 ## 2. create in memory version of EMGAATS links which have already been subset to project area
 ## 3. overwrite information from EMGAATS links to DME links where global_ids match

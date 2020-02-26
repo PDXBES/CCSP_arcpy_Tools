@@ -41,6 +41,7 @@ class Config:
         self.DME_view_name = r"CCSP.GIS.VDME"
         self.Master_links_nodes_view_name = r"CCSP.GIS.V_master_link_with_nodes"
         self.CCSP_Master_links_nodes_view_name = r"CCSP.GIS.v_ccsp_master_link_with_nodes"
+        # TODO - consider pointing directly to Sitka InputGDB - standardize gdb name (currently date stamped therefore dynamic)
         self.DME_master_hybrid_id_table_sde_path = self.CCSP_sde_path + r"\CCSP.GIS.Current_ID"
         self.DME_master_hybrid_sde_path = self.CCSP_sde_path + r"\CCSP.GIS.DME_master_hybrid"
 

@@ -11,6 +11,12 @@ config = Config('TEST')
 dme_master_hybrid = DmeMasterHybrid(config)
 dme_master_hybrid_db_data_io = DmeMasterHybridDbDataIo(config)
 
+## will write out result with citywide extent
+## 1. create in memory version of DME links
+## 2. create in memory version of EMGAATS links which have already been subset to project area
+## 3. apply decision logic to choose between DME and master link values where global_ids match
+## 4. append result to CCSP.DME_MASTER_HYBRID
+
 start = time.time()
 test_dme_links = dme_master_hybrid.create_dme_links(dme_master_hybrid_db_data_io)
 print time.time() - start
