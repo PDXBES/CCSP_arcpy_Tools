@@ -11,7 +11,7 @@ class DataLoad():
         self.base_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB"
 
         #inputs
-        sde_connections = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\03_RRAD\CCSP_Data_Management_ToolBox\connection_files"
+        self.sde_connections = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\03_RRAD\CCSP_Data_Management_ToolBox\connection_files"
 
         EMGAATS_sde = "BESDBPROD1.EMGAATS.sde"
         PLT_sde = "BESDBPROD1.PLT.sde"
@@ -23,15 +23,15 @@ class DataLoad():
         EGH_PUBLIC_sde = "GISDB1.EGH_PUBLIC.sde"
         PWB_WATER_sde = "GISDB1.PWBWATER.sde"
 
-        self.EMGAATS_sde_path = os.path.join(sde_connections, EMGAATS_sde)
-        self.PLT_sde_path = os.path.join(sde_connections, PLT_sde)
-        self.REHAB_sde_path = os.path.join(sde_connections, REHAB_sde)
-        self.HANSEN8_SG_sde_path = os.path.join(sde_connections, HANSEN8_SG_sde)
-        self.MODEL_CATALOG_sde_path = os.path.join(sde_connections, MODEL_CATALOG_sde)
-        self.CCSP_sde_path = os.path.join(sde_connections, CCSP_sde)
-        self.EGH_PUBLIC_sde_path = os.path.join(sde_connections, EGH_PUBLIC_sde)
-        self.BESGEORPT_sde_path = os.path.join(sde_connections, BESGEORPT_sde)
-        self.PWB_WATER_sde_path = os.path.join(sde_connections, PWB_WATER_sde)
+        self.EMGAATS_sde_path = os.path.join(self.sde_connections, EMGAATS_sde)
+        self.PLT_sde_path = os.path.join(self.sde_connections, PLT_sde)
+        self.REHAB_sde_path = os.path.join(self.sde_connections, REHAB_sde)
+        self.HANSEN8_SG_sde_path = os.path.join(self.sde_connections, HANSEN8_SG_sde)
+        self.MODEL_CATALOG_sde_path = os.path.join(self.sde_connections, MODEL_CATALOG_sde)
+        self.CCSP_sde_path = os.path.join(self.sde_connections, CCSP_sde)
+        self.EGH_PUBLIC_sde_path = os.path.join(self.sde_connections, EGH_PUBLIC_sde)
+        self.BESGEORPT_sde_path = os.path.join(self.sde_connections, BESGEORPT_sde)
+        self.PWB_WATER_sde_path = os.path.join(self.sde_connections, PWB_WATER_sde)
 
         # idea - move all input to xls. read in as dict then feed dict into copy method
 
