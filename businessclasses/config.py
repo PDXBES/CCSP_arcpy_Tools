@@ -15,6 +15,7 @@ class Config:
 
 
         sde_connections = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\03_RRAD\CCSP_Data_Management_ToolBox\connection_files_GIS_login"
+
 ##
         server = None
 
