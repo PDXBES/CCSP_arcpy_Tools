@@ -3,29 +3,34 @@ from datetime import datetime
 import arcpy
 
 
-def todays_gdb_name():
-    basename = "PipXP_"
-    today = datetime.today().strftime('%Y%m%d')
-    extension = ".gdb"
-    full_name = basename + today + extension
-    return full_name
+class Utility:
+    def __init__(self, config):
+        self.config = config
 
-def todays_gdb_full_path_name(ETL_load_base_folder):
-    full_name = todays_gdb_name()
-    full_path = os.path.join(ETL_load_base_folder, full_name)
-    return full_path
+    @staticmethod
+    def todays_gdb_name():
+        basename = "PipXP_"
+        today = datetime.today().strftime('%Y%m%d')
+        extension = ".gdb"
+        full_name = basename + today + extension
+        return full_name
 
-def source_formatter(sde_connections, source_string):
-    if r"\\" in source_string:
-        return source_string
-    else:
-        return os.path.join(sde_connections, source_string)
+    def todays_gdb_full_path_name(self):
+        full_name = self.todays_gdb_name()
+        full_path = os.path.join(self.config.ETL_load_base_folder, full_name)
+        return full_path
 
-def valid_source_values(sde_connections, data_dict):
-    valid = True
-    for key, value in data_dict.iteritems():
-        full_source = source_formatter(sde_connections, value)
-        if arcpy.Exists(full_source) == False:
-            print "Invalid source for: " + str(key)
-            valid = False
-    return valid
+    def source_formatter(self, source_string):
+        if r"\\" in source_string:
+            return source_string
+        else:
+            return os.path.join(self.config.sde_connections, source_string)
+
+    def valid_source_values(self, data_dict):
+        valid = True
+        for key, value in data_dict.iteritems():
+            full_source = self.source_formatter(value)
+            if not arcpy.Exists(full_source):
+                print "Invalid source for: " + str(key)
+                valid = False
+        return valid
