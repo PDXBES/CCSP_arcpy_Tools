@@ -2,6 +2,7 @@ import arcpy
 import os
 import sys
 import openpyxl
+import json
 from dataio import utility
 from businessclasses import config
 from datetime import datetime
@@ -24,7 +25,7 @@ class DataLoad:
             print "Creating gdb"
             arcpy.CreateFileGDB_management(self.config.ETL_load_base_folder, self.utility.todays_gdb_name(self.utility))
 
-    # note - if xlxs was csv instead then we could version control it
+    # TODO - convert these 2 functions to read from a json instead
     def read_xlsx_as_sheet_object(self):
         #print "Reading xlsx"
         wb_obj = openpyxl.load_workbook(self.config.ETL_source_table)
@@ -38,6 +39,32 @@ class DataLoad:
             if row[0] is not None and "#" not in row[0]:
                 data_dict[row[0]] = row[1]
         return data_dict
+
+    # TODO - make a generic reader
+    def create_source_list_from_json_dict(self, input_appsettings_file):
+        sourcelayer_list = []
+        data = self.utility.create_dict_from_json(input_appsettings_file)
+        LMdata = data["ETLServiceSettings"]["LayerMappings"]
+        for item in LMdata:
+            sourcelayer_list.append(item["SourceLayer"])
+        return sourcelayer_list
+
+# this is pseudo and needs finishing
+    def missing_source_names(self):
+        missing_list = []
+        for item in self.create_source_list_from_json_dict(): #get appsettings location
+            if item not in dict.keys(): # input dict from json goes here
+                missing_list.append(item)
+         return missing_list
+
+# TODO - can also sort list/keys and test if the 2 match exactly (==)
+
+# this is pseudo and needs finishing
+    def input_source_names_valid(self):
+        if len(self.missing_source_names()) > 0:
+            return True
+        else:
+            return False
 
     def copy_sources(self, data_dict):
         if self.utility.valid_source_values(data_dict):

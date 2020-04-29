@@ -1,4 +1,5 @@
 import os
+import json
 from datetime import datetime
 import arcpy
 
@@ -16,7 +17,7 @@ class Utility:
         return date_object.strftime('%Y%m%d')
 
     def todays_gdb_name(self, date_object):
-        basename = "PipXP_"
+        basename = "CCSPToolsInput_"
         today = self.date_today(date_object)
         extension = ".gdb"
         full_name = basename + today + extension
@@ -41,3 +42,14 @@ class Utility:
                 print "Invalid source for: " + str(key)
                 valid = False
         return valid
+
+    def create_dict_from_json(self, input_json_file):
+        if arcpy.Exists(input_json_file):
+            sourcelayer_list = []
+            with open(input_json_file) as json_file:
+                data = json.load(json_file)
+            return data
+        else:
+            arcpy.AddError("Invalid json source")
+            arcpy.ExecuteError()
+            raise Exception
