@@ -36,7 +36,7 @@ class Utility:
 
     def valid_source_values(self, data_dict):
         valid = True
-        for key, value in data_dict.iteritems():
+        for key, value in data_dict.items():
             full_source = self.source_formatter(value)
             if not arcpy.Exists(full_source):
                 print "Invalid source for: " + str(key)
@@ -45,7 +45,6 @@ class Utility:
 
     def create_dict_from_json(self, input_json_file):
         if arcpy.Exists(input_json_file):
-            sourcelayer_list = []
             with open(input_json_file) as json_file:
                 data = json.load(json_file)
             return data

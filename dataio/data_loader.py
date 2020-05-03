@@ -14,33 +14,25 @@ class DataLoad:
 
         self.config = config.Config(test_flag)
         self.utility = utility.Utility(self.config)
-        self.todays_gdb_full_path_name = self.utility.todays_gdb_name(self.utility, datetime.today())
+        self.todays_gdb_full_path_name = self.utility.todays_gdb_full_path_name(datetime.today())
 
     def create_todays_gdb(self):
         if arcpy.Exists(self.todays_gdb_full_path_name):
-            #arcpy.AddError("gdb already exists")
+            arcpy.AddError("gdb already exists")
             arcpy.ExecuteError()
             sys.exit("gdb already exists") #TODO - make sure this works as expected
         else:
             print "Creating gdb"
-            arcpy.CreateFileGDB_management(self.config.ETL_load_base_folder, self.utility.todays_gdb_name(self.utility))
+            arcpy.CreateFileGDB_management(self.config.ETL_load_base_folder, self.utility.todays_gdb_name(datetime.today()))
 
-    # TODO - convert these 2 functions to read from a json instead
-    def read_xlsx_as_sheet_object(self):
-        #print "Reading xlsx"
-        wb_obj = openpyxl.load_workbook(self.config.ETL_source_table)
-        sheet = wb_obj.active
-        return sheet
+    def create_input_dict_from_json_dict(self):
+        #print "Creating ETL input dict from json"
+        input_dict = {}
+        data = self.utility.create_dict_from_json(self.config.ETL_source_json)
+        for key, value in data.items():
+            input_dict[key] = value
+        return input_dict
 
-    def read_two_sheet_columns_as_dict(self):
-        print "Creating dictionary from xlsx"
-        data_dict = {}
-        for row in self.read_xlsx_as_sheet_object().iter_rows(min_row=2, values_only=True):
-            if row[0] is not None and "#" not in row[0]:
-                data_dict[row[0]] = row[1]
-        return data_dict
-
-    # TODO - make a generic reader
     def create_source_list_from_json_dict(self, input_appsettings_file):
         sourcelayer_list = []
         data = self.utility.create_dict_from_json(input_appsettings_file)
@@ -49,19 +41,37 @@ class DataLoad:
             sourcelayer_list.append(item["SourceLayer"])
         return sourcelayer_list
 
-# this is pseudo and needs finishing
-    def missing_source_names(self):
+    def create_missing_source_names_list(self, input_appsettings_file):
         missing_list = []
-        for item in self.create_source_list_from_json_dict(): #get appsettings location
-            if item not in dict.keys(): # input dict from json goes here
+        appsettings_list = self.create_source_list_from_json_dict(input_appsettings_file)
+        input_list = self.create_input_dict_from_json_dict()
+        for item in appsettings_list:
+            if item not in input_list.keys():
                 missing_list.append(item)
-         return missing_list
+        return missing_list
 
-# TODO - can also sort list/keys and test if the 2 match exactly (==)
+    def create_missing_appsettings_names_list(self, input_appsettings_file):
+        missing_list = []
+        appsettings_list = self.create_source_list_from_json_dict(input_appsettings_file)
+        input_list = self.create_input_dict_from_json_dict()
+        for item in input_list.keys():
+            if item not in appsettings_list:
+                missing_list.append(item)
+        return missing_list
 
-# this is pseudo and needs finishing
-    def input_source_names_valid(self):
-        if len(self.missing_source_names()) > 0:
+# TODO - test for if input source list has values not in appsettings list?
+
+    def lists_identical(self, list1, list2):
+        if sorted(list1) == sorted(list2):
+            return True
+        else:
+            return False
+
+    def input_source_names_valid(self, input_appsettings_file):
+        # tests if names list associated with data sources are identical to those in appsettings
+        appsettings_list = self.create_source_list_from_json_dict(input_appsettings_file)
+        input_list = self.create_input_dict_from_json_dict()
+        if self.lists_identical(appsettings_list, input_list.keys()):
             return True
         else:
             return False
@@ -69,7 +79,7 @@ class DataLoad:
     def copy_sources(self, data_dict):
         if self.utility.valid_source_values(data_dict):
             print "Coping data sources to the gdb"
-            for key, value in data_dict.iteritems():
+            for key, value in data_dict.items():
                 print "   Copying: " + str(key)
                 full_input_path = self.utility.source_formatter(value)
                 full_output_path = os.path.join(self.todays_gdb_full_path_name, key)
@@ -84,13 +94,23 @@ class DataLoad:
             arcpy.ExecuteError()
             raise Exception
 
-    def load_data_to_gdb(self):
-        try:
-            self.create_todays_gdb()
-            self.copy_sources(self.read_two_sheet_columns_as_dict())
-        except:
-            if arcpy.Exists(self.todays_gdb_full_path_name):
-                arcpy.Delete_management(self.todays_gdb_full_path_name)
-            arcpy.AddError("Data could not be loaded")
-            arcpy.ExecuteError()
-
+# TODO - should both the appsettings and input source list be arguments?
+    def load_data_to_gdb(self, input_appsettings_file):
+        if self.input_source_names_valid(input_appsettings_file):
+            try:
+                self.create_todays_gdb()
+                self.copy_sources(self.create_input_dict_from_json_dict())
+            except:
+                if arcpy.Exists(self.todays_gdb_full_path_name):
+                    arcpy.Delete_management(self.todays_gdb_full_path_name)
+                arcpy.AddError("Data could not be loaded")
+                arcpy.ExecuteError()
+        else:
+            print "No data will be copied"
+            print "The input source list does not match the appsettings list"
+            missing_from_source_names = self.create_missing_source_names_list(input_appsettings_file)
+            if len(missing_from_source_names) > 0:
+                print "Missing from input source names: " + str(missing_from_source_names)
+            missing_from_appsettings = self.create_missing_appsettings_names_list(input_appsettings_file)
+            if len(missing_from_appsettings) > 0:
+                print "Missing from appsettings names: " + str(missing_from_appsettings)
