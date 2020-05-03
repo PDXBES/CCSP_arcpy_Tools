@@ -43,7 +43,7 @@ class DataLoad:
 
     def create_missing_source_names_list(self, input_appsettings_file):
         missing_list = []
-        appsettings_list = self.create_source_list_from_json_dict(input_appsettings_file)
+        appsettings_list = set(self.create_source_list_from_json_dict(input_appsettings_file))
         input_list = self.create_input_dict_from_json_dict()
         for item in appsettings_list:
             if item not in input_list.keys():
@@ -52,7 +52,7 @@ class DataLoad:
 
     def create_missing_appsettings_names_list(self, input_appsettings_file):
         missing_list = []
-        appsettings_list = self.create_source_list_from_json_dict(input_appsettings_file)
+        appsettings_list = set(self.create_source_list_from_json_dict(input_appsettings_file))
         input_list = self.create_input_dict_from_json_dict()
         for item in input_list.keys():
             if item not in appsettings_list:
@@ -69,7 +69,7 @@ class DataLoad:
 
     def input_source_names_valid(self, input_appsettings_file):
         # tests if names list associated with data sources are identical to those in appsettings
-        appsettings_list = self.create_source_list_from_json_dict(input_appsettings_file)
+        appsettings_list = set(self.create_source_list_from_json_dict(input_appsettings_file))
         input_list = self.create_input_dict_from_json_dict()
         if self.lists_identical(appsettings_list, input_list.keys()):
             return True
