@@ -36,9 +36,11 @@ class DataLoad:
     def create_source_list_from_json_dict(self, input_appsettings_file):
         sourcelayer_list = []
         data = self.utility.create_dict_from_json(input_appsettings_file)
-        LMdata = data["ETLServiceSettings"]["LayerMappings"]
+        LMdata = data["ETLServiceSettings"]["LayerMappings"] #returns list of dicts
+        LLdata = data["ETLServiceSettings"]["LinksLayer"] #returns dict
         for item in LMdata:
             sourcelayer_list.append(item["SourceLayer"])
+        sourcelayer_list.append(LLdata["SourceLayer"])
         return sourcelayer_list
 
     def create_missing_source_names_list(self, input_appsettings_file):
@@ -67,7 +69,7 @@ class DataLoad:
         else:
             return False
 
-    def input_source_names_valid(self, input_appsettings_file):
+    def input_source_names_identical(self, input_appsettings_file):
         # tests if names list associated with data sources are identical to those in appsettings
         appsettings_list = set(self.create_source_list_from_json_dict(input_appsettings_file))
         input_list = self.create_input_dict_from_json_dict()
@@ -96,7 +98,7 @@ class DataLoad:
 
 # TODO - should both the appsettings and input source list be arguments?
     def load_data_to_gdb(self, input_appsettings_file):
-        if self.input_source_names_valid(input_appsettings_file):
+        if self.input_source_names_identical(input_appsettings_file):
             try:
                 self.create_todays_gdb()
                 self.copy_sources(self.create_input_dict_from_json_dict())
@@ -110,7 +112,7 @@ class DataLoad:
             print "The input source list does not match the appsettings list"
             missing_from_source_names = self.create_missing_source_names_list(input_appsettings_file)
             if len(missing_from_source_names) > 0:
-                print "Missing from input source names: " + str(missing_from_source_names)
+                print "In appsettings but NOT IN input source names: " + str(missing_from_source_names)
             missing_from_appsettings = self.create_missing_appsettings_names_list(input_appsettings_file)
             if len(missing_from_appsettings) > 0:
-                print "Missing from appsettings names: " + str(missing_from_appsettings)
+                print "In input source names but NOT IN appsettings names: " + str(missing_from_appsettings)

@@ -4,7 +4,7 @@ from datetime import datetime
 
 data_load = DataLoad()
 
-input_appsettings_file = r"c:\temp\working\appsettings_example.json"
+input_appsettings_file = r"c:\temp\working\appsettings.json"
 
 print "Process started"
 print datetime.today().strftime("%m/%d/%Y, %H:%M:%S")
