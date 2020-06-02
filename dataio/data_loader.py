@@ -61,8 +61,6 @@ class DataLoad:
                 missing_list.append(item)
         return missing_list
 
-# TODO - test for if input source list has values not in appsettings list?
-
     def lists_identical(self, list1, list2):
         if sorted(list1) == sorted(list2):
             return True
