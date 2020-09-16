@@ -36,8 +36,8 @@ class DataLoad:
     def create_source_list_from_json_dict(self, input_appsettings_file):
         sourcelayer_list = []
         data = self.utility.create_dict_from_json(input_appsettings_file)
-        LMdata = data["ETLServiceSettings"]["LayerMappings"] #returns list of dicts
-        LLdata = data["ETLServiceSettings"]["LinksLayer"] #returns dict
+        LMdata = data["ETLServiceSettings"]["LayerMappings"] #returns list of dicts - gets all others
+        LLdata = data["ETLServiceSettings"]["LinksLayer"] #returns dict - gets bes_collection_system_master_hybrid_ccsp
         for item in LMdata:
             sourcelayer_list.append(item["SourceLayer"])
         sourcelayer_list.append(LLdata["SourceLayer"])
@@ -46,9 +46,9 @@ class DataLoad:
     def create_missing_source_names_list(self, input_appsettings_file):
         missing_list = []
         appsettings_list = set(self.create_source_list_from_json_dict(input_appsettings_file))
-        input_list = self.create_input_dict_from_json_dict()
+        input_dict = self.create_input_dict_from_json_dict()
         for item in appsettings_list:
-            if item not in input_list.keys():
+            if item not in input_dict.keys():
                 missing_list.append(item)
         return missing_list
 
@@ -68,6 +68,8 @@ class DataLoad:
             return False
 
     def input_source_names_identical(self, input_appsettings_file):
+        # TODO - modify to test that all appsettings items are in source list (hard fail if no)
+        # TODO - BUT allow process to continue with warning if there are extra values in source list
         # tests if names list associated with data sources are identical to those in appsettings
         appsettings_list = set(self.create_source_list_from_json_dict(input_appsettings_file))
         input_list = self.create_input_dict_from_json_dict()
@@ -96,10 +98,16 @@ class DataLoad:
 
 # TODO - should both the appsettings and input source list be arguments?
     def load_data_to_gdb(self, input_appsettings_file):
-        if self.input_source_names_identical(input_appsettings_file):
+        missing_from_source_names = self.create_missing_source_names_list(input_appsettings_file)
+        if len(missing_from_source_names) == 0:
+        #if self.input_source_names_identical(input_appsettings_file):
             try:
                 self.create_todays_gdb()
                 self.copy_sources(self.create_input_dict_from_json_dict())
+                missing_from_appsettings = self.create_missing_appsettings_names_list(input_appsettings_file)
+                if len(missing_from_appsettings) > 0:
+                    print "Warning: these entries are in the input source list but NOT IN the appsettings list: "
+                    print str(missing_from_appsettings)
             except:
                 if arcpy.Exists(self.todays_gdb_full_path_name):
                     arcpy.Delete_management(self.todays_gdb_full_path_name)
@@ -107,10 +115,6 @@ class DataLoad:
                 arcpy.ExecuteError()
         else:
             print "No data will be copied"
-            print "The input source list does not match the appsettings list"
-            missing_from_source_names = self.create_missing_source_names_list(input_appsettings_file)
-            if len(missing_from_source_names) > 0:
-                print "In appsettings but NOT IN input source names: " + str(missing_from_source_names)
-            missing_from_appsettings = self.create_missing_appsettings_names_list(input_appsettings_file)
-            if len(missing_from_appsettings) > 0:
-                print "In input source names but NOT IN appsettings names: " + str(missing_from_appsettings)
+            print "All appsettings entries are required"
+            print "These entries are in the appsettings list but NOT IN input source list: " + str(missing_from_source_names)
+
