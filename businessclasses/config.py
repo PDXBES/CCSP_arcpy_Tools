@@ -13,13 +13,12 @@ class Config:
 
         self.test_flag = test_flag
 
-        # GIS
-        #sde_connections = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\03_RRAD\CCSP_Data_Management_ToolBox\connection_files_GIS_login"
-        # OS
+        #TODO - both sde_connections are needed or else it bonks - find out how to use only one
+        #TODO - prob have data_loader inherit config just like utility does
         sde_connections = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\03_RRAD\CCSP_Data_Management_ToolBox\connection_files"
         self.sde_connections = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\03_RRAD\CCSP_Data_Management_ToolBox\connection_files"
         self.ETL_load_base_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB"
-        self.ETL_source_json = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\ETL_input_data_sources.json"
+        #self.ETL_source_json = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\ETL_input_data_sources.json"
 
         ##
         server = None
