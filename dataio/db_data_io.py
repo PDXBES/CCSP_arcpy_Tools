@@ -18,7 +18,10 @@ class DbDataIo(object):
         field_mappings = arcpy.FieldMappings()
         fields = arcpy.ListFields(model_link_results_path)
         for field in fields:
-            if field.name == "SHAPE_Area" or field.name == "SHAPE_Length" or field.name == "OBJECTID" or field.name == "SHAPE":
+            if field.name == "SHAPE_Area" \
+                    or field.name == "SHAPE_Length" \
+                    or field.name == "OBJECTID" \
+                    or field.name == "SHAPE":
                 pass
             else:
                 field_map = arcpy.FieldMap()
@@ -210,8 +213,9 @@ class DbDataIo(object):
 
     def append_table_to_db(self, input_table, target_table):
         # type: (str, str) -> None
-        field_mappings = self._create_field_map_for_sde_db(input_table)
-        arcpy.Append_management(input_table, target_table, "NO_TEST", field_mappings)
+        #field_mappings = self._create_field_map_for_sde_db(input_table)
+        #arcpy.Append_management(input_table, target_table, "NO_TEST", field_mappings)
+        arcpy.Append_management(input_table, target_table, "NO_TEST")
         arcpy.Delete_management(input_table)
 
     def append_object_to_db(self, generic_object, field_attribute_lookup, template_table, target_table):
@@ -235,13 +239,14 @@ class DbDataIo(object):
         self.add_ids(output_feature_class, "id", object_type)
         self.append_table_to_db(output_feature_class, target_table)
 
-    def append_objects_to_db(self, generic_object_list, field_attribute_lookup, template_table, target_table):
-        output_feature_class = self.workspace + "\\" + "intermediate_feature_class_to_append"
-        arcpy.Delete_management(output_feature_class)
-        self.create_feature_class_from_objects(generic_object_list, self.workspace,
-                                               "intermediate_feature_class_to_append",
-                                               field_attribute_lookup, template_table)
-        self.append_table_to_db(output_feature_class, target_table)
+    # LOOKS LIKE A DUPLICATE = ?
+    #def append_objects_to_db(self, generic_object_list, field_attribute_lookup, template_table, target_table):
+    #    output_feature_class = self.workspace + "\\" + "intermediate_feature_class_to_append"
+    #    arcpy.Delete_management(output_feature_class)
+    #    self.create_feature_class_from_objects(generic_object_list, self.workspace,
+    #                                           "intermediate_feature_class_to_append",
+    #                                           field_attribute_lookup, template_table)
+    #    self.append_table_to_db(output_feature_class, target_table)
 
 
 

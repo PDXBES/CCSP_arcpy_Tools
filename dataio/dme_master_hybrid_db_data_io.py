@@ -18,8 +18,10 @@ class DmeMasterHybridDbDataIo(DbDataIo):
     def append_dme_master_links_to_db(self, dme_master_links):
         # type: (List[DmeMasterLink]) -> None
         input_field_attribute_lookup = DmeMasterLink.input_field_attribute_lookup()
-        template_table = self.config.DME_master_hybrid_sde_path
-        target_table = self.config.DME_master_hybrid_sde_path
+        #template_table = self.config.DME_master_hybrid_sde_path
+        #target_table = self.config.DME_master_hybrid_sde_path
+        template_table = self.config.DME_master_hybrid_gdb_path
+        target_table = self.config.DME_master_hybrid_gdb_path
         self.append_objects_to_db_with_ids(dme_master_links,
                                   input_field_attribute_lookup,
                                   template_table,
