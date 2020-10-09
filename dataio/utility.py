@@ -39,7 +39,7 @@ class Utility:
         for key, value in data_dict.items():
             full_source = self.source_formatter(value)
             if not arcpy.Exists(full_source):
-                print "Invalid source for: " + str(key)
+                print "Check the data source file - Invalid source for: " + str(key)
                 valid = False
         return valid
 

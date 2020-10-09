@@ -43,23 +43,32 @@ class DataLoad:
         sourcelayer_list.append(LLdata["SourceLayer"])
         return sourcelayer_list
 
-    def create_missing_source_names_list(self, appsettings_file, data_source_file):
-        missing_list = []
+    def create_names_missing_from_source_list(self, appsettings_file, data_source_file):
+        missing_source_names_list = []
         appsettings_list = set(self.create_source_list_from_json_dict(appsettings_file))
         input_dict = self.create_input_dict_from_json_dict(data_source_file)
         for item in appsettings_list:
             if item not in input_dict.keys():
-                missing_list.append(item)
-        return missing_list
+                missing_source_names_list.append(item)
+        return missing_source_names_list
 
-    def create_missing_appsettings_names_list(self, appsettings_file, data_source_file):
-        missing_list = []
+
+    def create_names_missing_from_appsettings_list(self, appsettings_file, data_source_file):
+        missing_appsettings_names_list = []
         appsettings_list = set(self.create_source_list_from_json_dict(appsettings_file))
         input_list = self.create_input_dict_from_json_dict(data_source_file)
         for item in input_list.keys():
             if item not in appsettings_list:
-                missing_list.append(item)
-        return missing_list
+                missing_appsettings_names_list.append(item)
+        return missing_appsettings_names_list
+
+
+    def remove_extra_values(self, data_source_file, missing_appsettings_names_list):
+        data_source_dict = self.create_input_dict_from_json_dict(data_source_file)
+        for name in missing_appsettings_names_list:
+            del data_source_dict[name]
+        return data_source_dict
+
 
     def lists_identical(self, list1, list2):
         if sorted(list1) == sorted(list2):
@@ -96,17 +105,23 @@ class DataLoad:
             arcpy.ExecuteError()
             raise Exception
 
-# TODO - should both the appsettings and input source list be arguments?
     def load_data_to_gdb(self, appsettings_file, data_source_file):
-        missing_from_source_names = self.create_missing_source_names_list(appsettings_file, data_source_file)
+        missing_from_source_names = self.create_names_missing_from_source_list(appsettings_file, data_source_file)
         if len(missing_from_source_names) == 0:
             try:
                 self.create_todays_gdb()
-                self.copy_sources(self.create_input_dict_from_json_dict(data_source_file))
-                missing_from_appsettings = self.create_missing_appsettings_names_list(appsettings_file, data_source_file)
+                missing_from_appsettings = self.create_names_missing_from_appsettings_list(appsettings_file,
+                                                                                           data_source_file)
                 if len(missing_from_appsettings) > 0:
                     print "FYI: these entries are in the input source list but NOT IN the appsettings list: "
                     print str(missing_from_appsettings)
+                    print "The extra entries will not be copied to the output gdb"
+                    filtered_dict = self.remove_extra_values(self.create_input_dict_from_json_dict(data_source_file),
+                                                         missing_from_appsettings)
+                    self.copy_sources(filtered_dict)
+                else:
+                    self.copy_sources(self.create_input_dict_from_json_dict(data_source_file))
+
             except:
                 if arcpy.Exists(self.todays_gdb_full_path_name):
                     arcpy.Delete_management(self.todays_gdb_full_path_name)
