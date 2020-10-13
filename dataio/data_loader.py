@@ -52,7 +52,6 @@ class DataLoad:
                 missing_source_names_list.append(item)
         return missing_source_names_list
 
-
     def create_names_missing_from_appsettings_list(self, appsettings_file, data_source_file):
         missing_appsettings_names_list = []
         appsettings_list = set(self.create_source_list_from_json_dict(appsettings_file))
@@ -62,13 +61,11 @@ class DataLoad:
                 missing_appsettings_names_list.append(item)
         return missing_appsettings_names_list
 
-
     def remove_extra_values(self, data_source_file, missing_appsettings_names_list):
         data_source_dict = self.create_input_dict_from_json_dict(data_source_file)
         for name in missing_appsettings_names_list:
             del data_source_dict[name]
         return data_source_dict
-
 
     def lists_identical(self, list1, list2):
         if sorted(list1) == sorted(list2):
@@ -113,10 +110,10 @@ class DataLoad:
                 missing_from_appsettings = self.create_names_missing_from_appsettings_list(appsettings_file,
                                                                                            data_source_file)
                 if len(missing_from_appsettings) > 0:
-                    print "FYI: these entries are in the input source list but NOT IN the appsettings list: "
+                    print "FYI: these entries are in the input source list but NOT IN the appsettings(required) list: "
                     print str(missing_from_appsettings)
                     print "The extra entries will not be copied to the output gdb"
-                    filtered_dict = self.remove_extra_values(self.create_input_dict_from_json_dict(data_source_file),
+                    filtered_dict = self.remove_extra_values(data_source_file,
                                                          missing_from_appsettings)
                     self.copy_sources(filtered_dict)
                 else:
