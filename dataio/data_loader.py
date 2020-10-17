@@ -22,7 +22,7 @@ class DataLoad:
             arcpy.ExecuteError()
             sys.exit("gdb already exists") #TODO - make sure this works as expected
         else:
-            todays_gdb = self.utility.todays_gdb_name(datetime.today())
+            todays_gdb = self.utility.todays_ccsp_input_gdb_name(datetime.today())
             print "Creating gdb " + str(todays_gdb)
             arcpy.CreateFileGDB_management(self.config.ETL_load_base_folder, todays_gdb)
 

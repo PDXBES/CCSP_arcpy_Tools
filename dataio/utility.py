@@ -16,7 +16,7 @@ class Utility:
     def date_today(date_object):
         return date_object.strftime('%Y%m%d')
 
-    def todays_gdb_name(self, date_object):
+    def todays_ccsp_input_gdb_name(self, date_object):
         basename = "CCSPToolsInput_"
         today = self.date_today(date_object)
         extension = ".gdb"
@@ -24,7 +24,7 @@ class Utility:
         return full_name
 
     def todays_gdb_full_path_name(self, date_object):
-        full_name = self.todays_gdb_name(date_object)
+        full_name = self.todays_ccsp_input_gdb_name(date_object)
         full_path = os.path.join(self.config.ETL_load_base_folder, full_name)
         return full_path
 
