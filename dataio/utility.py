@@ -2,7 +2,7 @@ import os
 import json
 from datetime import datetime
 import arcpy
-
+import zipfile
 
 class Utility:
     def __init__(self, config):
@@ -52,3 +52,17 @@ class Utility:
             arcpy.AddError("Invalid json source")
             arcpy.ExecuteError()
             raise Exception
+
+    # https://stackoverflow.com/questions/16809328/zipfile-write-relative-path-of-files-reproduced-in-the-zip-archive
+    def unzip_folder(self, input_zip_file):
+        zf = zipfile.ZipFile(input, 'r')
+        extracted_dir = os.path.join(os.path.dirname(input_zip_file), os.path.basename(input_zip_file).split(".")[0])
+        zf.extractall(os.path.dirname(extracted_dir))
+        zf.close()
+
+    def zip_folder(self, input_folder):
+        zf = zipfile.ZipFile(input_folder + r".zip", 'w')
+        for root, dirs, files in os.walk(input_folder):
+            for file in files:
+                zf.write(os.path.join(root, file), arcname=os.path.join(root.replace(input_folder, ""), file))
+        zf.close()
