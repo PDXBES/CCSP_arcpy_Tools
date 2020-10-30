@@ -14,17 +14,14 @@ class DataLoad:
 
         self.config = config.Config(test_flag)
         self.utility = utility.Utility(self.config)
-        self.todays_gdb_full_path_name = self.utility.todays_gdb_full_path_name(datetime.today())
+        self.todays_gdb_full_path_name = self.utility.todays_gdb_full_path_name()
 
     def create_todays_gdb(self):
         if arcpy.Exists(self.todays_gdb_full_path_name):
-            arcpy.AddError("gdb already exists")
-            arcpy.ExecuteError()
-            sys.exit("gdb already exists") #TODO - make sure this works as expected
-        else:
-            todays_gdb = self.utility.todays_ccsp_input_gdb_name(datetime.today())
-            print "Creating gdb " + str(todays_gdb)
-            arcpy.CreateFileGDB_management(self.config.ETL_load_base_folder, todays_gdb)
+            arcpy.Delete_management(self.todays_gdb_full_path_name)
+        todays_gdb = self.utility.todays_ccsp_input_gdb_name()
+        #print "Creating gdb " + str(todays_gdb)
+        arcpy.CreateFileGDB_management(self.config.ETL_load_base_folder, todays_gdb)
 
     def create_input_dict_from_json_dict(self, data_source_file):
         input_dict = {}
@@ -85,17 +82,18 @@ class DataLoad:
             return False
 
     def copy_sources(self, data_dict):
+        arcpy.env.outputCoordinateSystem = arcpy.SpatialReference(2913)
         if self.utility.valid_source_values(data_dict):
             print "Coping data sources to the gdb"
             for key, value in data_dict.items():
                 print "   Copying: " + str(key)
                 full_input_path = self.utility.source_formatter(value)
-                full_output_path = os.path.join(self.todays_gdb_full_path_name, key)
+                #full_output_path = os.path.join(self.todays_gdb_full_path_name, key)
+                #try:
+                #    arcpy.Copy_management(full_input_path, full_output_path)
                 try:
-                    arcpy.Copy_management(full_input_path, full_output_path)
-                except Exception:
                     arcpy.FeatureClassToFeatureClass_conversion(full_input_path, self.todays_gdb_full_path_name, key)
-                except:
+                except Exception:
                     arcpy.TableToTable_conversion(full_input_path, self.todays_gdb_full_path_name, key)
         else:
             arcpy.AddError("Invalid data source(s)")
@@ -111,8 +109,8 @@ class DataLoad:
                                                                                            data_source_file)
                 if len(missing_from_appsettings) > 0:
                     print "FYI: these entries are in the input source list but NOT IN the appsettings(required) list: "
-                    print str(missing_from_appsettings)
-                    print "The extra entries will not be copied to the output gdb"
+                    print "   " + str(missing_from_appsettings)
+                    print "      The extra entries will not be copied to the output gdb"
                     filtered_dict = self.remove_extra_values(data_source_file,
                                                          missing_from_appsettings)
                     self.copy_sources(filtered_dict)

@@ -8,23 +8,26 @@ class Utility:
     def __init__(self, config):
         self.config = config
 
+        self.standard_SRID = 2913
+
     #@staticmethod
     #def date_today(self):
     #    return datetime.today().strftime('%Y%m%d')
+
 
     @staticmethod
     def date_today(date_object):
         return date_object.strftime('%Y%m%d')
 
-    def todays_ccsp_input_gdb_name(self, date_object):
-        basename = "CCSPToolsInput_"
-        today = self.date_today(date_object)
+    def todays_ccsp_input_gdb_name(self):
+        basename = "CCSPToolsInput"
+        #today = self.date_today(date_object)
         extension = ".gdb"
-        full_name = basename + today + extension
+        full_name = basename + extension
         return full_name
 
-    def todays_gdb_full_path_name(self, date_object):
-        full_name = self.todays_ccsp_input_gdb_name(date_object)
+    def todays_gdb_full_path_name(self):
+        full_name = self.todays_ccsp_input_gdb_name()
         full_path = os.path.join(self.config.ETL_load_base_folder, full_name)
         return full_path
 
@@ -66,3 +69,14 @@ class Utility:
             for file in files:
                 zf.write(os.path.join(root, file), arcname=os.path.join(root.replace(input_folder, ""), file))
         zf.close()
+
+    def get_SRID(self, input_feature_class):
+        desc = arcpy.Describe(input_feature_class)
+        SRID = desc.spatialReference.PCScode
+        return SRID
+
+    def valid_SRID(self, input_feature_class):
+        if self.get_SRID(input_feature_class) == self.standard_SRID:
+            return True
+        else:
+            return False
