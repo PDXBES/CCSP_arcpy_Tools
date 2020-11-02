@@ -10,9 +10,11 @@ data_source_file = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstima
 
 print "Data Loader - Process started"
 print datetime.today().strftime("%m/%d/%Y, %H:%M:%S")
-data_load.load_data_to_gdb(appsettings_file, data_source_file)
+data_load.load_data(appsettings_file, data_source_file)
 
 #TODO - call DME_master_hybrid_citywide here to send its output to input_gdb
+
+#TODO - zip gdb here once all data is in it
 
 print "Data Loader - Process ended"
 print datetime.today().strftime("%m/%d/%Y, %H:%M:%S")

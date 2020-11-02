@@ -14,7 +14,7 @@ class Config:
         self.test_flag = test_flag
 
         self.sde_connections = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\03_RRAD\CCSP_Data_Management_ToolBox\connection_files"
-        self.ETL_load_base_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB"
+        self.ETL_load_base_folder = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\CCSP_Tools_Input"
 
         ##
         server = None
@@ -44,9 +44,8 @@ class Config:
         self.CCSP_Master_links_nodes_view_name = r"CCSP.GIS.v_ccsp_master_link_with_nodes"
         # TODO - consider pointing directly to Sitka InputGDB - standardize gdb name (currently date stamped therefore dynamic)
         self.DME_master_hybrid_id_table_sde_path = self.CCSP_sde_path + r"\CCSP.GIS.Current_ID"
-        self.DME_master_hybrid_sde_path = self.CCSP_sde_path + r"\CCSP.GIS.DME_master_hybrid"
-        # temp - for testing
-        self.DME_master_hybrid_gdb_path = r"C:\temp\CCSP_working.gdb\DME_master_hybrid"
+        self.DME_master_hybrid_sde_path = self.CCSP_sde_path + r"\CCSP.GIS.DME_master_hybrid" # this will likely b/c obsolete
+        self.DME_master_hybrid_gdb_path = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\CCSP_Tools_Input\CCSPToolsInput.gdb"
 
         ## placeholders for use once we switch to using view/QL instead of hard coded query in dme_master_hybrid.create_dme_links()
         self.BESGEORPT_sde_path = os.path.join(self.sde_connections, BESGEORPT_sde)

@@ -3,6 +3,7 @@ import json
 from datetime import datetime
 import arcpy
 import zipfile
+import shutil
 
 class Utility:
     def __init__(self, config):
@@ -56,27 +57,29 @@ class Utility:
             arcpy.ExecuteError()
             raise Exception
 
-    # https://stackoverflow.com/questions/16809328/zipfile-write-relative-path-of-files-reproduced-in-the-zip-archive
-    def unzip_folder(self, input_zip_file):
-        zf = zipfile.ZipFile(input, 'r')
-        extracted_dir = os.path.join(os.path.dirname(input_zip_file), os.path.basename(input_zip_file).split(".")[0])
-        zf.extractall(os.path.dirname(extracted_dir))
-        zf.close()
+    def unzip(self, source_filename):
+        #overwrites output of same name if exixts
+        split = os.path.basename(source_filename).split(".")
+        new_name = split[0] + "." + split[1]
+        new_dir = os.path.join(os.path.dirname(source_filename), new_name)
+        if os.path.isdir(new_dir):
+            os.remove(new_dir)
+        os.mkdir(new_dir)
+        with zipfile.ZipFile(source_filename) as zf:
+            zf.extractall(new_dir)
 
-    def zip_folder(self, input_folder):
-        zf = zipfile.ZipFile(input_folder + r".zip", 'w')
-        for root, dirs, files in os.walk(input_folder):
-            for file in files:
-                zf.write(os.path.join(root, file), arcname=os.path.join(root.replace(input_folder, ""), file))
-        zf.close()
+    def zip(self, input_folder):
+        arcpy.AddMessage("Creating zipped folder")
+        #overwrites .zip of same name if exists
+        new_zipped_file = input_folder + ".zip"
+        if os.path.isfile(new_zipped_file):
+            os.remove(new_zipped_file)
+        shutil.make_archive(input_folder, 'zip', input_folder)
 
-    def get_SRID(self, input_feature_class):
-        desc = arcpy.Describe(input_feature_class)
-        SRID = desc.spatialReference.PCScode
-        return SRID
+    def delete_dir(self, input):
+        if os.path.isdir(input):
+            shutil.rmtree(input)
 
-    def valid_SRID(self, input_feature_class):
-        if self.get_SRID(input_feature_class) == self.standard_SRID:
-            return True
-        else:
-            return False
+    def delete_file(self, input):
+        if os.path.isfile(input):
+            os.remove(input)

@@ -84,7 +84,7 @@ class DataLoad:
     def copy_sources(self, data_dict):
         arcpy.env.outputCoordinateSystem = arcpy.SpatialReference(2913)
         if self.utility.valid_source_values(data_dict):
-            print "Coping data sources to the gdb"
+            print "Coping data sources to the gdb:"
             for key, value in data_dict.items():
                 print "   Copying: " + str(key)
                 full_input_path = self.utility.source_formatter(value)
@@ -100,7 +100,7 @@ class DataLoad:
             arcpy.ExecuteError()
             raise Exception
 
-    def load_data_to_gdb(self, appsettings_file, data_source_file):
+    def load_data(self, appsettings_file, data_source_file):
         missing_from_source_names = self.create_names_missing_from_source_list(appsettings_file, data_source_file)
         if len(missing_from_source_names) == 0:
             try:
@@ -108,14 +108,16 @@ class DataLoad:
                 missing_from_appsettings = self.create_names_missing_from_appsettings_list(appsettings_file,
                                                                                            data_source_file)
                 if len(missing_from_appsettings) > 0:
-                    print "FYI: these entries are in the input source list but NOT IN the appsettings(required) list: "
+                    print "FYI - these entries are in the input source list but NOT IN the appsettings(required) list: "
                     print "   " + str(missing_from_appsettings)
-                    print "      The extra entries will not be copied to the output gdb"
+                    print "      The extra entries will not be copied to the output gdb."
                     filtered_dict = self.remove_extra_values(data_source_file,
                                                          missing_from_appsettings)
                     self.copy_sources(filtered_dict)
                 else:
                     self.copy_sources(self.create_input_dict_from_json_dict(data_source_file))
+
+                self.utility.zip(self.todays_gdb_full_path_name) #TODO - do test run with this
 
             except:
                 if arcpy.Exists(self.todays_gdb_full_path_name):
