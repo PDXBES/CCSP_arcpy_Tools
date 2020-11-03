@@ -14,14 +14,14 @@ class DataLoad:
 
         self.config = config.Config(test_flag)
         self.utility = utility.Utility(self.config)
-        self.todays_gdb_full_path_name = self.utility.todays_gdb_full_path_name()
+        self.ccsp_gdb_full_path_name = self.utility.ccsp_gdb_full_path_name()
 
-    def create_todays_gdb(self):
-        if arcpy.Exists(self.todays_gdb_full_path_name):
-            arcpy.Delete_management(self.todays_gdb_full_path_name)
-        todays_gdb = self.utility.todays_ccsp_input_gdb_name()
-        #print "Creating gdb " + str(todays_gdb)
-        arcpy.CreateFileGDB_management(self.config.ETL_load_base_folder, todays_gdb)
+    def create_gdb(self):
+        if arcpy.Exists(self.ccsp_gdb_full_path_name):
+            arcpy.Delete_management(self.ccsp_gdb_full_path_name)
+        gdb_name = self.utility.ccsp_gdb_name()
+        #print "Creating gdb " + str(gdb_name)
+        arcpy.CreateFileGDB_management(self.config.ETL_load_base_folder, gdb_name)
 
     def create_input_dict_from_json_dict(self, data_source_file):
         input_dict = {}
@@ -89,9 +89,9 @@ class DataLoad:
                 print "   Copying: " + str(key)
                 full_input_path = self.utility.source_formatter(value)
                 try:
-                    arcpy.FeatureClassToFeatureClass_conversion(full_input_path, self.todays_gdb_full_path_name, key)
+                    arcpy.FeatureClassToFeatureClass_conversion(full_input_path, self.ccsp_gdb_full_path_name, key)
                 except Exception:
-                    arcpy.TableToTable_conversion(full_input_path, self.todays_gdb_full_path_name, key)
+                    arcpy.TableToTable_conversion(full_input_path, self.ccsp_gdb_full_path_name, key)
         else:
             arcpy.AddError("Invalid data source(s)")
             arcpy.ExecuteError()
@@ -100,29 +100,21 @@ class DataLoad:
     def load_data(self, appsettings_file, data_source_file):
         missing_from_source_names = self.create_names_missing_from_source_list(appsettings_file, data_source_file)
         if len(missing_from_source_names) == 0:
-            try:
-                self.create_todays_gdb()
-                missing_from_appsettings = self.create_names_missing_from_appsettings_list(appsettings_file,
-                                                                                           data_source_file)
-                if len(missing_from_appsettings) > 0:
-                    print "FYI - these entries are in the input source list but NOT IN the appsettings(required) list: "
-                    print "   " + str(missing_from_appsettings)
-                    print "      The extra entries will not be copied to the output gdb."
-                    filtered_dict = self.remove_extra_values(data_source_file,
-                                                         missing_from_appsettings)
-                    self.copy_sources(filtered_dict)
-                else:
-                    self.copy_sources(self.create_input_dict_from_json_dict(data_source_file))
 
-                self.utility.zip(self.todays_gdb_full_path_name) #TODO - do test run with this
+            missing_from_appsettings = self.create_names_missing_from_appsettings_list(appsettings_file,
+                                                                                       data_source_file)
+            if len(missing_from_appsettings) > 0:
+                print "FYI - these entries are in the input source list but NOT IN the appsettings(required) list: "
+                print "   " + str(missing_from_appsettings)
+                print "      The extra entries will not be copied to the output gdb."
+                filtered_dict = self.remove_extra_values(data_source_file,
+                                                     missing_from_appsettings)
+                self.copy_sources(filtered_dict)
+            else:
+                self.copy_sources(self.create_input_dict_from_json_dict(data_source_file))
 
-            except:
-                if arcpy.Exists(self.todays_gdb_full_path_name):
-                    arcpy.Delete_management(self.todays_gdb_full_path_name)
-                arcpy.AddError("Data could not be loaded")
-                arcpy.ExecuteError()
         else:
-            print "No data will be copied"
-            print "All appsettings entries are required"
-            print "These entries are in the appsettings list but NOT IN the input source list: " + str(missing_from_source_names)
-
+            arcpy.AddError("No data will be copied")
+            arcpy.AddError("All appsettings entries are required")
+            arcpy.AddMessage("These entries are in the appsettings list but NOT IN the input source list: " + str(missing_from_source_names))
+            arcpy.ExecuteError()

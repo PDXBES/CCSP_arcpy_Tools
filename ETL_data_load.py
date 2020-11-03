@@ -1,6 +1,6 @@
 from dataio.data_loader import DataLoad
 from datetime import datetime
-
+import arcpy
 
 data_load = DataLoad()
 #appsettings_file = r"c:\temp\working\appsettings.json"
@@ -8,13 +8,36 @@ appsettings_file = r"c:\temp\working\appsettings_REHAB_only.json"
 #data_source_file = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\ETL_input_data_sources.json"
 data_source_file = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\OLD_ETL_input_data_sources\ETL_input_data_sources_with_TEST1.json"
 
-print "Data Loader - Process started"
+print "ETL Data Loader - Process started"
 print datetime.today().strftime("%m/%d/%Y, %H:%M:%S")
-data_load.load_data(appsettings_file, data_source_file)
 
-#TODO - call DME_master_hybrid_citywide here to send its output to input_gdb
+try:
+    print "Refreshing gdb"
+    print datetime.today().strftime("%m/%d/%Y, %H:%M:%S")
+    data_load.create_gdb()
 
-#TODO - zip gdb here once all data is in it
+    print "Loading Data"
+    print datetime.today().strftime("%m/%d/%Y, %H:%M:%S")
+    data_load.load_data(appsettings_file, data_source_file)
+
+    print "Creating/ Loading DME master hybrid"
+    print datetime.today().strftime("%m/%d/%Y, %H:%M:%S")
+    #TODO - call DME_master_hybrid_citywide here to send its output to input_gdb
+
+    print "Zipping gdb"
+    print datetime.today().strftime("%m/%d/%Y, %H:%M:%S")
+    data_load.utility.zip(data_load.ccsp_gdb_full_path_name)
+
+except:
+
+    data_load.utility.delete_dir(data_load.ccsp_gdb_full_path_name)
+    data_load.utility.delete_file(data_load.ccsp_gdb_full_path_name + ".zip")
+
+    #if arcpy.Exists(self.ccsp_gdb_full_path_name):
+    #    arcpy.Delete_management(self.ccsp_gdb_full_path_name)
+
+    arcpy.AddError("Data could not be loaded")
+    arcpy.ExecuteError()
 
 print "Data Loader - Process ended"
 print datetime.today().strftime("%m/%d/%Y, %H:%M:%S")
