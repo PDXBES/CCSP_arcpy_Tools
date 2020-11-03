@@ -218,6 +218,11 @@ class DbDataIo(object):
         arcpy.Append_management(input_table, target_table, "NO_TEST")
         arcpy.Delete_management(input_table)
 
+    def copy_table_to_db(self, input_table, target_table):
+        # type: (str, str) -> None
+        arcpy.FeatureClassToGeodatabase_conversion(input_table, target_table)
+        arcpy.Delete_management(input_table)
+
     def append_object_to_db(self, generic_object, field_attribute_lookup, template_table, target_table):
         self.append_objects_to_db([generic_object], field_attribute_lookup, template_table, target_table)
 
@@ -238,6 +243,19 @@ class DbDataIo(object):
         object_type = type(generic_object_list[0])
         self.add_ids(output_feature_class, "id", object_type)
         self.append_table_to_db(output_feature_class, target_table)
+
+    def copy_objects_to_db_with_ids(self, generic_object_list, field_attribute_lookup, template_table, target_table,
+                                    output_name):
+        output_feature_class = self.workspace + "\\" + output_name
+        arcpy.Delete_management(output_feature_class)
+        self.create_feature_class_from_objects(generic_object_list,
+                                               self.workspace,
+                                               output_name,
+                                               field_attribute_lookup,
+                                               template_table)
+        object_type = type(generic_object_list[0])
+        self.add_ids(output_feature_class, "id", object_type)
+        self.copy_table_to_db(output_feature_class, target_table)
 
     # LOOKS LIKE A DUPLICATE = ?
     #def append_objects_to_db(self, generic_object_list, field_attribute_lookup, template_table, target_table):

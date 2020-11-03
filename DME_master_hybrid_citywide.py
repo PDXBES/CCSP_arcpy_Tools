@@ -111,6 +111,7 @@ for dme_link in test_dme_links:
 
 print time.time() - start
 start = time.time()
-dme_master_hybrid_db_data_io.append_dme_master_links_to_db(dme_master_links)
+#dme_master_hybrid_db_data_io.append_dme_master_links_to_db(dme_master_links)
+dme_master_hybrid_db_data_io.copy_dme_master_links_to_db(dme_master_links)
 print time.time() - start
 pass

@@ -88,9 +88,6 @@ class DataLoad:
             for key, value in data_dict.items():
                 print "   Copying: " + str(key)
                 full_input_path = self.utility.source_formatter(value)
-                #full_output_path = os.path.join(self.todays_gdb_full_path_name, key)
-                #try:
-                #    arcpy.Copy_management(full_input_path, full_output_path)
                 try:
                     arcpy.FeatureClassToFeatureClass_conversion(full_input_path, self.todays_gdb_full_path_name, key)
                 except Exception:
