@@ -74,8 +74,7 @@ class Utility:
         split = os.path.basename(source_filename).split(".")
         new_name = split[0] + "." + split[1]
         new_dir = os.path.join(os.path.dirname(source_filename), new_name)
-        if os.path.isdir(new_dir):
-            os.remove(new_dir)
+        self.delete_dir(new_dir)
         os.mkdir(new_dir)
         with zipfile.ZipFile(source_filename) as zf:
             zf.extractall(new_dir)
@@ -84,8 +83,7 @@ class Utility:
         arcpy.AddMessage("Creating zipped folder")
         #overwrites .zip of same name if exists
         new_zipped_file = input_folder + ".zip"
-        if os.path.isfile(new_zipped_file):
-            os.remove(new_zipped_file)
+        self.delete_file(new_zipped_file)
         shutil.make_archive(input_folder, 'zip', input_folder)
 
     def delete_dir(self, input):

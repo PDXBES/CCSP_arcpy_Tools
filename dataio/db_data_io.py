@@ -213,9 +213,9 @@ class DbDataIo(object):
 
     def append_table_to_db(self, input_table, target_table):
         # type: (str, str) -> None
-        #field_mappings = self._create_field_map_for_sde_db(input_table)
-        #arcpy.Append_management(input_table, target_table, "NO_TEST", field_mappings)
-        arcpy.Append_management(input_table, target_table, "NO_TEST")
+        field_mappings = self._create_field_map_for_sde_db(input_table)
+        arcpy.Append_management(input_table, target_table, "NO_TEST", field_mappings)
+        #arcpy.Append_management(input_table, target_table, "NO_TEST")
         arcpy.Delete_management(input_table)
 
     def copy_table_to_db(self, input_table, target_table):
