@@ -93,3 +93,12 @@ class Utility:
     def delete_file(self, input):
         if os.path.isfile(input):
             os.remove(input)
+
+    def DME_master_hybrid_data_cleanup(self):
+        feature_class_list = [self.config.DME_master_hybrid_sde_path]
+        for feature_class in feature_class_list:
+            try:
+                arcpy.TruncateTable_management(feature_class)
+            except:
+                print("  unable to truncate, using Delete Rows")
+                arcpy.DeleteRows_management(feature_class)

@@ -3,8 +3,8 @@ from datetime import datetime
 import arcpy
 import DME_master_hybrid_citywide
 
-appsettings_file = r"c:\temp\working\appsettings.json"
-#appsettings_file = r"c:\temp\working\appsettings_REHAB_only.json"
+#appsettings_file = r"c:\temp\working\appsettings.json"
+appsettings_file = r"c:\temp\working\appsettings_REHAB_only.json"
 #data_source_file = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\ETL_input_data_sources.json"
 data_source_file = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\OLD_ETL_input_data_sources\ETL_input_data_sources_with_TEST1.json"
 
@@ -18,6 +18,9 @@ print datetime.today().strftime("%m/%d/%Y, %H:%M:%S")
 try:
     print "Refreshing gdb - " + datetime.today().strftime("%H:%M:%S")
     data_load.create_gdb()
+
+    print "DME master hybrid cleanup - " + datetime.today().strftime("%H:%M:%S")
+    data_load.utility.DME_master_hybrid_data_cleanup()
 
     print "Creating/ Loading DME master hybrid - " + datetime.today().strftime("%H:%M:%S")
     DME_master_hybrid_citywide.create_citywide_hybrid()

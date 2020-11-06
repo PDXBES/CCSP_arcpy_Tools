@@ -21,7 +21,8 @@ class DbDataIo(object):
             if field.name == "SHAPE_Area" \
                     or field.name == "SHAPE_Length" \
                     or field.name == "OBJECTID" \
-                    or field.name == "SHAPE":
+                    or field.name == "SHAPE"\
+                    or field.name == "SHAPE_STLength__":
                 pass
             else:
                 field_map = arcpy.FieldMap()
