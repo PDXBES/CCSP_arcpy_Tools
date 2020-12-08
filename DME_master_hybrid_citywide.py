@@ -7,13 +7,15 @@ import time
 
     ## will write out result with citywide extent (DME_master_hybrid)
     ## 1. create in memory version of DME links
-    ## 2. apply decision logic to choose between DME and master link values where global_ids match
-    ## 3. if copy - copy result to ETL input gdb
-    ## 4. if append - append result to CCSP.DME_MASTER_HYBRID
+    ## 2. output is based on DME geometry
+    ## 3. apply decision logic to choose between DME and master link values where global_ids match
+    ## 4a. if copy - copy result to ETL input gdb
+    ## 4b. if append - append result to CCSP.DME_MASTER_HYBRID
 
 def create_citywide_hybrid():
     start = time.time()
-    config = Config('TEST')
+    #config = Config('TEST')
+    config = Config('PROD')
     dme_master_hybrid = DmeMasterHybrid(config)
     dme_master_hybrid_db_data_io = DmeMasterHybridDbDataIo(config)
 
@@ -121,4 +123,5 @@ def create_citywide_hybrid():
     print "   Writing result - duration: " + str(time.time() - start) + " seconds"
     pass
 
+#FOR TESTING/ RUNNING INDEPENDENTLY
 #create_citywide_hybrid()

@@ -7,7 +7,8 @@ from dataio import utility
 from businessclasses import config
 from datetime import datetime
 
-test_flag = "TEST"
+#test_flag = "TEST"
+test_flag = "PROD"
 
 class DataLoad:
     def __init__(self):
@@ -16,9 +17,14 @@ class DataLoad:
         self.utility = utility.Utility(self.config)
         self.ccsp_gdb_full_path_name = self.utility.ccsp_gdb_full_path_name()
 
-    def create_gdb(self):
+    def delete_existing_gdb(self):
         if arcpy.Exists(self.ccsp_gdb_full_path_name):
             arcpy.Delete_management(self.ccsp_gdb_full_path_name)
+        else:
+            pass
+
+    def create_gdb(self):
+        self.delete_existing_gdb()
         gdb_name = self.utility.ccsp_gdb_name()
         #print "Creating gdb " + str(gdb_name)
         arcpy.CreateFileGDB_management(self.config.ETL_load_base_folder, gdb_name)

@@ -3,10 +3,10 @@ from datetime import datetime
 import arcpy
 import DME_master_hybrid_citywide
 
-#appsettings_file = r"c:\temp\working\appsettings.json"
-appsettings_file = r"c:\temp\working\appsettings_REHAB_only.json"
-#data_source_file = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\ETL_input_data_sources.json"
-data_source_file = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\OLD_ETL_input_data_sources\ETL_input_data_sources_with_TEST1.json"
+appsettings_file = r"c:\temp\working\appsettings.json"
+#appsettings_file = r"c:\temp\working\appsettings_REHAB_only.json"
+data_source_file = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\CCSP_Tools_Input\ETL_input_data_sources.json"
+#data_source_file = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\OLD_ETL_input_data_sources\ETL_input_data_sources_with_TEST1.json"
 
 # ---------------------------------------------------------------
 
@@ -27,6 +27,8 @@ try:
 
     print "Loading Data - " + datetime.today().strftime("%H:%M:%S")
     data_load.load_data(appsettings_file, data_source_file)
+
+    #TODO - remove create_gdb, then after load_data (using intermediate named gdb) delete original gdb and os.rename
 
     print "Zipping gdb - " + datetime.today().strftime("%H:%M:%S")
     data_load.utility.zip(data_load.ccsp_gdb_full_path_name)

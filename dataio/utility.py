@@ -94,6 +94,10 @@ class Utility:
         if os.path.isfile(input):
             os.remove(input)
 
+    def rename_gdb(self):
+        #os.rename(#intermediate_gdb, self.ccsp_gdb_full_path_name)
+        pass
+
     def DME_master_hybrid_data_cleanup(self):
         feature_class_list = [self.config.DME_master_hybrid_sde_path]
         for feature_class in feature_class_list:
