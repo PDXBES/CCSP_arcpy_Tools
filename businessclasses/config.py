@@ -24,15 +24,19 @@ class Config:
         elif init_options[test_flag] == 0:
             server = "BESDBPROD1"
 
-
         GISDB1 = "GISDB1.EGH_PUBLIC.sde"
         EMGAATS_sde = server + ".EMGAATS.sde"
         CCSP_sde = server + ".CCSP.sde"
         BESGEORPT_sde = server + ".BESGEORPT.sde"
+        self.GIS_TRANSFER10_sde = server + ".GIS_TRANSFER10.sde"
 
         self.egh_public = os.path.join(self.sde_connections, GISDB1)
         self.DME_table_name = r"EGH_Public.ARCMAP_ADMIN.collection_lines_bes_pdx"
         self.DME_sde_path = self.egh_public + r"\\" + self.DME_table_name
+
+        self.GIS_TRANSFER10_sde_path = os.path.join(self.sde_connections, self.GIS_TRANSFER10_sde)
+        self.GIS_TRANSFER10_table_name = r"GIS_TRANSFER10.GIS.collection_lines_bes_pdx"
+        self.TRANSFER10_collection_lines_path = self.GIS_TRANSFER10_sde_path + r"\\" + self.GIS_TRANSFER10_table_name
 
         self.EMGAATS_sde_path = os.path.join(self.sde_connections, EMGAATS_sde)
         self.master_links_sde_path = self.EMGAATS_sde_path + r"\EMGAATS.GIS.Links"
@@ -46,12 +50,14 @@ class Config:
         self.DME_master_hybrid_id_table_sde_path = self.CCSP_sde_path + r"\CCSP.GIS.Current_ID"
         self.DME_master_hybrid_sde_path = self.CCSP_sde_path + r"\CCSP.GIS.DME_master_hybrid"
 
-        self.DME_master_hybrid_gdb_path = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\CCSP_Tools_Input\CCSPToolsInput.gdb"
+        # self.DME_master_hybrid_gdb_path = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\CCSP_Tools_Input\CCSPToolsInput.gdb"
 
         ## placeholders for use once we switch to using view/QL instead of hard coded query in dme_master_hybrid.create_dme_links()
         self.BESGEORPT_sde_path = os.path.join(self.sde_connections, BESGEORPT_sde)
         self.collection_lines_ACTIVE_BES_SEWER_STORM_view_name = r"\BESGEORPT.GIS.v_collection_lines_ACTIVE_BES_SEWER_STORM"
         self.collection_lines_ACTIVE_BES_SEWER_STORM_view_name_path = self.BESGEORPT_sde_path + self.collection_lines_ACTIVE_BES_SEWER_STORM_view_name
+
+
 
 
 ##

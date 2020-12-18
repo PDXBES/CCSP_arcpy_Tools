@@ -5,10 +5,9 @@ import DME_master_hybrid_citywide
 #from dataio.utility import Utility
 #from businessclasses import config
 
-appsettings_file = r"c:\temp\working\appsettings.json"
-#appsettings_file = r"c:\temp\working\appsettings_REHAB_only.json"
+#appsettings_file = r"c:\temp\working\appsettings.json"
+appsettings_file = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\CCSP_Tools_Input\appsettings.json"
 data_source_file = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\CCSP_Tools_Input\ETL_input_data_sources.json"
-#data_source_file = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\OLD_ETL_input_data_sources\ETL_input_data_sources_with_TEST1.json"
 
 # ---------------------------------------------------------------
 test_flag = "PROD"

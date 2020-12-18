@@ -23,8 +23,10 @@ class DmeMasterHybrid:
 
     def create_dme_links(self, dme_master_hybrid_db_data_io):
         # type: (DmeMasterHybridDbDataIo) -> List[DmeLink]
-        input_database = self.config.egh_public
-        input_table_name = self.config.DME_table_name
+        #input_database = self.config.egh_public
+        #input_table_name = self.config.DME_table_name
+        input_database = self.config.GIS_TRANSFER10_sde_path
+        input_table_name = self.config.GIS_TRANSFER10_table_name
         object_type = DmeLink
         #TODO - point to SQL view using query layer instead of this hard coded query
         query = "select * from " + input_table_name + " where (OWNRSHIP in ( ' ' , 'BES' , 'UNKN' , 'DNRV' ) or " + \
