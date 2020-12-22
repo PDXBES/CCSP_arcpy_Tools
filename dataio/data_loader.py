@@ -1,7 +1,7 @@
 import arcpy
 import os
 import sys
-import openpyxl
+#import openpyxl
 import json
 from dataio import utility
 from businessclasses import config
@@ -86,16 +86,17 @@ class DataLoad:
             return False
 
     def copy_sources_to_gdb(self, data_dict, output_gdb):
-        arcpy.env.outputCoordinateSystem = arcpy.SpatialReference(2913)
+        arcpy.env.outputCoordinateSystem = arcpy.SpatialReference(2913) #does not affect copy_management
         if self.utility.valid_source_values(data_dict):
             print "Coping data sources to the gdb:"
             for key, value in data_dict.items():
                 print "   Copying: " + str(key)
                 full_input_path = self.utility.source_formatter(value)
-                try:
-                    arcpy.FeatureClassToFeatureClass_conversion(full_input_path, output_gdb, key)
-                except Exception:
-                    arcpy.TableToTable_conversion(full_input_path, output_gdb, key)
+                #try:
+                #    arcpy.FeatureClassToFeatureClass_conversion(full_input_path, output_gdb, key)
+                #except Exception:
+                #    arcpy.TableToTable_conversion(full_input_path, output_gdb, key)
+                arcpy.Copy_management(full_input_path, os.path.join(output_gdb, key))
         else:
             arcpy.AddError("Invalid data source(s)")
             arcpy.ExecuteError()
