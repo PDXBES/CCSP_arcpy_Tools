@@ -71,7 +71,7 @@ class Utility:
             raise Exception
 
     def unzip(self, source_filename):
-        #overwrites output of same name if exixts
+        #overwrites output of same name if exists
         split = os.path.basename(source_filename).split(".")
         new_name = split[0] + "." + split[1]
         new_dir = os.path.join(os.path.dirname(source_filename), new_name)
@@ -81,7 +81,6 @@ class Utility:
             zf.extractall(new_dir)
 
     def zip(self, input_folder):
-        #arcpy.AddMessage("Creating zipped folder")
         #overwrites .zip of same name if exists
         new_zipped_file = input_folder + ".zip"
         self.delete_file(new_zipped_file)

@@ -22,7 +22,7 @@
 "LinkResults": "BESDBPROD1.MODELCATALOG.sde\\MODEL_CATALOG.GIS.LinkResults",
 "Model_Links": "BESDBPROD1.MODELCATALOG.sde\\MODEL_CATALOG.GIS.Links", 
 "NodeResults": "BESDBPROD1.MODELCATALOG.sde\\MODEL_CATALOG.GIS.NodeResults",
-"bes_collection_nodes": "BESDBPROD1.GIS_TRANSFER10.sde\\GIS_TRANSFER10.GIS.collection_lines_bes_pdx",
+"bes_collection_nodes": "BESDBPROD1.GIS_TRANSFER10.sde\\GIS_TRANSFER10.GIS.collection_points_bes_pdx",
 "bes_collection_lines": "BESDBPROD1.BESGEORPT.sde\\BESGEORPT.GIS.v_collection_lines_ACTIVE_BES_SEWER_STORM",
 "costest_hardareas": "BESDBPROD1.BESGEORPT.sde\\BESGEORPT.GIS.COSTEST_HARDAREAS",
 "bes_collection_system_master_hybrid_ccsp": "BESDBPROD1.CCSP.sde\\CCSP.GIS.DME_master_hybrid",

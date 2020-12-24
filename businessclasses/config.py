@@ -15,6 +15,8 @@ class Config:
 
         self.sde_connections = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\03_RRAD\CCSP_Data_Management_ToolBox\connection_files"
         self.ETL_load_base_folder = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\CCSP_Tools_Input"
+        # for besapp4 testing
+        #self.ETL_load_base_folder = r"C:\temp\CCSP_tools_working"
 
         self.log_file = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\CCSP_Tools_Input\data_load_log"
         #self.log_file = r"\\besapp4\gis\Scripts\Python\Production\CCSP\data_load_log"
