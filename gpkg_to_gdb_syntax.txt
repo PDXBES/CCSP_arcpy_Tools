@@ -1,0 +1,11 @@
+
+cmd syntax
+1. set python env
+ see - https://pro.arcgis.com/en/pro-app/arcpy/get-started/using-conda-with-arcgis-pro.htm
+2. specify script location
+3. one param = input geopackage
+
+example
+c:\Progra~1\ArcGIS\Pro\bin\Python\scripts\propy.bat c:\temp\gpkg_import.py "C:\temp\geopackage_TEST\Cost Estimator_11_results.gpkg"
+
+    

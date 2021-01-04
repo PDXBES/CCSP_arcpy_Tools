@@ -92,10 +92,9 @@ class DataLoad:
             for key, value in data_dict.items():
                 print "   Copying: " + str(key)
                 full_input_path = self.utility.source_formatter(value)
-                #try:
-                #    arcpy.FeatureClassToFeatureClass_conversion(full_input_path, output_gdb, key)
-                #except Exception:
-                #    arcpy.TableToTable_conversion(full_input_path, output_gdb, key)
+                print "       Full input path: " + str(full_input_path)
+                print "           Exists: " + str(arcpy.Exists(full_input_path))
+                print "       Full output path: " + str(os.path.join(output_gdb, key))
                 arcpy.Copy_management(full_input_path, os.path.join(output_gdb, key))
         else:
             arcpy.AddError("Invalid data source(s)")
