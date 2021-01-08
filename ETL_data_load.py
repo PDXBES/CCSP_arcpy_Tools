@@ -21,11 +21,11 @@ log_obj.info("ETL Data Loader - Process started".format())
 
 try:
 
-    log_obj.info("DME master hybrid cleanup".format())
-    utility.DME_master_hybrid_data_cleanup()
+    #log_obj.info("DME master hybrid cleanup".format())
+    #utility.DME_master_hybrid_data_cleanup()
 
-    log_obj.info("Creating DME master hybrid".format())
-    DME_master_hybrid_citywide.create_citywide_hybrid()
+    #log_obj.info("Creating DME master hybrid".format())
+    #DME_master_hybrid_citywide.create_citywide_hybrid()
 
     log_obj.info("Creating intermediate gdb".format())
     data_load.create_gdb(utility.intermediate_gdb_full_path_name())

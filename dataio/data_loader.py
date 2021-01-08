@@ -38,10 +38,10 @@ class DataLoad:
         sourcelayer_list = []
         data = self.utility.create_dict_from_json(appsettings_file)
         LMdata = data["ETLServiceSettings"]["LayerMappings"] #returns list of dicts - gets all others
-        LLdata = data["ETLServiceSettings"]["LinksLayer"] #returns dict - gets bes_collection_system_master_hybrid_ccsp
+        #LLdata = data["ETLServiceSettings"]["LinksLayer"] #returns dict - gets bes_collection_system_master_hybrid_ccsp
         for item in LMdata:
             sourcelayer_list.append(item["SourceLayer"])
-        sourcelayer_list.append(LLdata["SourceLayer"])
+        #sourcelayer_list.append(LLdata["SourceLayer"])
         return sourcelayer_list
 
     def create_names_missing_from_source_list(self, appsettings_file, data_source_file):
