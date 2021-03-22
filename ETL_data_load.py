@@ -21,16 +21,15 @@ log_obj.info("ETL Data Loader - Process started".format())
 
 try:
 
-    #log_obj.info("DME master hybrid cleanup".format())
-    #utility.DME_master_hybrid_data_cleanup()
-
-    #log_obj.info("Creating DME master hybrid".format())
-    #DME_master_hybrid_citywide.create_citywide_hybrid()
-
     log_obj.info("Creating intermediate gdb".format())
     data_load.create_gdb(utility.intermediate_gdb_full_path_name())
 
     log_obj.info("Loading Data".format())
+    data_source_dict = data_load.create_input_dict_from_json_dict(data_source_file)
+    print_string1 = "  Input sources that we are trying to load - " + str(data_source_dict.keys())
+    print_string2 = "  Input source count - " + str(len(data_source_dict))
+    log_obj.info(print_string1.format())
+    log_obj.info(print_string2.format())
     data_load.load_data(appsettings_file, data_source_file)
 
     log_obj.info("GDB cleanup".format())
@@ -47,7 +46,7 @@ except:
     utility.delete_dir(utility.intermediate_gdb_full_path_name())
     utility.delete_file(utility.intermediate_gdb_full_path_name() + ".zip")
 
-    log_obj.info("Data could not be loaded".format())
+    log_obj.info("DATA COULD NOT BE LOADED".format())
     arcpy.ExecuteError()
 
 log_obj.info("Data Loader - Process ended".format())

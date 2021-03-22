@@ -88,14 +88,19 @@ class DataLoad:
     def copy_sources_to_gdb(self, data_dict, output_gdb):
         arcpy.env.outputCoordinateSystem = arcpy.SpatialReference(2913) #does not affect copy_management
         if self.utility.valid_source_values(data_dict):
-            print "Coping data sources to the gdb:"
-            for key, value in data_dict.items():
-                print "   Copying: " + str(key)
-                full_input_path = self.utility.source_formatter(value)
-                print "       Full input path: " + str(full_input_path)
-                print "           Exists: " + str(arcpy.Exists(full_input_path))
-                print "       Full output path: " + str(os.path.join(output_gdb, key))
-                arcpy.Copy_management(full_input_path, os.path.join(output_gdb, key))
+            try:
+                print "Coping data sources to the gdb:"
+                print "Input source count - " + str(len(data_dict))
+                print "Input source list - " + str(data_dict.keys())
+                for key, value in data_dict.items():
+                    print "   Copying: " + str(key)
+                    full_input_path = self.utility.source_formatter(value)
+                    print "       Full input path: " + str(full_input_path)
+                    print "           Exists: " + str(arcpy.Exists(full_input_path))
+                    print "       Full output path: " + str(os.path.join(output_gdb, key))
+                    arcpy.Copy_management(full_input_path, os.path.join(output_gdb, key))
+            except:
+                arcpy.ExecuteError()
         else:
             arcpy.AddError("Invalid data source(s)")
             arcpy.ExecuteError()
