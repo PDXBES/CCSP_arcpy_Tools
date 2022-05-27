@@ -25,7 +25,7 @@ class DataLoad:
 
     def create_gdb(self, gdb_full_path_name):
         self.delete_existing_gdb(gdb_full_path_name)
-        arcpy.CreateFileGDB_management(self.config.ETL_load_base_folder, os.path.basename(gdb_full_path_name))
+        arcpy.CreateFileGDB_management(self.config.loader_output_base_folder, os.path.basename(gdb_full_path_name))
 
     def create_input_dict_from_json_dict(self, data_source_file):
         input_dict = {}
@@ -86,7 +86,7 @@ class DataLoad:
             return False
 
     def copy_sources_to_gdb(self, data_dict, output_gdb):
-        arcpy.env.outputCoordinateSystem = arcpy.SpatialReference(2913) #does not affect copy_management
+        arcpy.env.outputCoordinateSystem = arcpy.SpatialReference(self.utility.city_standard_SRID) #does not affect copy_management but supposed to affect copy features
         if self.utility.valid_source_values(data_dict):
             try:
                 print "Coping data sources to the gdb:"
@@ -98,7 +98,8 @@ class DataLoad:
                     print "       Full input path: " + str(full_input_path)
                     print "           Exists: " + str(arcpy.Exists(full_input_path))
                     print "       Full output path: " + str(os.path.join(output_gdb, key))
-                    arcpy.Copy_management(full_input_path, os.path.join(output_gdb, key))
+                    #arcpy.Copy_management(full_input_path, os.path.join(output_gdb, key))
+                    arcpy.CopyFeatures_management(full_input_path, os.path.join(output_gdb, key))
             except:
                 arcpy.ExecuteError()
         else:

@@ -12,7 +12,7 @@ class Utility:
     def __init__(self, config):
         self.config = config
 
-        self.standard_SRID = 2913
+        self.city_standard_SRID = 2913
 
     #@staticmethod
     #def date_today(self):
@@ -25,12 +25,12 @@ class Utility:
 
     def ccsp_gdb_full_path_name(self):
         full_name = "CCSPToolsInput.gdb"
-        full_ccsp_path = os.path.join(self.config.ETL_load_base_folder, full_name)
+        full_ccsp_path = os.path.join(self.config.loader_output_base_folder, full_name)
         return full_ccsp_path
 
     def intermediate_gdb_full_path_name(self):
         full_name = "data_load_intermediate.gdb"
-        full_ccsp_path = os.path.join(self.config.ETL_load_base_folder, full_name)
+        full_ccsp_path = os.path.join(self.config.loader_output_base_folder, full_name)
         return full_ccsp_path
 
     def todays_ccsp_input_gdb_name(self, date_object):
@@ -42,7 +42,7 @@ class Utility:
 
     def todays_gdb_full_path_name(self, date_object):
         full_name = self.todays_ccsp_input_gdb_name(date_object)
-        full_path = os.path.join(self.config.ETL_load_base_folder, full_name)
+        full_path = os.path.join(self.config.loader_output_base_folder, full_name)
         return full_path
 
     def source_formatter(self, source_string):

@@ -4,9 +4,12 @@ import arcpy
 import DME_master_hybrid_citywide
 #from dataio.utility import Utility
 from businessclasses import config
+import os
 
-appsettings_file = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\CCSP_Tools_Input\appsettings.json"
-data_source_file = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\CCSP_Tools_Input\ETL_input_data_sources.json"
+#OLD
+#appsettings_file = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\CCSP_Tools_Input\appsettings.json"
+#data_source_file = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\CCSP_Tools_Input\ETL_input_data_sources.json"
+
 
 # ---------------------------------------------------------------
 test_flag = "PROD"
@@ -14,6 +17,9 @@ test_flag = "PROD"
 data_load = DataLoad()
 utility = data_load.utility
 config = config.Config(test_flag)
+
+appsettings_file = os.path.join(config.loader_input_base_folder, "appsettings.json")
+data_source_file = os.path.join(config.loader_input_base_folder, "ETL_input_data_sources.json")
 
 log_obj = utility.Logger(config.log_file)
 
