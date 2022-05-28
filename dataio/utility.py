@@ -110,7 +110,18 @@ class Utility:
                 print("  unable to truncate, using Delete Rows")
                 arcpy.DeleteRows_management(feature_class)
 
-    # https://stackoverflow.com/questions/6386698/how-to-write-to-a-file-using-the-logging-python-module
+    def get_final_fc_list(self, gdb):
+        arcpy.env.workspace = gdb
+        full_list = []
+        fc_list = arcpy.ListFeatureClasses()
+        for fc in fc_list:
+            full_list.append(fc)
+        table_list = arcpy.ListTables()
+        for table in table_list:
+            full_list.append(table)
+        return full_list
+
+        # https://stackoverflow.com/questions/6386698/how-to-write-to-a-file-using-the-logging-python-module
     def Logger(self, file_name):
         formatter = logging.Formatter(fmt='%(asctime)s %(module)s,line: %(lineno)d %(levelname)8s | %(message)s',
                                       datefmt='%Y/%m/%d %H:%M:%S')  # %I:%M:%S %p AM|PM format

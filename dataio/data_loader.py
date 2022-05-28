@@ -99,7 +99,11 @@ class DataLoad:
                     print "           Exists: " + str(arcpy.Exists(full_input_path))
                     print "       Full output path: " + str(os.path.join(output_gdb, key))
                     #arcpy.Copy_management(full_input_path, os.path.join(output_gdb, key))
-                    arcpy.CopyFeatures_management(full_input_path, os.path.join(output_gdb, key))
+                    try:
+                        arcpy.CopyFeatures_management(full_input_path, os.path.join(output_gdb, key))
+                    except:
+                        arcpy.TableToTable_conversion(full_input_path, output_gdb, key)
+
             except:
                 arcpy.ExecuteError()
         else:
