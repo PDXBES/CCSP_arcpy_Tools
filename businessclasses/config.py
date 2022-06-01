@@ -14,8 +14,8 @@ class Config:
         self.test_flag = test_flag
 
         self.sde_connections = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\03_RRAD\CCSP_Data_Management_ToolBox\connection_files"
-        #self.ETL_load_base_folder = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\CCSP_Tools_Input"
         self.loader_output_base_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Production"
+        #self.loader_output_base_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Test" # for fake WB run
         self.loader_input_base_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderInputFiles"
 
         self.log_file = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Production\data_load_log"
