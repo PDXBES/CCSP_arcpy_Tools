@@ -16,8 +16,8 @@ utility = data_load.utility
 config = config.Config(test_flag)
 
 appsettings_file = os.path.join(config.loader_input_base_folder, "appsettings.json")
-data_source_file = os.path.join(config.loader_input_base_folder, "ETL_input_data_sources.json")
-#data_source_file = os.path.join(config.loader_input_base_folder, "ETL_input_data_sources - fake WB.json") #for manual run with fake WB - appsettings stays the same
+#data_source_file = os.path.join(config.loader_input_base_folder, "ETL_input_data_sources.json")
+data_source_file = os.path.join(config.loader_input_base_folder, "ETL_input_data_sources - fake WB.json") #for manual run with fake WB - appsettings stays the same
 
 log_obj = utility.Logger(config.log_file)
 

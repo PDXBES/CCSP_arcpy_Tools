@@ -86,7 +86,7 @@ class DataLoad:
             return False
 
     def copy_sources_to_gdb(self, data_dict, output_gdb):
-        arcpy.env.outputCoordinateSystem = arcpy.SpatialReference(self.utility.city_standard_SRID) #does not affect copy_management but supposed to affect copy features
+        arcpy.env.outputCoordinateSystem = arcpy.SpatialReference(self.utility.city_standard_SRID) #only applies on CopyFeatures
         if self.utility.valid_source_values(data_dict):
             try:
                 print "Coping data sources to the gdb:"
@@ -98,11 +98,11 @@ class DataLoad:
                     print "       Full input path: " + str(full_input_path)
                     print "           Exists: " + str(arcpy.Exists(full_input_path))
                     print "       Full output path: " + str(os.path.join(output_gdb, key))
-                    #arcpy.Copy_management(full_input_path, os.path.join(output_gdb, key))
-                    try:
+                    if arcpy.Describe(self.utility.source_formatter(value)).dataType == 'FeatureClass':
                         arcpy.CopyFeatures_management(full_input_path, os.path.join(output_gdb, key))
-                    except:
-                        arcpy.TableToTable_conversion(full_input_path, output_gdb, key)
+                    elif arcpy.Describe(self.utility.source_formatter(value)).dataType == 'Table':
+                        arcpy.Copy_management(full_input_path, os.path.join(output_gdb, key))
+                        #arcpy.TableToTable_conversion(full_input_path, output_gdb, key)
 
             except:
                 arcpy.ExecuteError()
