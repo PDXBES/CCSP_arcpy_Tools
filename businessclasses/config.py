@@ -18,6 +18,7 @@ class Config:
         #self.loader_output_base_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Test" #for manual run with fake WB
         self.loader_input_base_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderInputFiles"
 
+        self.archive_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Production\Archive"
         self.log_file = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Production\data_load_log"
 
         ##

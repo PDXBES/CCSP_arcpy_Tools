@@ -29,7 +29,7 @@ class TestUtility(TestCase):
     def test_date_today_calls_strftime_with_correct_date_format_argument(self):
         todays_date = mock.MagicMock(datetime.datetime.today())
         todays_date.strftime.return_value = "test string"
-        return_string = self.utility.date_today(todays_date)
+        return_string = self.utility.datetime_now(todays_date)
         self.assertEquals(return_string, "test string")
         self.assertEquals("%Y%m%d", todays_date.strftime.call_args[0][0])
 

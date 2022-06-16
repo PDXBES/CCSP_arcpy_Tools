@@ -23,10 +23,14 @@ log_obj = utility.Logger(config.log_file)
 
 log_obj.info("ETL Data Loader - Process started".format())
 
+utility.now_gdb_full_path_name()
+#now_gdb_full_path_name = data_load.now_gdb_full_path_name
+
 try:
 
-    log_obj.info("Creating intermediate gdb".format())
-    data_load.create_gdb(utility.intermediate_gdb_full_path_name())
+    log_obj.info("Creating gdb for this run (datetime stamped)".format())
+
+    data_load.create_gdb(data_load.now_gdb_full_path_name)
 
     log_obj.info("Loading Data".format())
     data_source_dict = data_load.create_input_dict_from_json_dict(data_source_file)
@@ -36,22 +40,25 @@ try:
     log_obj.info(print_string2.format())
     data_load.load_data(appsettings_file, data_source_file)
 
-    log_obj.info("GDB cleanup".format())
-    log_obj.info("     delete existing load gdb".format())
-    utility.delete_dir(utility.ccsp_gdb_full_path_name())
-    log_obj.info("     rename intermediate to load gdb".format())
-    utility.rename_intermediate_gdb_to_input_gdb()
+    #log_obj.info("GDB cleanup".format())
+    #log_obj.info("     delete existing load gdb".format())
+    #utility.delete_dir(utility.ccsp_gdb_full_path_name())
+    #log_obj.info("     rename intermediate to load gdb".format())
+    #utility.rename_intermediate_gdb_to_input_gdb()
 
-    final_fc_list = utility.get_final_fc_list(utility.ccsp_gdb_full_path_name())
+    final_fc_list = utility.get_final_fc_list(data_load.now_gdb_full_path_name)
     log_obj.info("Final source count - " + str(len(final_fc_list)))
 
-    log_obj.info("Zipping gdb".format())
-    utility.zip(utility.ccsp_gdb_full_path_name())
+    log_obj.info("Creating CCSPToolsInput.gdb.zip".format())
+    utility.zip_and_rename(data_load.now_gdb_full_path_name)
+
+    log_obj.info("Archiving run result".format())
+
 
 except:
 
-    utility.delete_dir(utility.intermediate_gdb_full_path_name())
-    utility.delete_file(utility.intermediate_gdb_full_path_name() + ".zip")
+    utility.delete_dir_if_exists(data_load.now_gdb_full_path_name)
+    utility.delete_file_if_exists(utility.ccsp_gdb_full_path_name() + ".zip")
 
     log_obj.info("DATA COULD NOT BE LOADED".format())
     arcpy.ExecuteError()

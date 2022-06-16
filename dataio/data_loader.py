@@ -16,6 +16,7 @@ class DataLoad:
         self.config = config.Config(test_flag)
         self.utility = utility.Utility(self.config)
         self.ccsp_gdb_full_path_name = self.utility.ccsp_gdb_full_path_name()
+        self.now_gdb_full_path_name = self.utility.now_gdb_full_path_name()
 
     def delete_existing_gdb(self, file_to_delete):
         if arcpy.Exists(file_to_delete):
@@ -102,7 +103,6 @@ class DataLoad:
                         arcpy.CopyFeatures_management(full_input_path, os.path.join(output_gdb, key))
                     elif arcpy.Describe(self.utility.source_formatter(value)).dataType == 'Table':
                         arcpy.Copy_management(full_input_path, os.path.join(output_gdb, key))
-                        #arcpy.TableToTable_conversion(full_input_path, output_gdb, key)
 
             except:
                 arcpy.ExecuteError()
@@ -123,9 +123,9 @@ class DataLoad:
                 print "      The extra entries will not be copied to the output gdb."
                 filtered_dict = self.remove_extra_values(data_source_file,
                                                      missing_from_appsettings)
-                self.copy_sources_to_gdb(filtered_dict, self.utility.intermediate_gdb_full_path_name())
+                self.copy_sources_to_gdb(filtered_dict, self.now_gdb_full_path_name)
             else:
-                self.copy_sources_to_gdb(self.create_input_dict_from_json_dict(data_source_file), self.utility.intermediate_gdb_full_path_name())
+                self.copy_sources_to_gdb(self.create_input_dict_from_json_dict(data_source_file), self.now_gdb_full_path_name)
 
         else:
             arcpy.AddError("No data will be copied")
