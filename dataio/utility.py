@@ -29,6 +29,11 @@ class Utility:
         full_ccsp_path = os.path.join(self.config.loader_output_base_folder, full_name)
         return full_ccsp_path
 
+    def ccsp_gdb_noWB_full_path_name(self):
+        full_name = "CCSPToolsInputNoWB.gdb"
+        full_ccsp_path = os.path.join(self.config.loader_output_base_folder, full_name)
+        return full_ccsp_path
+
     def intermediate_gdb_full_path_name(self):
         full_name = "data_load_intermediate.gdb"
         full_ccsp_path = os.path.join(self.config.loader_output_base_folder, full_name)
@@ -43,7 +48,7 @@ class Utility:
 
     def now_gdb_full_path_name(self):
         full_name = self.now_ccsp_input_gdb_name()
-        full_path = os.path.join(self.config.loader_output_base_folder, full_name)
+        full_path = os.path.join(self.config.archive_folder, full_name)
         return full_path
 
     def source_formatter(self, source_string):
@@ -87,11 +92,11 @@ class Utility:
         self.delete_file_if_exists(output_zipped_file)
         shutil.make_archive(input_folder, 'zip', input_folder)
 
-    def zip_and_rename(self, input_folder):
-        output_folder = self.ccsp_gdb_full_path_name()
-        output_zipped_file = output_folder + ".zip"
+    def zip_and_rename(self, input_folder, full_path_name):
+        #output_folder = self.ccsp_gdb_full_path_name()
+        output_zipped_file = full_path_name + ".zip"
         self.delete_file_if_exists(output_zipped_file)
-        shutil.make_archive(output_folder, 'zip', input_folder)
+        shutil.make_archive(full_path_name, 'zip', input_folder)
 
     def delete_dir_if_exists(self, input):
         if os.path.isdir(input):
@@ -127,6 +132,25 @@ class Utility:
         for table in table_list:
             full_list.append(table)
         return full_list
+
+    def gdb_copy_name(self, input_gdb, output_dir):
+        name = os.path.basename(input_gdb).split(".")[0]
+        extention = os.path.basename(input_gdb).split(".")[1]
+        new_full_path_name = os.path.join(output_dir, name + "_copy." + extention)
+        return new_full_path_name
+
+    def delete_feature_classes(self, gdb, feature_classes_list):
+        # feature_classes is a list, can be list of one
+        arcpy.env.workspace = gdb
+        cws = arcpy.env.workspace
+
+        fc_Delete = feature_classes_list
+
+        for fc in fc_Delete:
+
+            fc_path = os.path.join(cws, fc)
+            if arcpy.Exists(fc_path):
+                arcpy.Delete_management(fc_path)
 
         # https://stackoverflow.com/questions/6386698/how-to-write-to-a-file-using-the-logging-python-module
     def Logger(self, file_name):

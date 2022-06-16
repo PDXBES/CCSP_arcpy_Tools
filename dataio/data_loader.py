@@ -26,7 +26,7 @@ class DataLoad:
 
     def create_gdb(self, gdb_full_path_name):
         self.delete_existing_gdb(gdb_full_path_name)
-        arcpy.CreateFileGDB_management(self.config.loader_output_base_folder, os.path.basename(gdb_full_path_name))
+        arcpy.CreateFileGDB_management(os.path.dirname(gdb_full_path_name), os.path.basename(gdb_full_path_name))
 
     def create_input_dict_from_json_dict(self, data_source_file):
         input_dict = {}

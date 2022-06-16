@@ -5,7 +5,7 @@ import DME_master_hybrid_citywide
 #from dataio.utility import Utility
 from businessclasses import config
 import os
-
+import sys
 
 
 # ---------------------------------------------------------------
@@ -33,34 +33,38 @@ try:
     data_load.create_gdb(data_load.now_gdb_full_path_name)
 
     log_obj.info("Loading Data".format())
-    data_source_dict = data_load.create_input_dict_from_json_dict(data_source_file)
-    print_string1 = "  Input sources that we are trying to load - " + str(data_source_dict.keys())
-    print_string2 = "  Input source count - " + str(len(data_source_dict))
-    log_obj.info(print_string1.format())
-    log_obj.info(print_string2.format())
     data_load.load_data(appsettings_file, data_source_file)
-
-    #log_obj.info("GDB cleanup".format())
-    #log_obj.info("     delete existing load gdb".format())
-    #utility.delete_dir(utility.ccsp_gdb_full_path_name())
-    #log_obj.info("     rename intermediate to load gdb".format())
-    #utility.rename_intermediate_gdb_to_input_gdb()
 
     final_fc_list = utility.get_final_fc_list(data_load.now_gdb_full_path_name)
     log_obj.info("Final source count - " + str(len(final_fc_list)))
 
-    log_obj.info("Creating CCSPToolsInput.gdb.zip".format())
-    utility.zip_and_rename(data_load.now_gdb_full_path_name)
+    log_obj.info("Creating zipped CCSPToolsInput.gdb (overwrite existing)".format())
+    utility.zip_and_rename(data_load.now_gdb_full_path_name, utility.ccsp_gdb_full_path_name())
+
+    log_obj.info("Creating zipped CCSPToolsInputNoWB.gdb (overwrite existing)".format())
+    gdb_copy_name = utility.gdb_copy_name(data_load.now_gdb_full_path_name, config.archive_folder)
+    log_obj.info("     creating result copy".format())
+    arcpy.Copy_management(data_load.now_gdb_full_path_name, gdb_copy_name)
+    log_obj.info("     deleting WB data from copy".format())
+    utility.delete_feature_classes(gdb_copy_name, ["pressure_Mains"])
+    log_obj.info("     saving out zipped version".format())
+    utility.zip_and_rename(gdb_copy_name, utility.ccsp_gdb_noWB_full_path_name())
+    log_obj.info("     deleting copy".format())
+    arcpy.Delete_management(gdb_copy_name)
 
     log_obj.info("Archiving run result".format())
+    log_obj.info("     create zipped version of run result".format())
+    utility.zip(data_load.now_gdb_full_path_name)
+    log_obj.info("     delete run result".format())
+    utility.delete_dir_if_exists(data_load.now_gdb_full_path_name)
 
-
-except:
+except Exception as e:
 
     utility.delete_dir_if_exists(data_load.now_gdb_full_path_name)
-    utility.delete_file_if_exists(utility.ccsp_gdb_full_path_name() + ".zip")
+    #utility.delete_file_if_exists(utility.ccsp_gdb_full_path_name() + ".zip")
 
     log_obj.info("DATA COULD NOT BE LOADED".format())
     arcpy.ExecuteError()
+    log_obj.exception(str(sys.exc_info()[0]))
 
 log_obj.info("Data Loader - Process ended".format())
