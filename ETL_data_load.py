@@ -43,7 +43,7 @@ try:
 
     log_obj.info("Creating zipped CCSPToolsInputNoWB.gdb (overwrite existing)".format())
     gdb_copy_name = utility.gdb_copy_name(data_load.now_gdb_full_path_name, config.archive_folder)
-    log_obj.info("     creating result copy".format())
+    log_obj.info("     creating result copy in Archive".format())
     arcpy.Copy_management(data_load.now_gdb_full_path_name, gdb_copy_name)
     log_obj.info("     deleting WB data from copy".format())
     utility.delete_feature_classes(gdb_copy_name, ["pressure_Mains"])
@@ -68,3 +68,4 @@ except Exception as e:
     log_obj.exception(str(sys.exc_info()[0]))
 
 log_obj.info("Data Loader - Process ended".format())
+ 
