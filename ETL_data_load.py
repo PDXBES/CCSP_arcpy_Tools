@@ -24,7 +24,19 @@ log_obj = utility.Logger(config.log_file)
 log_obj.info("ETL Data Loader - Process started".format())
 
 utility.now_gdb_full_path_name()
-#now_gdb_full_path_name = data_load.now_gdb_full_path_name
+
+# creates datetime stamped gdb in Archive
+# creates a zipped version of that (called CCSPTools.gdb.zip) in Production
+# creates _copy of datetime stamped gdb in Archive
+# deletes WB data from that
+# creates a zipped version of that (called CCSPToolsNoWB.gdb.zip) in Production
+# deletes the _copy gdb from Archive
+# creates a zipped version of the datetime stamped gdb in Archive
+# deletes datetime stamped gdb from Archive
+
+# end result is 2 zipped gdbs in Production (CCSPTools.gdb.zip, CCSPToolsNoWB.gdb.zip)
+# and 1 zipped gdb in Archive (zipped, datestamped copy of CCSPTools.gdb) per run, accruing
+
 
 try:
 
@@ -49,7 +61,7 @@ try:
     utility.delete_feature_classes(gdb_copy_name, ["pressure_Mains"])
     log_obj.info("     saving out zipped version".format())
     utility.zip_and_rename(gdb_copy_name, utility.ccsp_gdb_noWB_full_path_name())
-    log_obj.info("     deleting copy".format())
+    log_obj.info("     deleting gdb".format())
     arcpy.Delete_management(gdb_copy_name)
 
     log_obj.info("Archiving run result".format())
