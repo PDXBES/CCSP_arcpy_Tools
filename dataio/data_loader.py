@@ -90,15 +90,15 @@ class DataLoad:
         arcpy.env.outputCoordinateSystem = arcpy.SpatialReference(self.utility.city_standard_SRID) #only applies on CopyFeatures
         if self.utility.valid_source_values(data_dict):
             try:
-                print "Coping data sources to the gdb:"
-                print "Input source count - " + str(len(data_dict))
-                print "Input source list - " + str(data_dict.keys())
+                print("Coping data sources to the gdb:")
+                print("Input source count - " + str(len(data_dict)))
+                print("Input source list - " + str(data_dict.keys()))
                 for key, value in data_dict.items():
-                    print "   Copying: " + str(key)
+                    print("   Copying: " + str(key))
                     full_input_path = self.utility.source_formatter(value)
-                    print "       Full input path: " + str(full_input_path)
-                    print "           Exists: " + str(arcpy.Exists(full_input_path))
-                    print "       Full output path: " + str(os.path.join(output_gdb, key))
+                    print("       Full input path: " + str(full_input_path))
+                    print("           Exists: " + str(arcpy.Exists(full_input_path)))
+                    print("       Full output path: " + str(os.path.join(output_gdb, key)))
                     if arcpy.Describe(self.utility.source_formatter(value)).dataType == 'FeatureClass':
                         arcpy.CopyFeatures_management(full_input_path, os.path.join(output_gdb, key))
                     elif arcpy.Describe(self.utility.source_formatter(value)).dataType == 'Table':
@@ -118,9 +118,9 @@ class DataLoad:
             missing_from_appsettings = self.create_names_missing_from_appsettings_list(appsettings_file,
                                                                                        data_source_file)
             if len(missing_from_appsettings) > 0:
-                print "FYI - these entries are in the input source list but NOT IN the appsettings(required) list: "
-                print "   " + str(missing_from_appsettings)
-                print "      The extra entries will not be copied to the output gdb."
+                print("FYI - these entries are in the input source list but NOT IN the appsettings(required) list: ")
+                print("   " + str(missing_from_appsettings))
+                print("      The extra entries will not be copied to the output gdb.")
                 filtered_dict = self.remove_extra_values(data_source_file,
                                                      missing_from_appsettings)
                 self.copy_sources_to_gdb(filtered_dict, self.now_gdb_full_path_name)

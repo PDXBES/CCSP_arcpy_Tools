@@ -18,6 +18,8 @@ class Config:
         #self.loader_output_base_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Test" #for manual run with fake WB
         self.loader_input_base_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderInputFiles"
 
+        self.WFS_layers = r"\\besfile1\ccsp\Mapping\Lyr\lyrx\ESA_WFS_items"
+        self.WFS_intermediate = r"\\besfile1\ccsp\Mapping\ArcPro_Projects\working\WFS_testing\WFS_intermediate.gdb"
         self.archive_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Production\Archive"
         self.log_file = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Production\data_load_log"
 
@@ -62,7 +64,22 @@ class Config:
         self.collection_lines_ACTIVE_BES_SEWER_STORM_view_name = r"\BESGEORPT.GIS.v_collection_lines_ACTIVE_BES_SEWER_STORM"
         self.collection_lines_ACTIVE_BES_SEWER_STORM_view_name_path = self.BESGEORPT_sde_path + self.collection_lines_ACTIVE_BES_SEWER_STORM_view_name
 
-
+        self.rename_dict = {
+            'DepthToHGLFtOnlyForBasementAboveCrownOfPipe': 'DepthToHGLFtOFBACoP',
+            'EstimatedBasementFloodingDepthFtOnlyForBasementAboveCrownOfPipe': 'EstBsmtFloodingDepthFtOFBACoP',
+            'ModelLinkIsUpstreamNodeSurcharged': 'ML_IsUSNodeSurcharged',
+            'ModelLinkIsHydraulicallyDeficient': 'ML_IsHydraulDef',
+            'ModelLinkExceedsSurchargedDepthCriteria': 'ML_ExceedsSurchargedDepthCrit',
+            'ModelLinkExceedsSurchargeDurationCriteria': 'ML_ExceedsSurchargeDurCrit',
+            'SmallDiameterRehabStatusInProject': 'SmallDiamRehabStatusInProject',
+            'LargeDiameterRehabStatusInProject': 'LargeDiamRehabStatusInProject',
+            'MortalityCOFMaxSegmentWithSpotRepairPipeEmergencyRepair': 'MortCOFMaxSegWSpotPipeERep',
+            'MortalityCOFMaxSegmentWithCippEmergencyRepair': 'MortCOFMaxSegWCippERep',
+            'MortalityCOFMaxSegmentWithWholePipeReplacementEmergencyRepair': 'MortCOFMaxSegWWholePipReplERep',
+            'NBCRLifeCycleWholePipeReplacement': 'NBCRLifeCycleWholePipRepl',
+            'WholePipeReplacementCapitalCostNBCR': 'WholePipeRepCapitalCostNBCR',
+            'NumberOfSpotRepairOnlyIfNotLined': 'NumOfSpotRepOnlyIfNotLined'
+        }
 
 
 ##

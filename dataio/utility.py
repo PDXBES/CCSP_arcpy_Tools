@@ -62,7 +62,7 @@ class Utility:
         for key, value in data_dict.items():
             full_source = self.source_formatter(value)
             if not arcpy.Exists(full_source):
-                print "Check the data source file - Invalid source for: " + str(key)
+                print("Check the data source file - Invalid source for: " + str(key))
                 valid = False
         return valid
 
@@ -153,6 +153,7 @@ class Utility:
                 arcpy.Delete_management(fc_path)
 
         # https://stackoverflow.com/questions/6386698/how-to-write-to-a-file-using-the-logging-python-module
+
     def Logger(self, file_name):
         formatter = logging.Formatter(fmt='%(asctime)s %(module)s,line: %(lineno)d %(levelname)8s | %(message)s',
                                       datefmt='%Y/%m/%d %H:%M:%S')  # %I:%M:%S %p AM|PM format
@@ -170,3 +171,21 @@ class Utility:
 
         log_obj.info("Starting log session..")
         return log_obj
+
+    def get_item_list_from_dir(self, dir):
+        item_list = []
+        for item in os.listdir(dir):
+            item_list.append(os.path.join(dir, item))
+        return item_list
+
+    def get_field_names_from_feature_class(self, feature_class):
+        field_names = []
+        fields = arcpy.ListFields(feature_class)
+        for field in fields:
+            field_names.append(field.name)
+        return field_names
+
+    def get_basename_no_extension(self, full_path):
+        basename = os.path.basename(full_path)
+        result = basename.split('.')[0]
+        return result
