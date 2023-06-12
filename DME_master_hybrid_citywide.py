@@ -21,11 +21,11 @@ def create_citywide_hybrid():
 
     start = time.time()
     test_dme_links = dme_master_hybrid.create_dme_links(dme_master_hybrid_db_data_io)
-    print "   Creating DME links - duration: " + str(time.time() - start) + " seconds"
+    print("   Creating DME links - duration: " + str(time.time() - start) + " seconds")
 
     start = time.time()
     test_master_links = dme_master_hybrid.create_master_links(dme_master_hybrid_db_data_io)
-    print "   Creating master links - duration: " + str(time.time() - start) + " seconds"
+    print("   Creating master links - duration: " + str(time.time() - start) + " seconds")
 
     dme_master_links = []
     start = time.time()
@@ -114,13 +114,13 @@ def create_citywide_hybrid():
             dme_master_links.append(dme_master_link)
 
     if invalid_counter > 0:
-        print "   Records with Invalid Diameter: " + str(invalid_counter)
-    print "   Data conditioning - duration: " + str(time.time() - start) + " seconds"
+        print("   Records with Invalid Diameter: " + str(invalid_counter))
+    print("   Data conditioning - duration: " + str(time.time() - start) + " seconds")
 
     start = time.time()
     dme_master_hybrid_db_data_io.append_dme_master_links_to_db(dme_master_links)
     #dme_master_hybrid_db_data_io.copy_dme_master_links_to_db(dme_master_links)
-    print "   Writing result - duration: " + str(time.time() - start) + " seconds"
+    print("   Writing result - duration: " + str(time.time() - start) + " seconds")
     pass
 
 #FOR TESTING/ RUNNING INDEPENDENTLY

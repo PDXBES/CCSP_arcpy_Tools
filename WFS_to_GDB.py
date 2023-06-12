@@ -37,8 +37,8 @@ try:
             if name in config.rename_dict.keys():
                 arcpy.management.AlterField(working, name, config.rename_dict[name])
 
-
-        output_fc = os.path.join(config.BESGEORPT_sde_path, item_basename)
+        output_fc = os.path.join(config.GIS_TRANSFER10_GIS_sde_path, item_basename)
+        #output_fc = os.path.join(config.BESGEORPT_sde_path, item_basename)
         #output_fc = os.path.join(r"\\besfile1\ccsp\Mapping\ArcPro_Projects\working\WFS_testing\TEST_output.gdb", item_basename)
         log_obj.info("WFS to GDB - saving to disk at - {}".format(output_fc))
         arcpy.CopyFeatures_management(working, output_fc)

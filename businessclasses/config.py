@@ -19,7 +19,7 @@ class Config:
         self.loader_input_base_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderInputFiles"
 
         self.WFS_layers = r"\\besfile1\ccsp\Mapping\Lyr\lyrx\ESA_WFS_items"
-        self.WFS_intermediate = r"\\besfile1\ccsp\Mapping\ArcPro_Projects\working\WFS_testing\WFS_intermediate.gdb"
+        self.WFS_intermediate = r"\\besfile1\ccsp\Mapping\ArcPro_Projects\WFS_setup\WFS_intermediate.gdb"
         self.archive_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Production\Archive"
         self.log_file = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Production\data_load_log"
 
@@ -36,12 +36,14 @@ class Config:
         CCSP_sde = server + ".CCSP.sde"
         BESGEORPT_sde = server + ".BESGEORPT.sde"
         self.GIS_TRANSFER10_sde = server + ".GIS_TRANSFER10.sde"
+        self.GIS_TRANSFER10_GIS_sde = server + ".GIS_TRANSFER10.GIS.sde"
 
         self.egh_public = os.path.join(self.sde_connections, GISDB1)
         self.DME_table_name = r"EGH_Public.ARCMAP_ADMIN.collection_lines_bes_pdx"
         self.DME_sde_path = self.egh_public + r"\\" + self.DME_table_name
 
         self.GIS_TRANSFER10_sde_path = os.path.join(self.sde_connections, self.GIS_TRANSFER10_sde)
+        self.GIS_TRANSFER10_GIS_sde_path = os.path.join(self.sde_connections, self.GIS_TRANSFER10_GIS_sde)
         self.GIS_TRANSFER10_table_name = r"GIS_TRANSFER10.GIS.collection_lines_bes_pdx"
         self.TRANSFER10_collection_lines_path = self.GIS_TRANSFER10_sde_path + r"\\" + self.GIS_TRANSFER10_table_name
 

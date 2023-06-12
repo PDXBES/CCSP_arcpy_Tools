@@ -86,17 +86,39 @@ class Utility:
         with zipfile.ZipFile(source_filename) as zf:
             zf.extractall(new_dir)
 
-    def zip(self, input_folder):
-        #replaces .zip of same name if exists
-        output_zipped_file = input_folder + ".zip"
-        self.delete_file_if_exists(output_zipped_file)
-        shutil.make_archive(input_folder, 'zip', input_folder)
+    # def zip_gdb(self, input_folder):
+    #     #replaces .zip of same name if exists
+    #     output_zipped_file = input_folder + ".zip"
+    #     self.delete_file_if_exists(output_zipped_file)
+    #     shutil.make_archive(input_folder, 'zip', input_folder)
+    #
+    # def zip_and_rename_gdb(self, input_folder, full_path_name):
+    #     #output_folder = self.ccsp_gdb_full_path_name()
+    #     output_zipped_file = full_path_name + ".zip"
+    #     self.delete_file_if_exists(output_zipped_file)
+    #     shutil.make_archive(full_path_name, 'zip', input_folder)
 
-    def zip_and_rename(self, input_folder, full_path_name):
-        #output_folder = self.ccsp_gdb_full_path_name()
-        output_zipped_file = full_path_name + ".zip"
-        self.delete_file_if_exists(output_zipped_file)
-        shutil.make_archive(full_path_name, 'zip', input_folder)
+    def zip_gdb(self, inputGDB):
+        gdbFile = str(inputGDB)
+        # output_folder = self.ccsp_gdb_full_path_name()
+        outFile = gdbFile + '.zip'
+        self.delete_file_if_exists(outFile)
+        gdbName = os.path.basename(gdbFile)
+        with zipfile.ZipFile(outFile, mode='w', compression=zipfile.ZIP_DEFLATED, allowZip64=True) as myzip:
+            for f in os.listdir(gdbFile):
+                if f[-5:] != '.lock':
+                    myzip.write(os.path.join(gdbFile, f), gdbName + '\\' + os.path.basename(f))
+
+    def zip_and_rename_gdb(self, inputGDB, outputGDB):
+        gdbFile = str(inputGDB)
+        # output_folder = self.ccsp_gdb_full_path_name()
+        outFile = outputGDB + '.zip'
+        self.delete_file_if_exists(outFile)
+        gdbName = os.path.basename(gdbFile)
+        with zipfile.ZipFile(outFile, mode='w', compression=zipfile.ZIP_DEFLATED, allowZip64=True) as myzip:
+            for f in os.listdir(gdbFile):
+                if f[-5:] != '.lock':
+                    myzip.write(os.path.join(gdbFile, f), gdbName + '\\' + os.path.basename(f))
 
     def delete_dir_if_exists(self, input):
         if os.path.isdir(input):
