@@ -28,20 +28,30 @@ try:
     for item in WFS_items:
         item_basename = utility.get_basename_no_extension(item)
         log_obj.info("WFS to GDB - copying {} to intermediate".format(item_basename))
-        full_intermediate = os.path.join(config.WFS_intermediate, item_basename)
-        working = arcpy.CopyFeatures_management(item, full_intermediate)
+
+        # must be 'in_memory' (not 'memory') for AlterField to work
+        in_memory_intermediate = os.path.join("in_memory", item_basename)
+        #working_in_memory = os.path.join(config.WFS_intermediate, item_basename)
+        #working_in_memory = os.path.join(config.BESGEORPT_sde_path, item_basename)
+        working_in_memory = arcpy.CopyFeatures_management(item, in_memory_intermediate)
 
         log_obj.info("WFS to GDB - shortening fields as needed for {}".format(item_basename))
-        field_names = utility.get_field_names_from_feature_class(working)
+        field_names = utility.get_field_names_from_feature_class(working_in_memory)
         for name in field_names:
             if name in config.rename_dict.keys():
-                arcpy.management.AlterField(working, name, config.rename_dict[name])
+                arcpy.management.AlterField(working_in_memory, name, config.rename_dict[name])
+
+        # must be in 'memory' (not 'in_memory') for Copy to GIS_TRANSFER10 to work
+        memory_intermediate = os.path.join("memory", item_basename)
+        working_memory = arcpy.CopyFeatures_management(working_in_memory, memory_intermediate)
 
         output_fc = os.path.join(config.GIS_TRANSFER10_GIS_sde_path, item_basename)
         #output_fc = os.path.join(config.BESGEORPT_sde_path, item_basename)
-        #output_fc = os.path.join(r"\\besfile1\ccsp\Mapping\ArcPro_Projects\working\WFS_testing\TEST_output.gdb", item_basename)
+        #output_fc = os.path.join(r"\\besfile1\ccsp\Mapping\ArcPro_Projects\WFS_setup\TEST_output.gdb", item_basename)
         log_obj.info("WFS to GDB - saving to disk at - {}".format(output_fc))
-        arcpy.CopyFeatures_management(working, output_fc)
+        arcpy.CopyFeatures_management(working_memory, output_fc)
+        arcpy.Delete_management(working_in_memory)
+        arcpy.Delete_management(working_memory)
         log_obj.info(" --- ")
 
     log_obj.info("WFS to GDB - Process Complete".format())
