@@ -107,7 +107,7 @@ class Utility:
         with zipfile.ZipFile(outFile, mode='w', compression=zipfile.ZIP_DEFLATED, allowZip64=True) as myzip:
             for f in os.listdir(gdbFile):
                 if f[-5:] != '.lock':
-                    myzip.write(os.path.join(gdbFile, f), gdbName + '\\' + os.path.basename(f))
+                    myzip.write(os.path.join(gdbFile, f), os.path.basename(f))
 
     def zip_and_rename_gdb(self, inputGDB, outputGDB):
         gdbFile = str(inputGDB)
@@ -118,7 +118,7 @@ class Utility:
         with zipfile.ZipFile(outFile, mode='w', compression=zipfile.ZIP_DEFLATED, allowZip64=True) as myzip:
             for f in os.listdir(gdbFile):
                 if f[-5:] != '.lock':
-                    myzip.write(os.path.join(gdbFile, f), gdbName + '\\' + os.path.basename(f))
+                    myzip.write(os.path.join(gdbFile, f), os.path.basename(f))
 
     def delete_dir_if_exists(self, input):
         if os.path.isdir(input):
