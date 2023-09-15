@@ -98,11 +98,24 @@ class DataLoad:
                     full_input_path = self.utility.source_formatter(value)
                     print("       Full input path: " + str(full_input_path))
                     print("           Exists: " + str(arcpy.Exists(full_input_path)))
-                    print("       Full output path: " + str(os.path.join(output_gdb, key)))
+                    print("           Input record count: " + str(arcpy.GetCount_management(str(full_input_path))))
                     if arcpy.Describe(self.utility.source_formatter(value)).dataType == 'FeatureClass':
-                        arcpy.CopyFeatures_management(full_input_path, os.path.join(output_gdb, key))
+                        #arcpy.CopyFeatures_management(full_input_path, os.path.join(output_gdb, key))
+                        #print(str(full_input_path))
+                        #print(str(os.path.join(output_gdb, key)))
+                        try:
+                            arcpy.Copy_management(full_input_path, os.path.join(output_gdb, key))
+                            print("       Full output path: " + str(os.path.join(output_gdb, key)))
+                            print("           Output record count: " + str(arcpy.GetCount_management(str(os.path.join(output_gdb, key)))))
+                        except:
+                            arcpy.CopyFeatures_management(full_input_path, os.path.join(output_gdb, key))
+                            print("       Full output path: " + str(os.path.join(output_gdb, key)))
+                            print("           Output record count: " + str(arcpy.GetCount_management(str(os.path.join(output_gdb, key)))))
+
                     elif arcpy.Describe(self.utility.source_formatter(value)).dataType == 'Table':
                         arcpy.Copy_management(full_input_path, os.path.join(output_gdb, key))
+                        print("       Full output path: " + str(os.path.join(output_gdb, key)))
+                        print("           Output record count: " + str(arcpy.GetCount_management(str(os.path.join(output_gdb, key)))))
 
             except:
                 arcpy.ExecuteError()

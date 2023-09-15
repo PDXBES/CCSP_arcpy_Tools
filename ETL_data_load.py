@@ -30,7 +30,7 @@ utility.now_gdb_full_path_name()
 # creates _copy of datetime stamped gdb in Archive
 # deletes WB data from that
 # creates a zipped version of that (called CCSPToolsNoWB.gdb.zip) in Production
-# deletes the _copy gdb from Archive
+# deletes the _copy gdb (that had WB removed) from Archive
 # creates a zipped version of the datetime stamped gdb in Archive
 # deletes datetime stamped gdb from Archive
 

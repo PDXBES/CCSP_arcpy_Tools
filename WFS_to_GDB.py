@@ -25,6 +25,14 @@ try:
     log_obj.info("WFS to GDB - getting layers".format())
     WFS_items = utility.get_item_list_from_dir(config.WFS_layers)
 
+    layer_names = []
+    for item in WFS_items:
+        layer_names.append(os.path.basename(item))
+
+    log_obj.info("WFS to GDB - Running process for : ")
+    for name in layer_names:
+        log_obj.info("   {}".format(name))
+
     for item in WFS_items:
         item_basename = utility.get_basename_no_extension(item)
         log_obj.info("WFS to GDB - copying {} to intermediate".format(item_basename))
