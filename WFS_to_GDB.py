@@ -16,6 +16,7 @@ data_load = DataLoad()
 utility = data_load.utility
 config = config.Config(test_flag)
 
+arcpy.env.outputCoordinateSystem = 2913
 
 log_obj = utility.Logger(config.log_file)
 
@@ -23,7 +24,8 @@ log_obj.info("WFS to GDB - Process Started".format())
 
 try:
     log_obj.info("WFS to GDB - getting layers".format())
-    WFS_items = utility.get_item_list_from_dir(config.WFS_layers)
+    #WFS_items = utility.get_item_list_from_dir(config.WFS_layers)
+    WFS_items = utility.get_item_list_from_dir(config.WFS_layers_QA) # for testing, remove
 
     layer_names = []
     for item in WFS_items:
@@ -39,8 +41,6 @@ try:
 
         # must be 'in_memory' (not 'memory') for AlterField to work
         in_memory_intermediate = os.path.join("in_memory", item_basename)
-        #working_in_memory = os.path.join(config.WFS_intermediate, item_basename)
-        #working_in_memory = os.path.join(config.BESGEORPT_sde_path, item_basename)
         working_in_memory = arcpy.CopyFeatures_management(item, in_memory_intermediate)
 
         log_obj.info("WFS to GDB - shortening fields as needed for {}".format(item_basename))
@@ -53,9 +53,10 @@ try:
         memory_intermediate = os.path.join("memory", item_basename)
         working_memory = arcpy.CopyFeatures_management(working_in_memory, memory_intermediate)
 
-        output_fc = os.path.join(config.GIS_TRANSFER10_GIS_sde_path, item_basename)
-        #output_fc = os.path.join(config.BESGEORPT_sde_path, item_basename)
-        #output_fc = os.path.join(r"\\besfile1\ccsp\Mapping\ArcPro_Projects\WFS_setup\TEST_output.gdb", item_basename)
+        # output_fc = os.path.join(config.GIS_TRANSFER10_GIS_sde_path, item_basename)
+        gdb = r"\\besfile1\ccsp\Mapping\Gdb\ESA_WFS_QA_testing.gdb" #for testing, remove
+        output_fc = os.path.join(gdb, item_basename) # for testing, remove
+
         log_obj.info("WFS to GDB - saving to disk at - {}".format(output_fc))
         arcpy.CopyFeatures_management(working_memory, output_fc)
         arcpy.Delete_management(working_in_memory)
