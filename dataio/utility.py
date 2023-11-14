@@ -211,3 +211,44 @@ class Utility:
         basename = os.path.basename(full_path)
         result = basename.split('.')[0]
         return result
+
+    def get_first_half_of_list(self, list):
+        half = len(list) >> 1
+        firsthalf = list[:half]
+        return firsthalf
+
+    def get_second_half_of_list(self, list):
+        half = len(list) >> 1
+        secondhalf = list[half:]
+        return secondhalf
+
+    def get_half_of_list(self, list, which_half): #which_half = 'first' or 'second'
+        if which_half == 'first':
+            half = self.get_first_half_of_list(list)
+            return half
+        elif which_half == 'second':
+            half = self.get_second_half_of_list(list)
+            return half
+
+    def extract_dict_by_key(self, key, json_as_dict):
+        extracted_dict = {}
+        extracted_dict[key] = json_as_dict[key]
+        return extracted_dict
+
+    def split_json_as_dict(self, json_as_dict): #returns a list with each of the split json dicts
+        type_dict = self.extract_dict_by_key('type', json_as_dict)
+
+        features_dict = self.extract_dict_by_key('features', json_as_dict)
+        features_key_value = list(features_dict.keys())[0]
+
+        first_features_dict = {}
+        first_features_dict[features_key_value] = self.get_half_of_list(features_dict[features_key_value], 'first')
+        first_compiled_dict = {**type_dict, **first_features_dict}
+
+        second_features_dict = {}
+        second_features_dict[features_key_value] = self.get_half_of_list(features_dict[features_key_value], 'second')
+        second_compiled_dict = {**type_dict, **second_features_dict}
+
+        split_list = [first_compiled_dict, second_compiled_dict]
+
+        return split_list
