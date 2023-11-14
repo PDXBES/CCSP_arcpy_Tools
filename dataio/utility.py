@@ -67,7 +67,7 @@ class Utility:
         return valid
 
     def create_dict_from_json(self, input_json_file):
-        if arcpy.Exists(input_json_file):
+        if os.path.exists(input_json_file):
             with open(input_json_file) as json_file:
                 data = json.load(json_file)
             return data

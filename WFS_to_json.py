@@ -5,8 +5,9 @@ from shapely import wkt
 import sys
 
 
-#wfs_url = 'https://geoserver-ccsptools.gov-prod.sitkatech.com/geoserver/CCSP/ows'
-wfs_url = 'https://geoserver-ccsptools.gov-qa.sitkatech.com/geoserver/CCSP/ows'
+wfs_url = 'https://geoserver-ccsptools.gov-prod.sitkatech.com/geoserver/CCSP/ows'
+#wfs_url = 'https://geoserver-ccsptools.gov-qa.sitkatech.com/geoserver/CCSP/ows'
+# user/ password have been added to qa
 
 layers = [# "CCSPCharacterizationAreas",
           # "CCSPCharacterizationDetailedBypassPumpingLinks",
