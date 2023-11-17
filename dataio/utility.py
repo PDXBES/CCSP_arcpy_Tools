@@ -204,7 +204,7 @@ class Utility:
         field_names = []
         fields = arcpy.ListFields(feature_class)
         for field in fields:
-            field_names.append(field.name)
+            field_names.append(field.json_name)
         return field_names
 
     def get_basename_no_extension(self, full_path):
@@ -252,3 +252,11 @@ class Utility:
         split_list = [first_compiled_dict, second_compiled_dict]
 
         return split_list
+
+    def write_json_to_disk(self, json_as_dict, outfile):
+        file = open(outfile, "w")
+        json.dump(json_as_dict, file, indent=4)
+
+    def get_count_of_features_in_json_dict(self, json_as_dict):
+        count = len(json_as_dict['features'])
+        return count

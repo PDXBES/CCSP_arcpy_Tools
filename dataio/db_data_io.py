@@ -18,17 +18,17 @@ class DbDataIo(object):
         field_mappings = arcpy.FieldMappings()
         fields = arcpy.ListFields(model_link_results_path)
         for field in fields:
-            if field.name == "SHAPE_Area" \
-                    or field.name == "SHAPE_Length" \
-                    or field.name == "OBJECTID" \
-                    or field.name == "SHAPE"\
-                    or field.name == "SHAPE_STLength__":
+            if field.json_name == "SHAPE_Area" \
+                    or field.json_name == "SHAPE_Length" \
+                    or field.json_name == "OBJECTID" \
+                    or field.json_name == "SHAPE"\
+                    or field.json_name == "SHAPE_STLength__":
                 pass
             else:
                 field_map = arcpy.FieldMap()
-                field_map.addInputField(model_link_results_path, field.name)
+                field_map.addInputField(model_link_results_path, field.json_name)
                 field_name = field_map.outputField
-                field_name.name = field.name[0:31]
+                field_name.json_name = field.json_name[0:31]
                 field_map.outputField = field_name
                 field_mappings.addFieldMap(field_map)
 
