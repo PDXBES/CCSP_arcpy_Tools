@@ -23,25 +23,30 @@ log_obj = utility.Logger(config.log_file)
 log_obj.info("WFS to GDB - Process Started".format())
 
 try:
-    log_obj.info("WFS to GDB - getting layers".format())
-    #WFS_items = utility.get_item_list_from_dir(config.WFS_layers)
-    WFS_items = utility.get_item_list_from_dir(config.WFS_layers_QA) # for testing, remove
+    log_obj.info("WFS to GDB - Getting layers...".format())
+    #lyrx_list = utility.get_item_list_from_dir(config.WFS_layers)
+    #lyrx_list = utility.get_item_list_from_dir(config.WFS_layers_QA) # for testing
+    lyrx_list = utility.get_item_list_from_dir(config.WFS_layers_testing)
 
     layer_names = []
-    for item in WFS_items:
-        layer_names.append(os.path.basename(item))
+    for lyrx in lyrx_list:
+        layer_names.append(os.path.basename(lyrx))
 
-    log_obj.info("WFS to GDB - Running process for : ")
+    log_obj.info("WFS to GDB - Running process for {} layers: ".format(len(layer_names)))
     for name in layer_names:
         log_obj.info("   {}".format(name))
 
-    for item in WFS_items:
-        item_basename = utility.get_basename_no_extension(item)
-        log_obj.info("WFS to GDB - copying {} to intermediate".format(item_basename))
+    for lyrx in lyrx_list:
+        item_basename = utility.get_basename_no_extension(lyrx)
 
+        log_obj.info("WFS to GDB - making feature layer from {}".format(item_basename))
+        fl_intermediate = os.path.join("in_memory", item_basename + "_fl")
+        fl = arcpy.MakeFeatureLayer_management(lyrx, fl_intermediate)
+
+        log_obj.info("WFS to GDB - copying {} feature layer to intermediate (memory space)".format(item_basename))
         # must be 'in_memory' (not 'memory') for AlterField to work
         in_memory_intermediate = os.path.join("in_memory", item_basename)
-        working_in_memory = arcpy.CopyFeatures_management(item, in_memory_intermediate)
+        working_in_memory = arcpy.CopyFeatures_management(fl, in_memory_intermediate)
 
         log_obj.info("WFS to GDB - shortening fields as needed for {}".format(item_basename))
         field_names = utility.get_field_names_from_feature_class(working_in_memory)
@@ -54,7 +59,8 @@ try:
         working_memory = arcpy.CopyFeatures_management(working_in_memory, memory_intermediate)
 
         # output_fc = os.path.join(config.GIS_TRANSFER10_GIS_sde_path, item_basename)
-        gdb = r"\\besfile1\ccsp\Mapping\Gdb\ESA_WFS_QA_testing.gdb" #for testing, remove
+        #gdb = r"\\besfile1\ccsp\Mapping\Gdb\ESA_WFS_QA_testing.gdb" #for testing, remove
+        gdb = r"\\besfile1\ccsp\Mapping\Gdb\ESA_WFS_testing2.gdb"
         output_fc = os.path.join(gdb, item_basename) # for testing, remove
 
         log_obj.info("WFS to GDB - saving to disk at - {}".format(output_fc))

@@ -29,6 +29,8 @@ for json_dict in split_list:
     json_outfile = os.path.join(json_folder, json_name)
     print("writing {} to {} as json file".format(json_name, json_folder))
     print("   there are {} features in this dict".format(utility.get_count_of_features_in_json_dict(json_dict)))
+    if os.path.exists(json_outfile):
+        os.remove(json_outfile)
     utility.write_json_to_disk(json_dict, json_outfile)
 
     fc_name = "json_to_fc" + index_num
