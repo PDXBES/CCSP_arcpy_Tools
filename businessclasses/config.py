@@ -19,9 +19,9 @@ class Config:
         self.loader_input_base_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderInputFiles"
 
         self.WFS_layers = r"\\besfile1\ccsp\Mapping\Lyr\lyrx\ESA_WFS_layers"
-        self.WFS_layers_QA = r"\\besfile1\ccsp\Mapping\Lyr\lyrx\ESA_WFS_layers_QA"
-        self.WFS_layers_testing = r"\\besfile1\ccsp\Mapping\Lyr\lyrx\ESA_WFS_layers_testing"
-        self.WFS_intermediate = r"\\besfile1\ccsp\Mapping\ArcPro_Projects\WFS_setup\WFS_intermediate.gdb"
+        #self.WFS_layers_QA = r"\\besfile1\ccsp\Mapping\Lyr\lyrx\ESA_WFS_layers_QA"
+        #self.WFS_layers_testing = r"\\besfile1\ccsp\Mapping\Lyr\lyrx\ESA_WFS_layers_testing"
+        self.WFS_intermediate_gdb = r"\\besfile1\ccsp\Mapping\ArcPro_Projects\WFS_setup\WFS_intermediate.gdb"
         self.json_conversion_temp = r"\\besfile1\ccsp\Mapping\JSON\conversion_temp"
         self.archive_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Production\Archive"
         self.log_file = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Production\data_load_log"

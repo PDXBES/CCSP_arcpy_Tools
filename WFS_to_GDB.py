@@ -16,13 +16,16 @@ data_load = DataLoad()
 utility = data_load.utility
 config = config.Config(test_flag)
 
-arcpy.env.outputCoordinateSystem = 2913
+arcpy.env.outputCoordinateSystem = utility.city_standard_SRID
 lyrx_source = config.WFS_layers #PROD source
 #lyrx_source = config.WFS_layers_QA #QA source
 
 log_obj = utility.Logger(config.log_file)
 
 log_obj.info("WFS to GDB - Process Started".format())
+
+
+
 
 try:
     log_obj.info("WFS to GDB - Getting layers from {}...".format(lyrx_source))
@@ -37,26 +40,13 @@ try:
         log_obj.info("   {}".format(name))
 
     for lyrx in lyrx_list:
-        item_basename = utility.get_basename_no_extension(lyrx)
+        item_basename = utility.get_lyrx_basename_no_extension(lyrx)
 
         log_obj.info("WFS to GDB - making feature layer from {}".format(item_basename))
-        fl_intermediate = os.path.join("in_memory", item_basename + "_fl")
-        fl = arcpy.MakeFeatureLayer_management(lyrx, fl_intermediate)
+        fl = utility.make_in_memory_feature_layer_from_lyrx(lyrx)
 
         log_obj.info("WFS to GDB - copying {} feature layer to intermediate (memory space)".format(item_basename))
-        # must be 'in_memory' (not 'memory') for AlterField to work
-        in_memory_intermediate = os.path.join("in_memory", item_basename)
-        working_in_memory = arcpy.CopyFeatures_management(fl, in_memory_intermediate)
-
-        log_obj.info("WFS to GDB - shortening fields as needed for {}".format(item_basename))
-        field_names = utility.get_field_names_from_feature_class(working_in_memory)
-        for name in field_names:
-            if name in config.rename_dict.keys():
-                arcpy.management.AlterField(working_in_memory, name, config.rename_dict[name])
-
-        # must be in 'memory' (not 'in_memory') for Copy to GIS_TRANSFER10 to work
-        memory_intermediate = os.path.join("memory", item_basename)
-        working_memory = arcpy.CopyFeatures_management(working_in_memory, memory_intermediate)
+        working_memory = utility.shorten_field_names(item_basename, fl)
 
         output_fc = os.path.join(config.GIS_TRANSFER10_GIS_sde_path, item_basename)
         # gdb = r"\\besfile1\ccsp\Mapping\Gdb\ESA_WFS_Prod_testing.gdb" #for testing, remove
@@ -64,7 +54,7 @@ try:
 
         log_obj.info("WFS to GDB - saving to disk at - {}".format(output_fc))
         arcpy.CopyFeatures_management(working_memory, output_fc)
-        arcpy.Delete_management(working_in_memory)
+
         arcpy.Delete_management(working_memory)
         log_obj.info(" --- ")
 

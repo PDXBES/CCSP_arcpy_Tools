@@ -195,6 +195,9 @@ class Utility:
         log_obj.info("Starting log session..")
         return log_obj
 
+    def datetime_print(self, message):
+        print(datetime.now().strftime("%Y/%m/%d %H:%M:%S") + " " + message)
+
     def get_item_list_from_dir(self, dir):
         item_list = []
         for item in os.listdir(dir):
@@ -208,7 +211,7 @@ class Utility:
             field_names.append(field.name)
         return field_names
 
-    def get_basename_no_extension(self, full_path):
+    def get_lyrx_basename_no_extension(self, full_path):
         basename = os.path.basename(full_path)
         result = basename.split('.')[0]
         return result
@@ -265,9 +268,74 @@ class Utility:
     def get_cred_values(self, cred_file):
         reader = open(cred_file, "r")
         readlines = reader.readlines()
-        return readlines
+        creds = []
+        for line in readlines:
+            creds.append(line.strip('\n'))
+        return creds
 
     def basic_auth(self, username, password):
         token = b64encode(f"{username}:{password}".encode('utf-8')).decode("ascii")
         return f'Basic {token}'
+
+    def make_in_memory_feature_layer_from_lyrx(self, layer_file):
+        item_basename = self.get_lyrx_basename_no_extension(layer_file)
+        fl_intermediate = os.path.join("in_memory", item_basename + "_fl")
+        fl = arcpy.MakeFeatureLayer_management(layer_file, fl_intermediate)
+        return fl
+
+    def make_in_memory_feature_layer(self, feature, name):
+        fl_intermediate = os.path.join("in_memory", name + "_fl")
+        fl = arcpy.MakeFeatureLayer_management(feature, fl_intermediate)
+        return fl
+
+    def make_in_memory_object(self, feature_layer, item_basename):
+        in_memory_intermediate = os.path.join("in_memory", item_basename)
+        working_in_memory = arcpy.CopyFeatures_management(feature_layer, in_memory_intermediate)
+        return working_in_memory
+
+    def make_memory_object_from_in_memory_object(self, item_basename, working_in_memory):
+        memory_intermediate = os.path.join("memory", item_basename)
+        working_memory = arcpy.CopyFeatures_management(working_in_memory, memory_intermediate)
+        return working_memory
+
+    def rename_fields_from_dict(self, working_in_memory, renaming_dict):
+        field_names = self.get_field_names_from_feature_class(working_in_memory)
+        for name in field_names:
+            if name in renaming_dict.keys():
+                arcpy.management.AlterField(working_in_memory, name, renaming_dict[name])
+
+    def shorten_field_names(self, item_basename, feature_layer):
+        # must be 'in_memory' (not 'memory') for AlterField to work
+        working_in_memory = self.make_in_memory_object(feature_layer, item_basename)
+        self.datetime_print("shortening fields as needed for {}".format(item_basename))
+        self.rename_fields_from_dict(working_in_memory, self.config.rename_dict)
+        # must be in 'memory' (not 'in_memory') for Copy to GIS_TRANSFER10 to work
+        working_memory = self.make_memory_object_from_in_memory_object(item_basename, working_in_memory)
+        arcpy.Delete_management(working_in_memory)
+        return working_memory
+
+    def list_field_names(self, input_fc):
+        field_names = []
+        fields = arcpy.ListFields(input_fc)
+        for field in fields:
+            field_names.append(field.name)
+        return field_names
+
+    def add_and_populate_length_field(self, feature_class, field_to_add):
+        self.add_field_if_needed(feature_class, field_to_add, 'DOUBLE', '', 4)
+        arcpy.management.CalculateGeometryAttributes(feature_class,
+                                                     "{} LENGTH".format(field_to_add),
+                                                     "FEET_US",
+                                                     '',
+                                                     2913)
+
+    def add_field_if_needed(self, input_fc, field_to_add, field_type, precision=None, scale=None, length=None):
+        field_names = self.list_field_names(input_fc)
+        if field_to_add not in field_names:
+            arcpy.AddField_management(input_fc, field_to_add, field_type, precision, scale, length)
+
+
+
+
+
 
