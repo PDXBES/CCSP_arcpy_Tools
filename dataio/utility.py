@@ -7,6 +7,7 @@ import shutil
 import logging
 import sys
 import logging.config
+from base64 import b64encode
 
 class Utility:
     def __init__(self, config):
@@ -265,4 +266,8 @@ class Utility:
         reader = open(cred_file, "r")
         readlines = reader.readlines()
         return readlines
+
+    def basic_auth(self, username, password):
+        token = b64encode(f"{username}:{password}".encode('utf-8')).decode("ascii")
+        return f'Basic {token}'
 

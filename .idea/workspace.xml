@@ -9,7 +9,6 @@
       <change beforePath="$PROJECT_DIR$/WFS_to_json.py" beforeDir="false" afterPath="$PROJECT_DIR$/WFS_to_json.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/businessclasses/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/businessclasses/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dataio/utility.py" beforeDir="false" afterPath="$PROJECT_DIR$/dataio/utility.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/json_to_GDB_splitter.py" beforeDir="false" afterPath="$PROJECT_DIR$/json_to_GDB_splitter.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +38,7 @@
     <property name="last_opened_file_path" value="$USER_HOME$/AppData/Local/ESRI/conda/envs/arcgispro-py3-clone/python.exe" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.WFS_to_GDB">
+  <component name="RunManager" selected="Python.WFS_to_json">
     <configuration name="ETL_data_load" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="CCSP_arcpy_Tools" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -147,11 +146,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.WFS_to_json" />
         <item itemvalue="Python.WFS_to_GDB" />
         <item itemvalue="Python.json_to_GDB_splitter (1)" />
         <item itemvalue="Python.json_to_GDB_splitter" />
         <item itemvalue="Python.ETL_data_load" />
-        <item itemvalue="Python.WFS_to_json" />
       </list>
     </recent_temporary>
   </component>
