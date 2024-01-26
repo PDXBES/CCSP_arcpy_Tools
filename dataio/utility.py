@@ -8,6 +8,7 @@ import logging
 import sys
 import logging.config
 from base64 import b64encode
+import requests
 
 class Utility:
     def __init__(self, config):
@@ -307,7 +308,7 @@ class Utility:
     def shorten_field_names(self, item_basename, feature_layer):
         # must be 'in_memory' (not 'memory') for AlterField to work
         working_in_memory = self.make_in_memory_object(feature_layer, item_basename)
-        self.datetime_print("shortening fields as needed for {}".format(item_basename))
+        #self.datetime_print("shortening fields as needed for {}".format(item_basename))
         self.rename_fields_from_dict(working_in_memory, self.config.rename_dict)
         # must be in 'memory' (not 'in_memory') for Copy to GIS_TRANSFER10 to work
         working_memory = self.make_memory_object_from_in_memory_object(item_basename, working_in_memory)
@@ -334,8 +335,26 @@ class Utility:
         if field_to_add not in field_names:
             arcpy.AddField_management(input_fc, field_to_add, field_type, precision, scale, length)
 
+    def create_headers(self):
+        cred_values = self.get_cred_values(self.config.prod_cred_file)
+        headers = {'Authorization': self.basic_auth(cred_values[0], cred_values[1])}
+        return headers
 
+    def request_json_as_text(self, wfs_url, headers, layer_name):
+        params = dict(service='WFS', version="1.0.0", request='GetFeature', typeName=layer_name, outputFormat='json')
+        r = requests.get(wfs_url, params=params, headers=headers)
+        text = r.text
+        return text
 
+    def write_text_as_json_file(self, layer_name, text):
+        out_file = os.path.join(self.config.json_conversion_temp, layer_name + ".json")
+        f = open(out_file, 'w')
+        f.write(text)
+        f.close()
+        return out_file
 
-
-
+    def get_layer_names_from_lyrx_files(self, lyrx_list):
+        layer_names = []
+        for lyrx in lyrx_list:
+            layer_names.append(os.path.basename(lyrx))
+        return layer_names

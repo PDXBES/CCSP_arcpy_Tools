@@ -26,6 +26,11 @@ class Config:
         self.archive_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Production\Archive"
         self.log_file = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Production\data_load_log"
 
+        # PROD
+        self.wfs_url = 'https://geoserver-ccsptools.gov-prod.sitkatech.com/geoserver/CCSP/ows'
+        # QA
+        # self.wfs_url = 'https://geoserver-ccsptools.gov-qa.sitkatech.com/geoserver/CCSP/ows'
+
         self.prod_cred_file = r"\\besfile1\ccsp\Mapping\dev\cred_file.txt"
 
         ##
@@ -97,11 +102,38 @@ class Config:
             'MortalityCOFWithSpotEmergencyRepair': 'MortCOFWSpotERepair'
         }
 
+        # RehabReportMortalityCOFLinkSegments is the only one giving us an issue at this time
+        self.layer_names = [
+            # "CCSPCharacterizationAreas",
+            # "CCSPCharacterizationDetailedBypassPumpingLinks",
+            # "CCSPCharacterizationLinks",
+            # "CCSPCharacterizationNodes",
+            # "CCSPCharacterizationStormwaterLinks ",
+            #
+            # "CharacterizationAreas",
+            # "CharacterizationDetailedBypassPumpingLinks",
+            # "CharacterizationLinks",
+            # "CharacterizationNodes",
+            # "CharacterizationStormwaterLinks",
+            #
+            # "RehabReportLinkFMEs",
+            # "RehabReportLinks",
+            # "RehabReportRULLinkSegments",
+            "RehabReportMortalityCOFLinkSegments",
+            # "RehabReportPipXPLinkSegments",
+            #
+            # "DashboardForecastingReportAreas",
+            # "DashboardForecastingReportBlockObjects",
+            # "DashboardForecastingReportLinks",
+            # "DashboardForecastingReportMAUs",
+            # "DashboardForecastingReportNodes",
+            # "DashboardForecastingReportProjects",
+            # "DashboardForecastingReportSewerBasins"
+        ]
 
-##
 
 
-##
+
 
 
 
