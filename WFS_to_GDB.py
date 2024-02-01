@@ -27,7 +27,7 @@ log_obj = utility.Logger(config.log_file)
 
 log_obj.info("WFS to GDB - Process Started".format())
 
-
+#
 ###  STANDARD ROUTE - WFS TO GDB  ###
 log_obj.info("--- WFS to GDB - Standard Route ---")
 
@@ -49,6 +49,10 @@ for lyrx in lyrx_list:
 
         log_obj.info("WFS to GDB - shortening field names as needed - ".format(item_basename))
         working_memory = utility.shorten_field_names(item_basename, fl)
+
+        log_obj.info("WFS to GDB - adding geometry value")
+        geom_value = utility.get_geomattribute_value_by_type(utility.get_shape_type(working_memory))
+        utility.add_and_populate_geometry_field(working_memory, geom_value)
 
         output_fc = os.path.join(config.GIS_TRANSFER10_GIS_sde_path, item_basename)
         # gdb = r"\\besfile1\ccsp\Mapping\Gdb\ESA_WFS_Prod_testing.gdb" #for testing, remove
@@ -99,16 +103,18 @@ for layer_name in config.layer_names:
         log_obj.info("WFS to GDB - shortening field names as needed")
         working_memory = utility.shorten_field_names(layer_name, feature)
 
-        # shape_len coming through as dec degrees or something so manually filling geom_length
-        log_obj.info("WFS to GDB - adding geom_length")
-        utility.add_and_populate_length_field(working_memory, 'geom_length')
+        # shape_len coming through as dec degrees or something so manually filling geom values
+        log_obj.info("WFS to GDB - adding geometry value")
+        geom_value = utility.get_geomattribute_value_by_type(utility.get_shape_type(working_memory))
+        utility.add_and_populate_geometry_field(working_memory, geom_value)
 
         output_fc = os.path.join(config.GIS_TRANSFER10_GIS_sde_path, "ESA_" + layer_name)
         #gdb = r"\\besfile1\ccsp\Mapping\Gdb\ESA_WFS_Prod_testing.gdb" #for testing, remove
         #output_fc = os.path.join(gdb, layer) # for testing, remove
 
         log_obj.info("WFS to GDB - saving to disk at - {}".format(output_fc))
-        arcpy.CopyFeatures_management(working_memory, output_fc)
+        #arcpy.CopyFeatures_management(working_memory, output_fc)
+        arcpy.FeatureClassToFeatureClass_conversion(working_memory, config.GIS_TRANSFER10_GIS_sde_path, "ESA_" + layer_name)
 
         log_obj.info("WFS to GDB - WFS to JSON to GDB complete for {}".format(layer_name))
 
