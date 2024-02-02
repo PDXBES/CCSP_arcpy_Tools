@@ -104,31 +104,32 @@ class Config:
 
         # RehabReportMortalityCOFLinkSegments is the only one giving us an issue at this time
         self.layer_names = [
-            # "CCSPCharacterizationAreas",
-            # "CCSPCharacterizationDetailedBypassPumpingLinks",
-            # "CCSPCharacterizationLinks",
-            # "CCSPCharacterizationNodes",
-            # "CCSPCharacterizationStormwaterLinks ",
-            #
-            # "CharacterizationAreas",
-            # "CharacterizationDetailedBypassPumpingLinks",
-            # "CharacterizationLinks",
-            # "CharacterizationNodes",
-            # "CharacterizationStormwaterLinks",
-            #
-            # "RehabReportLinkFMEs",
-            # "RehabReportLinks",
-            # RehabReportRULLinkSegments",
+            "CCSPCharacterizationAreas",
+            "CCSPCharacterizationDetailedBypassPumpingLinks",
+            "CCSPCharacterizationLinks",
+            "CCSPCharacterizationNodes",
+            "CCSPCharacterizationStormwaterLinks",
+
+            "CharacterizationAreas",
+            "CharacterizationDetailedBypassPumpingLinks",
+            "CharacterizationLinks",
+            "CharacterizationNodes",
+            "CharacterizationStormwaterLinks",
+
+            "DashboardForecastingReportAreas",
+            "DashboardForecastingReportBlockObjects",
+            "DashboardForecastingReportLinks",
+            "DashboardForecastingReportMAUs",
+            "DashboardForecastingReportNodes",
+            "DashboardForecastingReportProjects",
+            "DashboardForecastingReportSewerBasins",
+
+            "RehabLinks",
+            "RehabReportLinkFMEs",
+            "RehabReportLinks",
             "RehabReportMortalityCOFLinkSegments",
-            # "RehabReportPipXPLinkSegments",
-            #
-            # "DashboardForecastingReportAreas",
-            # "DashboardForecastingReportBlockObjects",
-            # "DashboardForecastingReportLinks",
-            # "DashboardForecastingReportMAUs",
-            # "DashboardForecastingReportNodes",
-            # "DashboardForecastingReportProjects",
-            # "DashboardForecastingReportSewerBasins"
+            "RehabReportPipXPLinkSegments",
+            "RehabReportRULLinkSegments"
         ]
 
 

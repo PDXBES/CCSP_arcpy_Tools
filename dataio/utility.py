@@ -323,13 +323,16 @@ class Utility:
         return field_names
 
     def add_and_populate_geometry_field(self, feature_class, geom_value):
-        field_name = "geom_" + geom_value
-        self.add_field_if_needed(feature_class, field_name, 'DOUBLE', '', 4)
-        arcpy.management.CalculateGeometryAttributes(feature_class,
-                                                     "{} {}".format(field_name, geom_value),
-                                                     '',
-                                                     '',
-                                                     2913)
+        if geom_value == 'Other':
+            pass
+        else:
+            field_name = "geom_" + geom_value
+            self.add_field_if_needed(feature_class, field_name, 'DOUBLE', '', 4)
+            arcpy.management.CalculateGeometryAttributes(feature_class,
+                                                         "{} {}".format(field_name, geom_value),
+                                                         '',
+                                                         '',
+                                                         2913)
 
     def get_shape_type(self, fc):
         desc = arcpy.Describe(fc)
@@ -341,6 +344,8 @@ class Utility:
             return 'LENGTH'
         elif shape_type == 'Polygon':
             return 'AREA'
+        else:
+            return 'Other'
 
     def add_field_if_needed(self, input_fc, field_to_add, field_type, precision=None, scale=None, length=None):
         field_names = self.list_field_names(input_fc)
