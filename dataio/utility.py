@@ -375,3 +375,11 @@ class Utility:
         for lyrx in lyrx_list:
             layer_names.append(os.path.basename(lyrx))
         return layer_names
+
+    def get_field_value_list(self, fc, field):
+        value_list = []
+        with arcpy.da.SearchCursor(fc, field) as cursor:
+            for row in cursor:
+                if row[0] is not None:
+                    value_list.append(str(row[0]))
+        return value_list

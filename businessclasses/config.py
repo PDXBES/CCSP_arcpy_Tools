@@ -20,7 +20,7 @@ class Config:
 
         self.WFS_layers = r"\\besfile1\ccsp\Mapping\Lyr\lyrx\ESA_WFS_layers"
         #self.WFS_layers_QA = r"\\besfile1\ccsp\Mapping\Lyr\lyrx\ESA_WFS_layers_QA"
-        #self.WFS_layers_testing = r"\\besfile1\ccsp\Mapping\Lyr\lyrx\ESA_WFS_layers_testing"
+        self.WFS_layers_testing = r"\\besfile1\ccsp\Mapping\Lyr\lyrx\ESA_WFS_layers_testing"
         self.WFS_intermediate_gdb = r"\\besfile1\ccsp\Mapping\ArcPro_Projects\WFS_setup\WFS_intermediate.gdb"
         self.json_conversion_temp = r"\\besfile1\ccsp\Mapping\JSON\conversion_temp"
         self.archive_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Production\Archive"
@@ -69,6 +69,28 @@ class Config:
         self.DME_master_hybrid_id_table_sde_path = self.CCSP_sde_path + r"\CCSP.GIS.Current_ID"
         self.DME_master_hybrid_sde_path = self.CCSP_sde_path + r"\CCSP.GIS.DME_master_hybrid"
 
+        block_object_exclusions_raw_source = r"\\besfile1\ccsp\Mapping\Gdb\heat_mapping.gdb\block_object_exclusion"
+        block_object_exclusions_fl = arcpy.MakeFeatureLayer_management(block_object_exclusions_raw_source,
+                                                                       r"in_memory/block_object_exclusions_fl",
+                                                                       "Excluded = 1")
+        block_object_exclusions_copy = arcpy.CopyFeatures_management(block_object_exclusions_fl,
+                                                          r"in_memory/block_object_exclusions_copy")
+
+        MAU_exlusions_raw_source = r"\\besfile1\ccsp\Mapping\Gdb\heat_mapping.gdb\MAU_exclusion"
+        MAU_exclusions_fl = arcpy.MakeFeatureLayer_management(MAU_exlusions_raw_source,
+                                                              r"in_memory/MAU_exclusions_fl",
+                                                              "Excluded = 1")
+        MAU_exclusions_copy = arcpy.CopyFeatures_management(MAU_exclusions_fl,
+                                                            r"in_memory/MAU_exclusions_copy")
+
+        sewer_basin_exclusions_raw_source = r"\\besfile1\ccsp\Mapping\Gdb\heat_mapping.gdb\basin_exclusion"
+        sewer_basin_exclusions_fl = arcpy.MakeFeatureLayer_management(sewer_basin_exclusions_raw_source,
+                                                              r"in_memory/sewer_basin_exclusions_fl",
+                                                              "Excluded = 1")
+        sewer_basin_exclusions_copy = arcpy.CopyFeatures_management(sewer_basin_exclusions_fl,
+                                                                    r"in_memory/sewer_basin_exclusions_copy")
+
+
         # self.DME_master_hybrid_gdb_path = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\04_CostEstimator\Code\InputGDB\CCSP_Tools_Input\CCSPToolsInput.gdb"
 
         ## placeholders for use once we switch to using view/QL instead of hard coded query in dme_master_hybrid.create_dme_links()
@@ -102,7 +124,7 @@ class Config:
             'MortalityCOFWithSpotEmergencyRepair': 'MortCOFWSpotERepair'
         }
 
-        # RehabReportMortalityCOFLinkSegments is the only one giving us an issue at this time
+        # only used for "alternate" method (csv to json to fc)
         self.layer_names = [
             "CCSPCharacterizationAreas",
             "CCSPCharacterizationDetailedBypassPumpingLinks",
@@ -131,6 +153,21 @@ class Config:
             "RehabReportPipXPLinkSegments",
             "RehabReportRULLinkSegments"
         ]
+
+        # areas that we want to subset to only those that have registered Characterizations in Model Catalog
+        # dict format is: CCSP fc name: [CCSP fc key field, exclusion source, exclusion key field]
+        # kinds fragile - relies on exclusion sources not changing location or field properties
+        self.CCSP_subset_layers = {
+            "ESA_DashboardForecastingReportBlockObjects": ["BlockObjectID",
+                                                           block_object_exclusions_copy,
+                                                           "block_object_ID"],
+            "ESA_DashboardForecastingReportMAUs": ["MaintenanceAreaUnitID",
+                                                   MAU_exclusions_copy,
+                                                   "MAUID"],
+            "ESA_DashboardForecastingReportSewerBasins": ["SewerBasinID",
+                                                          sewer_basin_exclusions_copy,
+                                                          "BASIN_ID"]
+        }
 
 
 
