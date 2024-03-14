@@ -21,12 +21,12 @@ config = config.Config(test_flag)
 # setting coordsys env seems to cause issues with JSONtoFeature + don't know if its really needed
 
 # -----------------------------------------------------------------------------------------------------
-#lyrx_source = config.WFS_layers #PROD source
-lyrx_source = config.WFS_layers_testing
+lyrx_source = config.WFS_layers #PROD source
+#lyrx_source = config.WFS_layers_testing # just a few testing copies here
 #lyrx_source = config.WFS_layers_QA #QA source
 
-#output_gdb = config.GIS_TRANSFER10_GIS_sde_path
-output_gdb = r"\\besfile1\ccsp\Mapping\Gdb\ESA_WFS_Prod_testing.gdb" #for testing, eventually remove
+output_gdb = config.GIS_TRANSFER10_GIS_sde_path
+#output_gdb = r"\\besfile1\ccsp\Mapping\Gdb\ESA_WFS_Prod_testing.gdb" #for testing, eventually remove
 # -----------------------------------------------------------------------------------------------------
 
 
@@ -61,8 +61,8 @@ for lyrx in lyrx_list:
         geom_value = utility.get_geomattribute_value_by_type(utility.get_shape_type(working_memory))
         utility.add_and_populate_geometry_field(working_memory, geom_value)
 
-        log_obj.info("WFS to GDB - filtering Dashboard results to CCSP areas")
         if item_basename in config.CCSP_subset_layers:
+            log_obj.info("WFS to GDB - filtering Dashboard results to CCSP areas")
             target_key_field = config.CCSP_subset_layers[item_basename][0]
             exclusion_fc = config.CCSP_subset_layers[item_basename][1]
             exclusion_key_field = config.CCSP_subset_layers[item_basename][2]
