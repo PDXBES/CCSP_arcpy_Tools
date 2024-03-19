@@ -1,9 +1,8 @@
 from dataio.data_loader import DataLoad
-from datetime import datetime
+# from datetime import datetime
 import arcpy
-#import DME_master_hybrid_citywide
-#from dataio.utility import Utility
-from businessclasses import config
+# import DME_master_hybrid_citywide
+# from dataio.utility import Utility
 import os
 import sys
 
@@ -13,13 +12,12 @@ test_flag = "PROD"
 
 data_load = DataLoad()
 utility = data_load.utility
-config = config.Config(test_flag)
 
-appsettings_file = os.path.join(config.loader_input_base_folder, "appsettings.json")
-data_source_file = os.path.join(config.loader_input_base_folder, "ETL_input_data_sources.json")
+appsettings_file = os.path.join(data_load.config.loader_input_base_folder, "appsettings.json")
+data_source_file = os.path.join(data_load.config.loader_input_base_folder, "ETL_input_data_sources.json")
 #data_source_file = os.path.join(config.loader_input_base_folder, "ETL_input_data_sources - fake WB.json") #for manual run with fake WB - appsettings stays the same
 
-log_obj = utility.Logger(config.log_file)
+log_obj = utility.Logger(data_load.config.log_file)
 
 log_obj.info("ETL Data Loader - Process started".format())
 
@@ -54,7 +52,7 @@ try:
     utility.zip_and_rename_gdb(data_load.now_gdb_full_path_name, utility.ccsp_gdb_full_path_name())
 
     log_obj.info("Creating zipped CCSPToolsInputNoWB.gdb (overwrite existing)".format())
-    gdb_copy_name = utility.gdb_copy_name(data_load.now_gdb_full_path_name, config.archive_folder)
+    gdb_copy_name = utility.gdb_copy_name(data_load.now_gdb_full_path_name, data_load.config.archive_folder)
     log_obj.info("     creating result copy in Archive".format())
     arcpy.Copy_management(data_load.now_gdb_full_path_name, gdb_copy_name)
     log_obj.info("     deleting WB data from copy".format())

@@ -6,7 +6,8 @@
       <change beforePath="$PROJECT_DIR$/CCSP_arcpy_Tools/WFS_to_GDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/CCSP_arcpy_Tools/WFS_to_GDB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CCSP_arcpy_Tools/dataio/db_data_io.py" beforeDir="false" afterPath="$PROJECT_DIR$/CCSP_arcpy_Tools/dataio/db_data_io.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CCSP_arcpy_Tools/dataio/utility.py" beforeDir="false" afterPath="$PROJECT_DIR$/CCSP_arcpy_Tools/dataio/utility.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WFS_to_GDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/WFS_to_GDB.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ETL_data_load.py" beforeDir="false" afterPath="$PROJECT_DIR$/ETL_data_load.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/businessclasses/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/businessclasses/config.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +37,28 @@
     <property name="last_opened_file_path" value="$USER_HOME$/AppData/Local/ESRI/conda/envs/arcgispro-py3-clone/python.exe" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.WFS_to_GDB">
+  <component name="RunManager" selected="Python.ETL_data_load">
+    <configuration name="ETL_data_load" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="CCSP_arcpy_Tools" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ETL_data_load.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="WFS_to_GDB" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="CCSP_arcpy_Tools" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -121,34 +143,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="json_to_GDB_splitter" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="CCSP_arcpy_Tools" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Clones\CCSP_arcpy_Tools\json_to_GDB_splitter.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.ETL_data_load" />
         <item itemvalue="Python.WFS_to_GDB" />
         <item itemvalue="Python.WFS_to_GDB_alt" />
         <item itemvalue="Python.WFS_to_json" />
         <item itemvalue="Python.json_to_GDB_splitter (1)" />
-        <item itemvalue="Python.json_to_GDB_splitter" />
       </list>
     </recent_temporary>
   </component>

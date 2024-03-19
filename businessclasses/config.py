@@ -69,25 +69,25 @@ class Config:
         self.DME_master_hybrid_id_table_sde_path = self.CCSP_sde_path + r"\CCSP.GIS.Current_ID"
         self.DME_master_hybrid_sde_path = self.CCSP_sde_path + r"\CCSP.GIS.DME_master_hybrid"
 
-        block_object_exclusions_raw_source = r"\\besfile1\ccsp\Mapping\Gdb\heat_mapping.gdb\block_object_exclusion"
-        block_object_exclusions_fl = arcpy.MakeFeatureLayer_management(block_object_exclusions_raw_source,
+        self.block_object_exclusions_raw_source = r"\\besfile1\ccsp\Mapping\Gdb\heat_mapping.gdb\block_object_exclusion"
+        self.block_object_exclusions_fl = arcpy.MakeFeatureLayer_management(self.block_object_exclusions_raw_source,
                                                                        r"in_memory/block_object_exclusions_fl",
                                                                        "Excluded = 1")
-        block_object_exclusions_copy = arcpy.CopyFeatures_management(block_object_exclusions_fl,
+        self.block_object_exclusions_copy = arcpy.CopyFeatures_management(self.block_object_exclusions_fl,
                                                           r"in_memory/block_object_exclusions_copy")
 
-        MAU_exlusions_raw_source = r"\\besfile1\ccsp\Mapping\Gdb\heat_mapping.gdb\MAU_exclusion"
-        MAU_exclusions_fl = arcpy.MakeFeatureLayer_management(MAU_exlusions_raw_source,
+        self.MAU_exlusions_raw_source = r"\\besfile1\ccsp\Mapping\Gdb\heat_mapping.gdb\MAU_exclusion"
+        self.MAU_exclusions_fl = arcpy.MakeFeatureLayer_management(self.MAU_exlusions_raw_source,
                                                               r"in_memory/MAU_exclusions_fl",
                                                               "Excluded = 1")
-        MAU_exclusions_copy = arcpy.CopyFeatures_management(MAU_exclusions_fl,
+        self.MAU_exclusions_copy = arcpy.CopyFeatures_management(self.MAU_exclusions_fl,
                                                             r"in_memory/MAU_exclusions_copy")
 
-        sewer_basin_exclusions_raw_source = r"\\besfile1\ccsp\Mapping\Gdb\heat_mapping.gdb\basin_exclusion"
-        sewer_basin_exclusions_fl = arcpy.MakeFeatureLayer_management(sewer_basin_exclusions_raw_source,
+        self.sewer_basin_exclusions_raw_source = r"\\besfile1\ccsp\Mapping\Gdb\heat_mapping.gdb\basin_exclusion"
+        self.sewer_basin_exclusions_fl = arcpy.MakeFeatureLayer_management(self.sewer_basin_exclusions_raw_source,
                                                               r"in_memory/sewer_basin_exclusions_fl",
                                                               "Excluded = 1")
-        sewer_basin_exclusions_copy = arcpy.CopyFeatures_management(sewer_basin_exclusions_fl,
+        self.sewer_basin_exclusions_copy = arcpy.CopyFeatures_management(self.sewer_basin_exclusions_fl,
                                                                     r"in_memory/sewer_basin_exclusions_copy")
 
 
@@ -159,13 +159,13 @@ class Config:
         # kinds fragile - relies on exclusion sources not changing location or field properties
         self.CCSP_subset_layers = {
             "ESA_DashboardForecastingReportBlockObjects": ["BlockObjectID",
-                                                           block_object_exclusions_copy,
+                                                           self.block_object_exclusions_copy,
                                                            "block_object_ID"],
             "ESA_DashboardForecastingReportMAUs": ["MaintenanceAreaUnitID",
-                                                   MAU_exclusions_copy,
+                                                   self.MAU_exclusions_copy,
                                                    "MAUID"],
             "ESA_DashboardForecastingReportSewerBasins": ["SewerBasinID",
-                                                          sewer_basin_exclusions_copy,
+                                                          self.sewer_basin_exclusions_copy,
                                                           "BASIN_ID"]
         }
 
