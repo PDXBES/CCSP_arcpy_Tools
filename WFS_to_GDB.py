@@ -1,6 +1,6 @@
 from dataio.data_loader import DataLoad
 import arcpy
-from businessclasses import config
+# from businessclasses import config
 import os
 import sys
 import urllib
@@ -11,26 +11,26 @@ import urllib
 
 arcpy.env.overwriteOutput = True
 
-test_flag = "PROD"
+test_flag = "TEST"
 
 data_load = DataLoad()
 utility = data_load.utility
-config = config.Config(test_flag)
+# config = config.Config(test_flag)
 
 # arcpy.env.outputCoordinateSystem = utility.city_standard_SRID
 # setting coordsys env seems to cause issues with JSONtoFeature + don't know if its really needed
 
 # -----------------------------------------------------------------------------------------------------
-lyrx_source = config.WFS_layers #PROD source
+lyrx_source = data_load.config.WFS_layers #PROD source
 #lyrx_source = config.WFS_layers_testing # just a few testing copies here
 #lyrx_source = config.WFS_layers_QA #QA source
 
-output_gdb = config.GIS_TRANSFER10_GIS_sde_path
+output_gdb = data_load.config.GIS_TRANSFER10_GIS_sde_path
 #output_gdb = r"\\besfile1\ccsp\Mapping\Gdb\ESA_WFS_Prod_testing.gdb" #for testing, eventually remove
 # -----------------------------------------------------------------------------------------------------
 
 
-log_obj = utility.Logger(config.log_file)
+log_obj = utility.Logger(data_load.config.log_file)
 
 log_obj.info("WFS to GDB - Process Started".format())
 
@@ -61,11 +61,11 @@ for lyrx in lyrx_list:
         geom_value = utility.get_geomattribute_value_by_type(utility.get_shape_type(working_memory))
         utility.add_and_populate_geometry_field(working_memory, geom_value)
 
-        if item_basename in config.CCSP_subset_layers:
+        if item_basename in data_load.config.CCSP_subset_layers:
             log_obj.info("WFS to GDB - filtering Dashboard results to CCSP areas")
-            target_key_field = config.CCSP_subset_layers[item_basename][0]
-            exclusion_fc = config.CCSP_subset_layers[item_basename][1]
-            exclusion_key_field = config.CCSP_subset_layers[item_basename][2]
+            target_key_field = data_load.config.CCSP_subset_layers[item_basename][0]
+            exclusion_fc = data_load.config.CCSP_subset_layers[item_basename][1]
+            exclusion_key_field = data_load.config.CCSP_subset_layers[item_basename][2]
 
             value_list = utility.get_field_value_list(exclusion_fc, exclusion_key_field)
 
@@ -109,17 +109,17 @@ log_obj.info("--- WFS to GDB - Standard Route Complete ---")
 ###  the standard route is problematic for COF, also on besapp4 the lyrx file credentials for WFS don't seem to work
 # log_obj.info("--- WFS to JSON to GDB (Alt Route) ---")
 #
-# log_obj.info("WFS to JSON to GDB - Process will be run for {} layers: ".format(len(config.layer_names)))
-# for name in config.layer_names:
+# log_obj.info("WFS to JSON to GDB - Process will be run for {} layers: ".format(len(data_load.config.layer_names)))
+# for name in data_load.config.layer_names:
 #     log_obj.info(" ... {}".format(name))
 #
 # headers = utility.create_headers()
 # #print(r.certs.where())
 #
-# for layer_name in config.layer_names:
+# for layer_name in data_load.config.layer_names:
 #     try:
 #         log_obj.info("WFS to JSON to GDB - pulling WFS data for {}".format(layer_name))
-#         text = utility.request_json_as_text(config.wfs_url, headers, layer_name)
+#         text = utility.request_json_as_text(data_load.config.wfs_url, headers, layer_name)
 #
 #         log_obj.info("WFS to JSON to GDB - writing to json file")
 #         out_file = utility.write_text_as_json_file(layer_name, text)
@@ -128,7 +128,7 @@ log_obj.info("--- WFS to GDB - Standard Route Complete ---")
 #         # seems like feature from this method must be written out to disk, cannot use in_memory version to proceed
 #         #in_memory_feature = arcpy.conversion.JSONToFeatures(out_file, 'in_memory/' + layer)
 #         feature = arcpy.conversion.JSONToFeatures(out_file,
-#                                                   os.path.join(config.WFS_intermediate_gdb, layer_name))
+#                                                   os.path.join(data_load.config.WFS_intermediate_gdb, layer_name))
 #
 #         log_obj.info("WFS to GDB - shortening field names as needed")
 #         working_memory = utility.shorten_field_names(layer_name, feature)
@@ -142,7 +142,7 @@ log_obj.info("--- WFS to GDB - Standard Route Complete ---")
 #
 #         log_obj.info("WFS to JSON to GDB - saving to disk at - {}".format(output_fc))
 #         #arcpy.CopyFeatures_management(working_memory, output_fc)
-#         arcpy.FeatureClassToFeatureClass_conversion(working_memory, config.GIS_TRANSFER10_GIS_sde_path, "ESA_" + layer_name)
+#         arcpy.FeatureClassToFeatureClass_conversion(working_memory, data_load.config.GIS_TRANSFER10_GIS_sde_path, "ESA_" + layer_name)
 #
 #         log_obj.info("WFS to JSON to GDB - WFS to JSON to GDB complete for {}".format(layer_name))
 #         log_obj.info(" ----------------------------------------------------- ")
