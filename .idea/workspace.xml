@@ -6,6 +6,8 @@
       <change beforePath="$PROJECT_DIR$/CCSP_arcpy_Tools/WFS_to_GDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/CCSP_arcpy_Tools/WFS_to_GDB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CCSP_arcpy_Tools/dataio/db_data_io.py" beforeDir="false" afterPath="$PROJECT_DIR$/CCSP_arcpy_Tools/dataio/db_data_io.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CCSP_arcpy_Tools/dataio/utility.py" beforeDir="false" afterPath="$PROJECT_DIR$/CCSP_arcpy_Tools/dataio/utility.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WFS_to_GDB.py" beforeDir="false" afterPath="$PROJECT_DIR$/WFS_to_GDB.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/businessclasses/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/businessclasses/config.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

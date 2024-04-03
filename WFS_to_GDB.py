@@ -11,13 +11,13 @@ import urllib
 
 arcpy.env.overwriteOutput = True
 
-test_flag = "TEST"
+test_flag = "PROD"
 
 data_load = DataLoad()
 utility = data_load.utility
 # config = config.Config(test_flag)
 
-# arcpy.env.outputCoordinateSystem = utility.city_standard_SRID
+arcpy.env.outputCoordinateSystem = utility.city_standard_SRID
 # setting coordsys env seems to cause issues with JSONtoFeature + don't know if its really needed
 
 # -----------------------------------------------------------------------------------------------------
@@ -142,7 +142,9 @@ log_obj.info("--- WFS to GDB - Standard Route Complete ---")
 #
 #         log_obj.info("WFS to JSON to GDB - saving to disk at - {}".format(output_fc))
 #         #arcpy.CopyFeatures_management(working_memory, output_fc)
-#         arcpy.FeatureClassToFeatureClass_conversion(working_memory, data_load.config.GIS_TRANSFER10_GIS_sde_path, "ESA_" + layer_name)
+#          arcpy.FeatureClassToFeatureClass_conversion(working_memory,
+#                                                      data_load.config.GIS_TRANSFER10_GIS_sde_path
+#                                                      "ESA_" + layer_name)
 #
 #         log_obj.info("WFS to JSON to GDB - WFS to JSON to GDB complete for {}".format(layer_name))
 #         log_obj.info(" ----------------------------------------------------- ")
