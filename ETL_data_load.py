@@ -14,8 +14,10 @@ data_load = DataLoad()
 utility = data_load.utility
 
 appsettings_file = os.path.join(data_load.config.loader_input_base_folder, "appsettings.json")
+#appsettings_file = os.path.join(data_load.config.loader_input_base_folder, "appsettings - BES lines ONLY.json")
+
 data_source_file = os.path.join(data_load.config.loader_input_base_folder, "ETL_input_data_sources.json")
-#data_source_file = os.path.join(config.loader_input_base_folder, "ETL_input_data_sources - fake WB.json") #for manual run with fake WB - appsettings stays the same
+#data_source_file = os.path.join(data_load.config.loader_input_base_folder, "ETL_input_data_sources - BES lines ONLY.json") #for manual test run
 
 log_obj = utility.Logger(data_load.config.log_file)
 

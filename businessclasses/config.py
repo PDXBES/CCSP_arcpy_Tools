@@ -14,8 +14,10 @@ class Config:
         self.test_flag = test_flag
 
         self.sde_connections = r"\\besfile1\CCSP\03_WP2_Planning_Support_Tools\03_RRAD\CCSP_Data_Management_ToolBox\connection_files"
+
         self.loader_output_base_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Production"
-        #self.loader_output_base_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Test" #for manual run with fake WB
+        #self.loader_output_base_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Test" #for manual test run
+
         self.loader_input_base_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderInputFiles"
 
         self.WFS_layers = r"\\besfile1\ccsp\Mapping\Lyr\lyrx\ESA_WFS_layers"
@@ -121,7 +123,11 @@ class Config:
             'COFStabilizationSignageAndTrafficControl': 'COFSSAndTrafficControl',
             'MortalityCOFForceMainWithSpotEmergencyRepair': 'MortCOFForceMainWSpotERepair',
             'MortalityCOFForceMainNoEmergencyRepair': 'MortCOFForceMainNoERepair',
-            'MortalityCOFWithSpotEmergencyRepair': 'MortCOFWSpotERepair'
+            'MortalityCOFWithSpotEmergencyRepair': 'MortCOFWSpotERepair',
+            'SewerDesignManualPeakSanitaryFlowCFS': 'SewerDesignManPeakSanFlowCFS',
+            'IsPositiveDryWeatherFlowGreaterThanDesignFlow': 'IsPosDryFlwGrtThnDesignFlw',
+            'IsPositiveAvgWinterFlowGreaterThanDesignFlow': 'IsPosAvgWintFlwGrtThnDesignFlw',
+            'IsAvgWinterFlowLessThanDryWeatherFlow': 'IsAvgWintFlwLessThnDryFlow'
         }
 
         # only used for "alternate" method (csv to json to fc)
