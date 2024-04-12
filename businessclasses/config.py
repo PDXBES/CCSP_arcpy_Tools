@@ -111,9 +111,11 @@ class Config:
             'LargeDiameterRehabStatusInProject': 'LargeDiamRehabStatusInProject',
             'MortalityCOFMaxSegmentWithSpotRepairPipeEmergencyRepair': 'MortCOFMaxSegWSpotPipeERep',
             'MortalityCOFMaxSegmentWithCippEmergencyRepair': 'MortCOFMaxSegWCippERep',
+            'MortalityCOFMaxSegmentWithCippNoSpotRepairPipeEmergencyRepair': 'MrtCOFMxSegWCippNSptRepPipERep',
             'MortalityCOFMaxSegmentWithWholePipeReplacementEmergencyRepair': 'MortCOFMaxSegWWholePipReplERep',
             'NBCRLifeCycleWholePipeReplacement': 'NBCRLifeCycleWholePipRepl',
-            'WholePipeReplacementCapitalCostNBCR': 'WholePipeRepCapitalCostNBCR',
+            'WholePipeReplacementCapitalCostNBCR': 'WholePipeReplCapitalCostNBCR',
+            'WholePipeReplacementCapitalCost': 'WholePipeReplCapitalCost',
             'NumberOfSpotRepairOnlyIfNotLined': 'NumOfSpotRepOnlyIfNotLined',
             'RehabReportMortalityCOFLinkSegmentID': 'RehabMortCOFLinkSegmentID',
             'SpotRepairConstructionDurationBase': 'SpotRepairConstrDurBase',
@@ -127,7 +129,11 @@ class Config:
             'SewerDesignManualPeakSanitaryFlowCFS': 'SewerDesignManPeakSanFlowCFS',
             'IsPositiveDryWeatherFlowGreaterThanDesignFlow': 'IsPosDryFlwGrtThnDesignFlw',
             'IsPositiveAvgWinterFlowGreaterThanDesignFlow': 'IsPosAvgWintFlwGrtThnDesignFlw',
-            'IsAvgWinterFlowLessThanDryWeatherFlow': 'IsAvgWintFlwLessThnDryFlow'
+            'IsAvgWinterFlowLessThanDryWeatherFlow': 'IsAvgWintFlwLessThnDryFlow',
+            'BlockObjectMortalityRiskPerAcre': 'BlockObjMortRiskPerAcre',
+            'PVFactorWholePipeAfterPlannedSpotAndEmerCIPP': 'PVFactWhoPipAftPlanSpotnECIPP',
+            'PVFactorWholePipeAfterPlannedSpotAndEmerCIPPAndWholePipe': 'PVFactWPAftPlanSpotnECIPPnWP',
+            'CAMGWholePipeReplacementCapitalCost': 'CAMGWhoPipReplCapitalCost'
         }
 
         # only used for "alternate" method (csv to json to fc)
