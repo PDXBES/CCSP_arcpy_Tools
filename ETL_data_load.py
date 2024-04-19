@@ -25,7 +25,14 @@ log_obj.info("ETL Data Loader - Process started".format())
 
 utility.now_gdb_full_path_name()
 
+# creates an intermediate gdb
+# loads fcs to that
+# zips then unzips the gdb
+
 # creates datetime stamped gdb in Archive
+
+# copies feature classes from intermediate gdb to the Archive gdb
+
 # creates a zipped version of that (called CCSPTools.gdb.zip) in Production
 # creates _copy of datetime stamped gdb in Archive
 # deletes WB data from that
@@ -40,14 +47,29 @@ utility.now_gdb_full_path_name()
 
 try:
 
-    log_obj.info("Creating gdb for this run (datetime stamped)".format())
+    log_obj.info("Creating intermediate gdb")
+    data_load.create_gdb(data_load.config.intermediate_gdb) #deletes then creates
 
+    log_obj.info("Loading Data to intermediate".format())
+    data_load.load_data(appsettings_file, data_source_file, data_load.config.intermediate_gdb)
+
+    # THIS IS A HACK TO GET AROUND DATA ISSUES RELATED TO LONG PROCESSING TIMES
+    # IT DOESN'T REALLY MAKE ANY SENSE BUT IT WORKS
+    log_obj.info("Zipping and unzipping intermediate gdb")
+    utility.zip_gdb(data_load.config.intermediate_gdb)
+    utility.unzip(data_load.config.intermediate_gdb + '.zip')
+
+    log_obj.info("Creating Archive gdb for this run (datetime stamped)".format())
     data_load.create_gdb(data_load.now_gdb_full_path_name)
 
-    log_obj.info("Loading Data".format())
-    data_load.load_data(appsettings_file, data_source_file)
+    log_obj.info("Copying feature classes from intermediate to Archive gdb")
+    utility.get_and_copy_gdb_feature_classes_and_tables(data_load.config.intermediate_gdb,
+                                                        data_load.now_gdb_full_path_name)
 
-    final_fc_list = utility.get_final_fc_list(data_load.now_gdb_full_path_name)
+    # log_obj.info("Loading Data".format())
+    # data_load.load_data(appsettings_file, data_source_file, data_load.now_gdb_full_path_name)
+
+    final_fc_list = utility.get_fc_list_from_gdb(data_load.now_gdb_full_path_name)
     log_obj.info("Final source count - " + str(len(final_fc_list)))
 
     log_obj.info("Creating zipped CCSPToolsInput.gdb (overwrite existing)".format())

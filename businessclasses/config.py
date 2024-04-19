@@ -25,6 +25,7 @@ class Config:
         #self.WFS_layers = r"\\besfile1\ccsp\Mapping\Lyr\lyrx\ESA_WFS_layers_testing"
         self.WFS_intermediate_gdb = r"\\besfile1\ccsp\Mapping\ArcPro_Projects\WFS_setup\WFS_intermediate.gdb"
         self.json_conversion_temp = r"\\besfile1\ccsp\Mapping\JSON\conversion_temp"
+        self.intermediate_gdb = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Production\Intermediate\intermediate.gdb"
         self.archive_folder = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Production\Archive"
         self.log_file = r"\\besfile1\ccsp\03_WP2_Planning_Support_Tools\04_CostEstimator\CCSPTools\DataLoader\DataLoaderOutput\Production\data_load_log"
 

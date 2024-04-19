@@ -146,7 +146,7 @@ class Utility:
                 print("  unable to truncate, using Delete Rows")
                 arcpy.DeleteRows_management(feature_class)
 
-    def get_final_fc_list(self, gdb):
+    def get_fc_list_from_gdb(self, gdb):
         arcpy.env.workspace = gdb
         full_list = []
         fc_list = arcpy.ListFeatureClasses()
@@ -383,3 +383,21 @@ class Utility:
                 if row[0] is not None:
                     value_list.append(str(row[0]))
         return value_list
+
+    def get_and_copy_gdb_feature_classes_and_tables(self, source_gdb, target_gdb):
+        source_list = self.get_fc_list_from_gdb(source_gdb)
+        fc_list = []
+        table_list = []
+        if len(source_list) > 0:
+            for source in source_list:
+                desc = arcpy.Describe(source)
+                if desc.datatype == 'FeatureClass':
+                    fc_list.append(source)
+                elif desc.datatype == 'Table':
+                    table_list.append(source)
+            if len(fc_list) > 0:
+                arcpy.FeatureClassToGeodatabase_conversion(fc_list, target_gdb)
+            if len(table_list) > 0:
+                arcpy.TableToGeodatabase_conversion(table_list, target_gdb)
+        else:
+            pass

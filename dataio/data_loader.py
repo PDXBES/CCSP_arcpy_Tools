@@ -124,7 +124,7 @@ class DataLoad:
             arcpy.ExecuteError()
             raise Exception
 
-    def load_data(self, appsettings_file, data_source_file):
+    def load_data(self, appsettings_file, data_source_file, output_gdb):
         missing_from_source_names = self.create_names_missing_from_source_list(appsettings_file, data_source_file)
         if len(missing_from_source_names) == 0:
 
@@ -136,9 +136,9 @@ class DataLoad:
                 print("      The extra entries will not be copied to the output gdb.")
                 filtered_dict = self.remove_extra_values(data_source_file,
                                                      missing_from_appsettings)
-                self.copy_sources_to_gdb(filtered_dict, self.now_gdb_full_path_name)
+                self.copy_sources_to_gdb(filtered_dict, output_gdb)
             else:
-                self.copy_sources_to_gdb(self.create_input_dict_from_json_dict(data_source_file), self.now_gdb_full_path_name)
+                self.copy_sources_to_gdb(self.create_input_dict_from_json_dict(data_source_file), output_gdb)
 
         else:
             arcpy.AddError("No data will be copied")
