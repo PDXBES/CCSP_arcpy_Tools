@@ -23,11 +23,9 @@ log_obj = utility.Logger(data_load.config.log_file)
 
 log_obj.info("ETL Data Loader - Process started".format())
 
-utility.now_gdb_full_path_name()
+#utility.now_gdb_full_path_name() # Don't think we need this. It gets set in data_loader init
 
 # creates an intermediate gdb
-# loads fcs to that
-# zips then unzips the gdb
 
 # creates datetime stamped gdb in Archive
 
@@ -50,14 +48,10 @@ try:
     log_obj.info("Creating intermediate gdb")
     data_load.create_gdb(data_load.config.intermediate_gdb) #deletes then creates
 
-    log_obj.info("Loading Data to intermediate".format())
-    data_load.load_data(appsettings_file, data_source_file, data_load.config.intermediate_gdb)
-
     # THIS IS A HACK TO GET AROUND DATA ISSUES RELATED TO LONG PROCESSING TIMES
     # IT DOESN'T REALLY MAKE ANY SENSE BUT IT WORKS
-    log_obj.info("Zipping and unzipping intermediate gdb")
-    utility.zip_gdb(data_load.config.intermediate_gdb)
-    utility.unzip(data_load.config.intermediate_gdb + '.zip')
+    log_obj.info("Loading Data to intermediate".format())
+    data_load.load_data(appsettings_file, data_source_file, data_load.config.intermediate_gdb)
 
     log_obj.info("Creating Archive gdb for this run (datetime stamped)".format())
     data_load.create_gdb(data_load.now_gdb_full_path_name)

@@ -18,7 +18,7 @@ utility = data_load.utility
 # config = config.Config(test_flag)
 
 arcpy.env.outputCoordinateSystem = utility.city_standard_SRID
-# setting coordsys env seems to cause issues with JSONtoFeature + don't know if its really needed
+# setting coordsys env seems to cause issues with JSONtoFeature but it is needed for the standard route
 
 # -----------------------------------------------------------------------------------------------------
 lyrx_source = data_load.config.WFS_layers #PROD source
