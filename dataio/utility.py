@@ -385,19 +385,22 @@ class Utility:
         return value_list
 
     def get_and_copy_gdb_feature_classes_and_tables(self, source_gdb, target_gdb):
+        print("   Getting source feature classes/ tables")
         source_list = self.get_fc_list_from_gdb(source_gdb)
         fc_list = []
         table_list = []
         if len(source_list) > 0:
             for source in source_list:
                 desc = arcpy.Describe(source)
+                print("   Copying {}".format(desc.name))
                 if desc.datatype == 'FeatureClass':
-                    fc_list.append(source)
+                    try:
+                        arcpy.Copy_management(source, os.path.join(target_gdb, desc.name))
+                    except:
+                        arcpy.CopyFeatures_management(source, os.path.join(target_gdb, desc.name))
                 elif desc.datatype == 'Table':
-                    table_list.append(source)
-            if len(fc_list) > 0:
-                arcpy.FeatureClassToGeodatabase_conversion(fc_list, target_gdb)
-            if len(table_list) > 0:
-                arcpy.TableToGeodatabase_conversion(table_list, target_gdb)
+                    arcpy.Copy_management(source, os.path.join(target_gdb, desc.name))
+
         else:
+            print("No feature classes or tables in source gdb")
             pass
